@@ -1,21 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import AppNavigator from "./app/navigation/AppNavigator";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import ReduxThunk from "redux-thunk";
+
+import AppLoading from "expo-app-loading";
+import {
+  useFonts,
+  TitilliumWeb_400Regular,
+  TitilliumWeb_600SemiBold,
+  TitilliumWeb_700Bold,
+} from "@expo-google-fonts/titillium-web";
+
+import discsReducer from "./app/store/reducers/discsReducer";
+
+const rootReducer = combineReducers({
+  discs: discsReducer,
+});
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
+  let [isFontsLoaded] = useFonts({
+    TitilliumWeb_400Regular,
+    TitilliumWeb_600SemiBold,
+    TitilliumWeb_700Bold,
+  });
+
+  if (!isFontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
