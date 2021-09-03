@@ -69,8 +69,7 @@ const DiscList = (props) => {
 
 const styles = StyleSheet.create({
   listContainer: {
-    width: "100%",
-    height: 300,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
