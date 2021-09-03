@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import HeaderButton from "../../components/ui/HeaderButton";
+import DiscRatingChart from "../../components/discs/DiscRatingChart";
 
 import {
   HeaderText,
@@ -50,6 +51,9 @@ const DiscsOverviewScreen = (props) => {
               {discData.disc.manufacturer.name} {discData.disc.name}
             </HeaderText>
           </View>
+          <View style={styles.discChart}>
+            <DiscRatingChart />
+          </View>
           <View style={styles.dataDeck}>
             <View style={styles.dataCard}>
               <BodyText style={styles.dataCardText}>
@@ -74,8 +78,18 @@ const DiscsOverviewScreen = (props) => {
               </BodyText>
             </View>
           </View>
-          <View style={styles.discChart}>
-            <HeaderText>CHART GOES HERE</HeaderText>
+          <View style={styles.dataDeck}>
+            <View style={styles.dataCard}>
+              <BodyText style={styles.dataCardText}>
+                Throws : {discData.disc.flexibility}
+              </BodyText>
+              <BodyText style={styles.dataCardText}>
+                Avg Dist : {discData.disc.weight}
+              </BodyText>
+              <BodyText style={styles.dataCardText}>
+                Fav Throw : {discData.disc.height}
+              </BodyText>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -112,7 +126,7 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: AppColors.primary,
+    backgroundColor: AppColors.white,
   },
   scroll: {
     width: "100%",
@@ -130,7 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   detailHeaderText: {
-    color: AppColors.white,
+    color: AppColors.black,
   },
   imageContainer: {
     position: "relative",
@@ -160,13 +174,13 @@ const styles = StyleSheet.create({
     right: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: AppColors.accent,
+    backgroundColor: AppColors.primary,
     borderTopLeftRadius: 55,
     width: 200,
     height: "10%",
   },
   discTypeText: {
-    color: AppColors.primary,
+    color: AppColors.white,
   },
   ratingContainer: {
     flexDirection: "column",
@@ -193,7 +207,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   dataCardText: {
-    color: AppColors.white,
+    color: AppColors.black,
   },
   discChart: {
     flex: 1,
