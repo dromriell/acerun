@@ -1,8 +1,23 @@
 import React, { useState } from "react";
 import { View, FlatList, StyleSheet, ScrollView } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import DiscItem from "./DiscItem";
 import { SubHeaderText } from "../ui/AppText";
+import AppColors from "../../utils/AppColors";
+
+const EmptyListPlaceHolder = (props) => {
+  return (
+    <View style={styles.placeholder}>
+      <MaterialIcons
+        name={"error-outline"}
+        size={30}
+        color={AppColors.accent}
+      />
+      <SubHeaderText>No Discs Found</SubHeaderText>
+    </View>
+  );
+};
 
 const DiscCarousel = (props) => {
   const handleDiscSelect = (discData) => {
@@ -14,32 +29,26 @@ const DiscCarousel = (props) => {
     });
   };
 
-  const renderDiscs = (itemData) => {
-    const discData = itemData.item;
-    return (
-      <DiscItem
-        discName={discData.disc.name}
-        imageUri={discData.disc.img_url}
-        onPress={() => handleDiscSelect(discData)}
-      />
-    );
-  };
-
   return (
     <View style={styles.listContainer}>
-      <SubHeaderText>Trending Discs</SubHeaderText>
-      <ScrollView style={styles.discList} horizontal={true}>
-        {props.data.map((disc) => {
-          return (
-            <DiscItem
-              discName={disc.disc.name}
-              imageUri={disc.disc.img_url}
-              onPress={() => handleDiscSelect(disc)}
-              style={styles.disc}
-            />
-          );
-        })}
-      </ScrollView>
+      <SubHeaderText>{props.title}</SubHeaderText>
+      {props.data.length > 0 ? (
+        <ScrollView style={styles.discList} horizontal={true}>
+          {props.data.map((disc) => {
+            return (
+              <DiscItem
+                key={disc.disc.id}
+                discName={disc.disc.name}
+                imageUri={disc.disc.img_url}
+                onPress={() => handleDiscSelect(disc)}
+                style={styles.disc}
+              />
+            );
+          })}
+        </ScrollView>
+      ) : (
+        <EmptyListPlaceHolder />
+      )}
     </View>
   );
 };
@@ -60,6 +69,13 @@ const styles = StyleSheet.create({
   listRow: {
     flex: 1,
     justifyContent: "space-around",
+  },
+  placeholder: {
+    width: "100%",
+    height: 150,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomWidth: 1,
   },
 });
 
