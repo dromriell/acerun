@@ -75,6 +75,12 @@ const UserDiscsScreen = (props) => {
   );
 };
 
+export const screenOptions = (navData) => {
+  return {
+    headerTitle: "My Discs",
+  };
+};
+
 const styles = StyleSheet.create({});
 
 export default UserDiscsScreen;
