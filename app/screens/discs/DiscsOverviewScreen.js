@@ -72,12 +72,24 @@ const DiscsOverviewScreen = (props) => {
       <DiscHomeMenu navigation={props.navigation} />
       <DiscCarousel
         data={userDiscs}
+        title={"Trending Discs"}
         navigation={props.navigation}
         listType="owned"
-        onBagToggle={() => console.log("Remove this disc")}
+      />
+      <DiscCarousel
+        data={[]} // Change data source
+        title={"New Discs"}
+        navigation={props.navigation}
+        listType="owned"
       />
     </View>
   );
+};
+
+export const screenOptions = (navData) => {
+  return {
+    headerTitle: "Disc Home",
+  };
 };
 
 const styles = StyleSheet.create({
