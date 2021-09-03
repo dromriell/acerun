@@ -9,4 +9,5 @@ export default {
   black: "#1C110A",
   blackTrans: "#1C110Ac0",
   background: "#EDF2C2",
+  primaryTrans: "#02737380",
 };
