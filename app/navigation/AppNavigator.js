@@ -8,8 +8,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import HomeScreen from "../screens/HomeScreen";
-import DiscsOverviewScreen from "../screens/discs/DiscsOverviewScreen";
-import UserDiscsScreen from "../screens/discs/UserDiscsScreen";
+import DiscsOverviewScreen, {
+  screenOptions as discOverviewScreenOptions,
+} from "../screens/discs/DiscsOverviewScreen";
+import UserDiscsScreen, {
+  screenOptions as userDiscScreenOptions,
+} from "../screens/discs/UserDiscsScreen";
 import DiscDetailScreen, {
   screenOptions as discDetailScreenOptions,
 } from "../screens/discs/DiscDetailScreen";
@@ -40,8 +44,16 @@ const defaultStackNavOptions = {
 const DiscStackNavigator = () => {
   return (
     <DiscStack.Navigator screenOptions={defaultStackNavOptions}>
-      <DiscStack.Screen name="DiscOverview" component={DiscsOverviewScreen} />
-      <DiscStack.Screen name="UserDiscs" component={UserDiscsScreen} />
+      <DiscStack.Screen
+        name="DiscOverview"
+        component={DiscsOverviewScreen}
+        options={discOverviewScreenOptions}
+      />
+      <DiscStack.Screen
+        name="UserDiscs"
+        component={UserDiscsScreen}
+        options={userDiscScreenOptions}
+      />
       <DiscStack.Screen
         name="DiscDetail"
         component={DiscDetailScreen}
@@ -58,7 +70,7 @@ const AppNavigator = (props) => {
         initialRouteName="Home"
         screenOptions={({ route }) => ({
           headerShown: false,
-          tabBarStyle: { backgroundColor: "#ccc" },
+          tabBarStyle: { backgroundColor: AppColors.primary },
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             size = 30;
@@ -103,9 +115,16 @@ const AppNavigator = (props) => {
                 return <Ionicons name={iconName} size={size} color={color} />;
             }
           },
-          tabBarActiveTintColor: "tomato",
-          tabBarInactiveTintColor: "gray",
-          tabBarStyle: { height: 75 },
+          tabBarActiveTintColor: AppColors.accent,
+          tabBarInactiveTintColor: AppColors.black,
+          tabBarStyle: {
+            height: 65,
+            alignItems: "center",
+            justifyContent: "center",
+          },
+          tabBarLabelStyle: {
+            paddingBottom: 10,
+          },
         })}
       >
         <Tab.Screen name="Profile" component={ProfileScreen} />
