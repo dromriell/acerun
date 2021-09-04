@@ -213,10 +213,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 3,
-    borderRadius: 3,
     width: "90%",
-    height: 300,
+    height: 350,
+    marginVertical: 10,
   },
 });
 
