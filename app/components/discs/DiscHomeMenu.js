@@ -33,7 +33,10 @@ const DiscHomeMenu = (props) => {
         </TouchComp>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchComp onPress={() => console.log("BUTTON")} useForeground>
+        <TouchComp
+          onPress={() => props.navigation.navigate("DiscComparison")}
+          useForeground
+        >
           <View style={styles.button}>
             <MaterialIcons name="compare" size={60} color={AppColors.accent} />
             <SubHeaderText style={styles.buttonText}>Compare</SubHeaderText>
