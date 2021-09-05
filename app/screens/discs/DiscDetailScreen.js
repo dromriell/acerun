@@ -10,8 +10,28 @@ import {
 } from "../../components/ui/AppText";
 import AppColors from "../../utils/AppColors";
 
+const StatCard = (props) => {
+  return (
+    <View style={styles.dataDeck}>
+      <SubHeaderText style={styles.dataHeader}>{props.header}</SubHeaderText>
+      {props.stats.map((stat, i) => {
+        return (
+          <View key={`discStat-${stat}-${i}`} style={styles.dataContainer}>
+            <SubHeaderText style={styles.dataLabel}>
+              {props.labels[i]}
+            </SubHeaderText>
+            <BodyText style={styles.data}>{stat}</BodyText>
+          </View>
+        );
+      })}
+    </View>
+  );
+};
+
 const DiscsOverviewScreen = (props) => {
   const { discData } = props.route.params;
+  const disc = discData.disc ? discData.disc : discData;
+
   console.log(props.route.params);
   return (
     <View style={styles.screen}>
@@ -25,19 +45,27 @@ const DiscsOverviewScreen = (props) => {
             <View style={styles.flightRating}>
               <View style={styles.ratingContainer}>
                 <SubHeaderText style={styles.flightType}>SPEED</SubHeaderText>
-                <SubHeaderText style={styles.flightValue}>1</SubHeaderText>
+                <SubHeaderText style={styles.flightValue}>
+                  {disc.speed}
+                </SubHeaderText>
               </View>
               <View style={styles.ratingContainer}>
                 <SubHeaderText style={styles.flightType}>GLIDE</SubHeaderText>
-                <SubHeaderText style={styles.flightValue}>1</SubHeaderText>
+                <SubHeaderText style={styles.flightValue}>
+                  {disc.glide}
+                </SubHeaderText>
               </View>
               <View style={styles.ratingContainer}>
                 <SubHeaderText style={styles.flightType}>TURN</SubHeaderText>
-                <SubHeaderText style={styles.flightValue}>1</SubHeaderText>
+                <SubHeaderText style={styles.flightValue}>
+                  {disc.turn}
+                </SubHeaderText>
               </View>
               <View style={styles.ratingContainer}>
                 <SubHeaderText style={styles.flightType}>FADE</SubHeaderText>
-                <SubHeaderText style={styles.flightValue}>1</SubHeaderText>
+                <SubHeaderText style={styles.flightValue}>
+                  {disc.fade}
+                </SubHeaderText>
               </View>
             </View>
             <View style={styles.discType}>
@@ -52,45 +80,32 @@ const DiscsOverviewScreen = (props) => {
             </HeaderText>
           </View>
           <View style={styles.discChart}>
-            <DiscRatingChart />
+            <DiscRatingChart data={[discData]} />
           </View>
-          <View style={styles.dataDeck}>
-            <View style={styles.dataCard}>
-              <BodyText style={styles.dataCardText}>
-                Flexibility: {discData.disc.flexibility}
-              </BodyText>
-              <BodyText style={styles.dataCardText}>
-                Max Weight : {discData.disc.weight}
-              </BodyText>
-              <BodyText style={styles.dataCardText}>
-                Height : {discData.disc.height}
-              </BodyText>
-            </View>
-            <View style={styles.dataCard}>
-              <BodyText style={styles.dataCardText}>
-                Rim Depth : {discData.disc.rim_depth}
-              </BodyText>
-              <BodyText style={styles.dataCardText}>
-                Rim Thickness : {discData.disc.rim_thickness}
-              </BodyText>
-              <BodyText style={styles.dataCardText}>
-                Rim Dep/Dia : {discData.disc.rim_depth_to_diameter}
-              </BodyText>
-            </View>
-          </View>
-          <View style={styles.dataDeck}>
-            <View style={styles.dataCard}>
-              <BodyText style={styles.dataCardText}>
-                Throws : {discData.disc.flexibility}
-              </BodyText>
-              <BodyText style={styles.dataCardText}>
-                Avg Dist : {discData.disc.weight}
-              </BodyText>
-              <BodyText style={styles.dataCardText}>
-                Fav Throw : {discData.disc.height}
-              </BodyText>
-            </View>
-          </View>
+          <StatCard
+            header="Properties"
+            labels={[
+              "Flexibility",
+              "Weight",
+              "Height",
+              "Rim Depth",
+              "Rim Thickness",
+              "Rim/Diameter",
+            ]}
+            stats={[
+              disc.flexibility,
+              `${disc.weight} g`,
+              disc.height,
+              disc.rim_depth,
+              disc.rim_thickness,
+              disc.rim_depth_to_diameter,
+            ]}
+          />
+          <StatCard
+            header={"User Stats"}
+            labels={["Throws", "Avg Dist", "Fav Throw"]}
+            stats={[disc.flexibility, `${disc.weight} g`, disc.height]}
+          />
         </View>
       </ScrollView>
     </View>
@@ -145,6 +160,7 @@ const styles = StyleSheet.create({
   },
   detailHeaderText: {
     color: AppColors.black,
+    fontSize: 24,
   },
   imageContainer: {
     position: "relative",
@@ -194,11 +210,28 @@ const styles = StyleSheet.create({
   },
   dataDeck: {
     flexDirection: "row",
+    flexWrap: "wrap",
     width: "90%",
-    elevation: 3,
     padding: 10,
-    borderRadius: 3,
+    marginVertical: 15,
   },
+  dataHeader: {
+    width: "100%",
+    marginBottom: 15,
+    fontSize: 21,
+    borderBottomColor: AppColors.accent,
+    borderBottomWidth: 1,
+    color: AppColors.black,
+  },
+  dataContainer: {
+    width: "50%",
+    marginVertical: 5,
+  },
+  dataLabel: {
+    fontSize: 16,
+    color: AppColors.blackTrans,
+  },
+  data: {},
   dataCard: {
     justifyContent: "space-around",
     alignItems: "flex-start",
