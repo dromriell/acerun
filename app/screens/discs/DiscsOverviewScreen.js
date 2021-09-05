@@ -11,6 +11,7 @@ import * as discActions from "../../store/actions/discsActions";
 
 import DiscHomeMenu from "../../components/discs/DiscHomeMenu";
 import DiscCarousel from "../../components/discs/DiscCarousel";
+import SearchBar from "../../components/ui/SearchBar";
 
 import AppColors from "../../utils/AppColors";
 import { SubHeaderText } from "../../components/ui/AppText";
@@ -88,7 +89,13 @@ const DiscsOverviewScreen = (props) => {
 
 export const screenOptions = (navData) => {
   return {
-    headerTitle: "Disc Home",
+    headerTitle: () => (
+      <SearchBar
+        placeholder="Search Discs..."
+        onPress={() => navData.navigation.navigate("DiscSearch")}
+      />
+    ),
+    headerTitleAlign: "center",
   };
 };
 
