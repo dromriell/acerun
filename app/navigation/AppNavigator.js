@@ -8,6 +8,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import HomeScreen from "../screens/HomeScreen";
+
+// DISC SCREENS
 import DiscsOverviewScreen, {
   screenOptions as discOverviewScreenOptions,
 } from "../screens/discs/DiscsOverviewScreen";
@@ -17,6 +19,13 @@ import UserDiscsScreen, {
 import DiscDetailScreen, {
   screenOptions as discDetailScreenOptions,
 } from "../screens/discs/DiscDetailScreen";
+import DiscComparisonScreen, {
+  screenOptions as discComparisonScreenOptions,
+} from "../screens/discs/DiscComparisonScreen";
+import DiscSearchScreen, {
+  screenOptions as discSearchScreenOptions,
+} from "../screens/discs/DiscSearchScreen";
+
 import CoursesOverviewScreen from "../screens/courses/CoursesOverviewScreen";
 import ProfileScreen from "../screens/profile/ProfileScreen";
 import GameSetupScreen from "../screens/game/GameSetupScreen";
@@ -58,6 +67,16 @@ const DiscStackNavigator = () => {
         name="DiscDetail"
         component={DiscDetailScreen}
         options={discDetailScreenOptions}
+      />
+      <DiscStack.Screen
+        name="DiscComparison"
+        component={DiscComparisonScreen}
+        options={discComparisonScreenOptions}
+      />
+      <DiscStack.Screen
+        name="DiscSearch"
+        component={DiscSearchScreen}
+        options={discSearchScreenOptions}
       />
     </DiscStack.Navigator>
   );
