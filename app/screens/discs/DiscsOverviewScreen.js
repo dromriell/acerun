@@ -93,6 +93,7 @@ export const screenOptions = (navData) => {
       <SearchBar
         placeholder="Search Discs..."
         onPress={() => navData.navigation.navigate("DiscSearch")}
+        button
       />
     ),
     headerTitleAlign: "center",
