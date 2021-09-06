@@ -12,6 +12,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import AppColors from "../../utils/AppColors";
 
 const SearchBar = (props) => {
+  const {onSearch} = props
   const [isRefSet, setIsRefSet] = useState(false);
   const [isInitialFocus, setIsInitialFocus] = useState(true);
   const searchRef = useRef();
@@ -29,6 +30,14 @@ const SearchBar = (props) => {
     }
   }, [isRefSet, setIsInitialFocus]);
 
+  const handleSearchInput = (text) => {
+    if (text.length < 3) {
+      return
+    }
+     // Get action function from props and call here
+    onSearch(text)
+  }
+
   const TouchComp =
     Platform.OS === "android" && Platform.Version >= 22
       ? TouchableNativeFeedback
@@ -44,6 +53,7 @@ const SearchBar = (props) => {
             // autoFocus={props.autoFocus}
             style={styles.searchField}
             ref={searchRef}
+            onChangeText={(text) => handleSearchInput(text)}
           />
         )}
       </TouchComp>
