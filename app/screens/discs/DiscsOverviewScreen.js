@@ -89,6 +89,13 @@ const DiscsOverviewScreen = (props) => {
 
 export const screenOptions = (navData) => {
   return {
+    headerLeft: () => {
+      return (
+        <View style={styles.headerLeftContainer}>
+          <Text style={styles.headerLeftText}> </Text>
+        </View>
+      );
+    },
     headerTitle: () => (
       <SearchBar
         placeholder="Search Discs..."
@@ -107,6 +114,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     paddingVertical: 10,
+  },
+  headerLeftContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    marginHorizontal: 11,
+    marginVertical: 3,
+  },
+  headerLeftText: {
+    height: 24,
+    width: 24,
+    margin: 3,
   },
   centered: {
     flex: 1,
