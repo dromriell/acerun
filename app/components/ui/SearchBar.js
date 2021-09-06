@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   TouchableNativeFeedback,
   TouchableOpacity,
@@ -8,20 +8,43 @@ import {
   Text,
   TextInput,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import AppColors from "../../utils/AppColors";
 
 const SearchBar = (props) => {
+  const [isRefSet, setIsRefSet] = useState(false);
+  const [isInitialFocus, setIsInitialFocus] = useState(true);
+  const searchRef = useRef();
+
+  useEffect(() => {
+    if (searchRef.current && !isRefSet) {
+      setIsRefSet(true);
+    }
+  }, [searchRef, setIsRefSet]);
+
+  useEffect(() => {
+    if (isRefSet && isInitialFocus) {
+      searchRef.current.focus();
+      setIsInitialFocus(false);
+    }
+  }, [isRefSet, setIsInitialFocus]);
+
   const TouchComp =
     Platform.OS === "android" && Platform.Version >= 22
       ? TouchableNativeFeedback
       : TouchableOpacity;
+
   return (
     <View style={{ ...styles.searchBar, ...props.style }}>
       <TouchComp onPress={props.onPress}>
         {props.button ? (
           <Text style={styles.placeholder}>{props.placeholder}</Text>
         ) : (
-          <TextInput style={styles.searchField} />
+          <TextInput
+            // autoFocus={props.autoFocus}
+            style={styles.searchField}
+            ref={searchRef}
+          />
         )}
       </TouchComp>
     </View>
