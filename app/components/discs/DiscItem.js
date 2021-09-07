@@ -35,6 +35,27 @@ const FlightRatingBar = (props) => {
   );
 };
 
+export const EmptyDiscItem = (props) => {
+  const TouchComp =
+    Platform.OS === "android" && Platform.Version >= 21
+      ? TouchableNativeFeedback
+      : TouchableOpacity;
+
+  return (
+    <View style={{ ...styles.discContainer, ...props.style }}>
+      <View style={styles.touchableEmpty}>
+        <TouchComp onPress={props.onPress} useForeground>
+          <View style={styles.emptyInfo}>
+            <SubHeaderText>{props.title}</SubHeaderText>
+            <BodyText>{props.body}</BodyText>
+            {props.icon}
+          </View>
+        </TouchComp>
+      </View>
+    </View>
+  );
+};
+
 const DiscItem = (props) => {
   const TouchComp =
     Platform.OS === "android" && Platform.Version >= 21
@@ -43,7 +64,7 @@ const DiscItem = (props) => {
 
   return (
     <View style={{ ...styles.discContainer, ...props.style }}>
-      <View style={styles.touchable}>
+      <View style={styles.touchableDI}>
         <TouchComp onPress={props.onPress} useForeground>
           <View style={styles.discInfo}>
             <View style={styles.imageContainer}>
@@ -75,12 +96,23 @@ const styles = StyleSheet.create({
     width: "40%",
     margin: 5,
   },
-  touchable: {
+  touchableDI: {
     width: "100%",
     height: "80%",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     overflow: "hidden",
+  },
+  touchableEmpty: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  emptyInfo: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
   },
   discInfo: {
     position: "relative",
