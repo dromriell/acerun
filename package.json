@@ -27,7 +27,10 @@
     "react-redux": "^7.2.4",
     "redux": "^4.1.1",
     "redux-thunk": "^2.3.0",
-    "victory-native": "^35.5.4"
+    "victory-native": "^35.5.4",
+    "@react-native-async-storage/async-storage": "~1.15.0",
+    "react-native-gesture-handler": "~1.10.2",
+    "expo-linear-gradient": "~9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
