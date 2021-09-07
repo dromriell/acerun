@@ -45,17 +45,20 @@ const processData = (data) => {
 };
 
 const DiscRatingChart = (props) => {
-  const discsData = props.data.map((disc) => {
-    return {
-      turn: disc.disc.turn,
-      glide: disc.disc.glide,
-      fade: disc.disc.fade,
-      speed: disc.disc.speed,
-    };
-  });
+  const discsData =
+    props.data.length > 0
+      ? props.data.map((disc) => {
+          return {
+            turn: disc.disc.turn,
+            glide: disc.disc.glide,
+            fade: disc.disc.fade,
+            speed: disc.disc.speed,
+          };
+        })
+      : [{ turn: 0, glide: 0, fade: 0, speed: 0 }];
+
   const data = processData(discsData);
   const maxima = flightValueRanges.max;
-  const minima = flightValueRanges.min;
 
   return (
     <View style={styles.container}>
@@ -65,7 +68,11 @@ const DiscRatingChart = (props) => {
         domain={{ y: [0, 1.25] }}
       >
         <VictoryGroup
-          colorScale={[AppColors.accent, "orange", "tomato"]}
+          colorScale={
+            props.data.length > 0
+              ? [AppColors.accent, "orange", "tomato"]
+              : [AppColors.grey]
+          }
           style={{ data: { fillOpacity: 0.2, strokeWidth: 2 } }}
         >
           {data.map((data, i) => {
