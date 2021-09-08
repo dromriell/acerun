@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   View,
   Text,
@@ -14,27 +14,34 @@ import DiscList from "../../components/discs/DiscList";
 import AppColors from "../../utils/AppColors";
 
 const UserDiscsScreen = (props) => {
+  const dispatch = useDispatch();
+  const { navigation } = props;
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
   const userDiscs = useSelector((state) => state.discs.userDiscs);
 
   const loadUserDiscs = useCallback(async () => {
     setError(null);
     try {
-      await dispatch(discActions.fetchUserDiscs());
+      await dispatch(discActions.fetchUserDiscs(token));
     } catch (error) {
       setError(error.message);
     }
-  }, [dispatch, setIsLoading, setError]);
+  }, [dispatch, setError]);
 
   useEffect(() => {
-    setIsLoading(true);
-    loadUserDiscs().then(() => {
-      setIsLoading(false);
+    const clearSearch = navigation.addListener("focus", () => {
+      setIsLoading(true);
+      loadUserDiscs().then(() => {
+        setIsLoading(false);
+      });
     });
-  }, [dispatch, loadUserDiscs, setError]);
+
+    return clearSearch;
+  }, [navigation, dispatch, loadUserDiscs, setError]);
 
   if (error) {
     return (
@@ -65,14 +72,7 @@ const UserDiscsScreen = (props) => {
     );
   }
 
-  return (
-    <DiscList
-      data={userDiscs}
-      navigation={props.navigation}
-      listType="owned"
-      onBagToggle={() => console.log("Remove this disc")}
-    />
-  );
+  return <DiscList data={userDiscs} navigation={props.navigation} />;
 };
 
 export const screenOptions = (navData) => {
