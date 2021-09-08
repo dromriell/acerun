@@ -20,12 +20,9 @@ const EmptyListPlaceHolder = (props) => {
 };
 
 const DiscCarousel = (props) => {
-  const handleDiscSelect = (discData) => {
+  const handleDiscSelect = (id) => {
     props.navigation.navigate("DiscDetail", {
-      discAction: {
-        status: props.listType,
-      },
-      discData: discData,
+      discId: id,
     });
   };
 
@@ -35,12 +32,13 @@ const DiscCarousel = (props) => {
       {props.data.length > 0 ? (
         <ScrollView style={styles.discList} horizontal={true}>
           {props.data.map((disc) => {
+            console.log(disc);
+            const discDataId = disc.disc ? disc.disc.id : disc.id;
             return (
               <DiscItem
-                key={disc.disc.id}
-                discName={disc.disc.name}
-                imageUri={disc.disc.img_url}
-                onPress={() => handleDiscSelect(disc)}
+                key={discDataId}
+                discData={disc}
+                onPress={() => handleDiscSelect(discDataId)}
                 style={styles.disc}
               />
             );

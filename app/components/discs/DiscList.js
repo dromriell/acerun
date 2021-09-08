@@ -22,27 +22,31 @@ const DiscList = (props) => {
       return;
     }
     const filteredDiscs = props.data.filter((disc) => {
-      return disc.disc.type === discTypes[discType];
+      const discData = disc.disc ? disc.disc : disc;
+      return discData.type === discTypes[discType];
     });
     setDiscs(filteredDiscs);
   };
 
-  const handleDiscSelect = (discData) => {
+  const handleDiscSelect = (id, discData) => {
+    if (props.onDiscSelect) {
+      props.onDiscSelect(discData);
+      return;
+    }
     props.navigation.navigate("DiscDetail", {
-      discAction: {
-        status: props.listType,
-      },
-      discData: discData,
+      discId: id,
     });
   };
 
   const renderDiscs = (itemData) => {
-    const discData = itemData.item;
+    const discDataId = itemData.item.disc
+      ? itemData.item.disc.id
+      : itemData.item.id;
     return (
       <DiscItem
-        discName={discData.disc.name}
-        imageUri={discData.disc.img_url}
-        onPress={() => handleDiscSelect(discData)}
+        key={discDataId}
+        discData={itemData.item}
+        onPress={() => handleDiscSelect(discDataId, itemData.item)}
       />
     );
   };
