@@ -1,11 +1,13 @@
 import React from "react";
 import { Platform } from "react-native";
 import { useSelector } from "react-redux";
+import { createStackNavigator } from "@react-navigation/stack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
+import LaunchScreen from "../screens/LaunchScreen";
 import AuthScreen from "../screens/auth/AuthScreen";
 
 import HomeScreen from "../screens/HomeScreen";
@@ -34,10 +36,11 @@ import GameSetupScreen from "../screens/game/GameSetupScreen";
 import AppColors from "../utils/AppColors";
 
 const Tab = createBottomTabNavigator();
-const DiscStack = createNativeStackNavigator();
+const DiscStack = createStackNavigator();
 const AuthStack = createNativeStackNavigator();
 
 const defaultStackNavOptions = {
+  screenInterpolator: () => {},
   headerStyle: {
     backgroundColor:
       Platform.OS === "android" ? AppColors.primary : AppColors.white,
@@ -58,7 +61,11 @@ const defaultAuthNavOptions = {
 
 export const AuthStackNavigator = () => {
   return (
-    <AuthStack.Navigator screenOptions={defaultAuthNavOptions}>
+    <AuthStack.Navigator
+      screenOptions={defaultAuthNavOptions}
+      initialRouteName="Launch"
+    >
+      <AuthStack.Screen name="Launch" component={LaunchScreen} />
       <AuthStack.Screen name="Login" component={AuthScreen} />
     </AuthStack.Navigator>
   );
