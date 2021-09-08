@@ -49,10 +49,10 @@ const DiscRatingChart = (props) => {
     props.data.length > 0
       ? props.data.map((disc) => {
           return {
-            turn: disc.disc.turn,
-            glide: disc.disc.glide,
-            fade: disc.disc.fade,
-            speed: disc.disc.speed,
+            turn: disc.turn,
+            glide: disc.glide,
+            fade: disc.fade,
+            speed: disc.speed,
           };
         })
       : [{ turn: 0, glide: 0, fade: 0, speed: 0 }];
