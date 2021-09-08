@@ -1,7 +1,22 @@
-import React from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import React, {
+  useState,
+  useCallback,
+  useLayoutEffect,
+  useEffect,
+} from "react";
+import {
+  View,
+  StyleSheet,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+
 import HeaderButton from "../../components/ui/HeaderButton";
 import DiscRatingChart from "../../components/discs/DiscRatingChart";
+import * as discActions from "../../store/actions/discsActions";
+import { discDetailEP } from "../../utils/apiEndPoints";
 
 import {
   HeaderText,
@@ -11,6 +26,13 @@ import {
 import AppColors from "../../utils/AppColors";
 
 const StatCard = (props) => {
+  /*
+   Component organizes disc properties explicitly passed down to it. Used to
+   seperate physical disc traits and user stats. Takes a 'header'(string),
+   'stats'(array), and 'labels'(array) props. The values of 'stats' and
+   'labels' are linked by their indexes and should be ordered together.
+  */
+
   return (
     <View style={styles.dataDeck}>
       <SubHeaderText style={styles.dataHeader}>{props.header}</SubHeaderText>
@@ -28,20 +50,144 @@ const StatCard = (props) => {
   );
 };
 
-const DiscsOverviewScreen = (props) => {
-  const { discData } = props.route.params;
-  const disc = discData.disc ? discData.disc : discData;
+const DiscsDetailScreen = (props) => {
+  /*
+   Screen for displaying detailed info about a given disc. Is passed down a disc id
+   from parent screen via navigation props.
+  */
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isScreenLoading, setIsScreenLoading] = useState(true);
+  const [error, setError] = useState();
 
-  console.log(props.route.params);
+  const [isUserDisc, setIsUserDisc] = useState(false);
+  const [disc, setDisc] = useState(null);
+
+  const { navigation } = props;
+  const { discId } = props.route.params;
+
+  const token = useSelector((state) => state.auth.token);
+  const profileId = useSelector((state) => state.auth.profile.id);
+  const userDiscs = useSelector((state) => state.discs.userDiscs);
+
+  const loadDisc = useCallback(async () => {
+    /*
+     Loads the target disc data from API and sets the disc state.
+    */
+    setError(null);
+    try {
+      const response = await fetch(`${discDetailEP}${discId}/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const discDataResponse = await response.json();
+      setDisc(discDataResponse);
+    } catch (error) {
+      setError(error.message);
+    }
+  }, [dispatch, setError]);
+
+  useEffect(() => {
+    loadDisc();
+  }, []);
+
+  useEffect(() => {
+    // Check if the target disc is currently in userDiscs
+    const currentArray = userDiscs.filter((targetDisc) => {
+      if (targetDisc) {
+        return targetDisc.disc.id === discId;
+      }
+      return false;
+    });
+
+    // Set isUserDisc and change screenLoading to false.
+    setIsUserDisc(currentArray.length > 0);
+    setIsScreenLoading(false);
+  }, [disc]);
+
+  const handleDiscAdd = useCallback(async () => {
+    /*
+     Handle adding disc to user bag.
+    */
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(discActions.addDiscToUserBag(token, profileId, disc.id));
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsUserDisc(true);
+    setIsLoading(false);
+  }, [dispatch, setError]);
+
+  const handleDiscRemove = useCallback(async () => {
+    /*
+     Handle removing disc to user bag.
+    */
+    const userDiscId = discData.id;
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(discActions.removeDiscFromUserBag(token, userDiscId));
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsUserDisc(false);
+    setIsLoading(false);
+  }, [dispatch, setError, setIsUserDisc]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (isLoading) {
+          return (
+            <View style={styles.headerRightContainer}>
+              <ActivityIndicator size="small" color={AppColors.accent} />
+            </View>
+          );
+        }
+        if (!isUserDisc) {
+          return (
+            <View style={styles.headerRightContainer}>
+              <HeaderButton
+                iconName="add-circle-outline"
+                size={35}
+                color={AppColors.accent}
+                onPress={handleDiscAdd}
+              />
+            </View>
+          );
+        }
+        return (
+          <View style={styles.headerRightContainer}>
+            <HeaderButton
+              iconName="remove-circle"
+              size={35}
+              onPress={handleDiscRemove}
+              color={AppColors.accent}
+            />
+          </View>
+        );
+      },
+    });
+  }, [navigation, isUserDisc, isLoading]);
+
+  if (isScreenLoading || !disc) {
+    return (
+      <View style={styles.screen}>
+        <ActivityIndicator size="large" color={AppColors.accent} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.screen}>
       <ScrollView style={styles.scroll}>
         <View style={styles.scrollContent}>
           <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: discData.disc.img_url }}
-              style={styles.image}
-            />
+            <Image source={{ uri: disc.img_url }} style={styles.image} />
             <View style={styles.flightRating}>
               <View style={styles.ratingContainer}>
                 <SubHeaderText style={styles.flightType}>SPEED</SubHeaderText>
@@ -70,17 +216,17 @@ const DiscsOverviewScreen = (props) => {
             </View>
             <View style={styles.discType}>
               <SubHeaderText style={styles.discTypeText}>
-                {discData.disc.type_display.toUpperCase()}
+                {disc.type_display.toUpperCase()}
               </SubHeaderText>
             </View>
           </View>
           <View style={styles.detailHeader}>
             <HeaderText style={styles.detailHeaderText}>
-              {discData.disc.manufacturer.name} {discData.disc.name}
+              {disc.manufacturer.name} {disc.name}
             </HeaderText>
           </View>
           <View style={styles.discChart}>
-            <DiscRatingChart data={[discData]} />
+            <DiscRatingChart data={[disc]} />
           </View>
           <StatCard
             header="Properties"
@@ -113,28 +259,8 @@ const DiscsOverviewScreen = (props) => {
 };
 
 export const screenOptions = (navData) => {
-  const { discAction } = navData.route.params;
   return {
     headerTitle: "",
-    headerRight: () => {
-      if (discAction.status !== "owned") {
-        return (
-          <HeaderButton
-            iconName="add-circle-outline"
-            size={30}
-            color={AppColors.green}
-          />
-        );
-      }
-      return (
-        <HeaderButton
-          iconName="remove-circle"
-          size={30}
-          onPress={() => console.log("Remove this disc")}
-          color={AppColors.red}
-        />
-      );
-    },
   };
 };
 
@@ -145,6 +271,12 @@ const styles = StyleSheet.create({
   },
   scroll: {
     width: "100%",
+  },
+  headerRightContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    marginHorizontal: 11,
+    marginVertical: 3,
   },
   scrollContent: {
     flex: 1,
@@ -252,4 +384,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DiscsOverviewScreen;
+export default DiscsDetailScreen;
