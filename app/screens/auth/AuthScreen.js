@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useReducer, useCallback, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   View,
@@ -7,15 +7,108 @@ import {
   Button,
   Platform,
   ImageBackground,
-  TextInput,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
+  Alert,
+  Keyboard,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import * as authActions from "../../store/actions/authActions";
+import Input from "../../components/ui/Input";
+
 import { Ionicons } from "@expo/vector-icons";
 import AppColors from "../../utils/AppColors";
-import { SubHeaderText } from "../../components/ui/AppText";
+
+const formReducer = (state, action) => {
+  switch (action.type) {
+    case "FORM_INPUT_UPDATE":
+      const updateValues = {
+        ...state.inputValues,
+        [action.input]: action.value,
+      };
+      const updatedValidities = {
+        ...state.inputValidities,
+        [action.input]: action.isValid,
+      };
+      let isUpdatedFormValid = true;
+      for (const [key, value] of Object.entries(updatedValidities)) {
+        isUpdatedFormValid = isUpdatedFormValid && value;
+      }
+      return {
+        ...state,
+        inputValues: updateValues,
+        inputValidities: updatedValidities,
+        isFormValid: isUpdatedFormValid,
+      };
+    default:
+      return state;
+  }
+};
 
 const AuthScreen = (props) => {
+  const dispatch = useDispatch();
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      username: "",
+      password: "",
+    },
+    inputValidities: {
+      username: false,
+      password: false,
+    },
+    isFormValid: false,
+  });
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Something Went Wrong...", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
+
+  const handleAuthSubmit = async () => {
+    const here = await Keyboard.dismiss();
+    const action = isSignUp
+      ? authActions.signup(
+          formState.inputValues.username,
+          formState.inputValues.password
+        )
+      : authActions.login(
+          formState.inputValues.username,
+          formState.inputValues.password
+        );
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(action);
+    } catch (error) {
+      setError(error.message);
+      setIsLoading(false);
+    }
+  };
+
+  const handleInputChange = useCallback(
+    (inputName, inputValue, isInputValid) => {
+      dispatchFormState({
+        type: "FORM_INPUT_UPDATE",
+        value: inputValue,
+        isValid: isInputValid,
+        input: inputName,
+      });
+    },
+    [dispatchFormState]
+  );
+
+  const handleSignUpToggle = () => {
+    setIsSignUp(!isSignUp);
+  };
+
   return (
-    <View style={styles.screen}>
+    <KeyboardAvoidingView style={styles.screen}>
       <ImageBackground
         source={require("../../assets/images/disc-golf-4985907_960_720.jpg")}
         style={styles.backgroundImage}
@@ -28,35 +121,67 @@ const AuthScreen = (props) => {
         />
       </ImageBackground>
       <View style={styles.authCard}>
-        <Text>Here</Text>
         <View style={styles.loginForm}>
-          <View style={styles.textInputContainer}>
-            <SubHeaderText style={styles.label}>Username</SubHeaderText>
-            <View style={styles.inputContainer}>
+          <Input
+            id="username"
+            icon={
               <Ionicons
                 name="person"
                 size={24}
                 color={AppColors.accent}
                 style={styles.inputIcon}
               />
-              <TextInput style={styles.textInput} />
-            </View>
-          </View>
-          <View style={styles.textInputContainer}>
-            <SubHeaderText style={styles.label}>Password</SubHeaderText>
-            <View style={styles.inputContainer}>
+            }
+            label="Username"
+            labelStyle={styles.label}
+            keyBoardType="text"
+            required
+            autoCapitalize="none"
+            errorText="Please enter a valid username"
+            onInputChange={handleInputChange}
+            initialValue=""
+          />
+          <Input
+            id="password"
+            icon={
               <Ionicons
                 name="md-lock-closed"
                 size={24}
                 color={AppColors.accent}
                 style={styles.inputIcon}
               />
-              <TextInput style={styles.textInput} />
-            </View>
+            }
+            label="Password"
+            labelStyle={styles.label}
+            keyBoardType="password"
+            secureTextEntry
+            required
+            autoCapitalize="none"
+            errorText="Invalid Password"
+            onInputChange={handleInputChange}
+            initialValue=""
+          />
+          <View style={styles.buttonContainer}>
+            {isLoading ? (
+              <ActivityIndicator size="small" color={AppColors.primary} />
+            ) : (
+              <Button
+                title={isSignUp ? "Sign-Up" : "Login"}
+                color={AppColors.primary}
+                onPress={handleAuthSubmit}
+              />
+            )}
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title={`Switch to ${isSignUp ? "Login" : "Sign-Up"}`}
+              color={AppColors.accent}
+              onPress={handleSignUpToggle}
+            />
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -98,16 +223,8 @@ const styles = StyleSheet.create({
   loginForm: {
     width: "90%",
   },
-  textInputContainer: {
-    width: "100%",
-  },
-  inputContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: 35,
-    marginVertical: 5,
+  buttonContainer: {
+    marginTop: 10,
   },
   label: {
     color: AppColors.white,
@@ -120,13 +237,6 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.white,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-  },
-  textInput: {
-    width: "90%",
-    height: "100%",
-    backgroundColor: AppColors.white,
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
   },
 });
 
