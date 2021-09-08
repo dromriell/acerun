@@ -13,23 +13,24 @@ import { BodyText, SubHeaderText, HeaderText } from "../ui/AppText";
 import AppColors from "../../utils/AppColors";
 
 const FlightRatingBar = (props) => {
+  const { speed, glide, turn, fade } = props;
   return (
     <View style={styles.flightRating}>
       <Text style={styles.flightLabel}>
         <BodyText style={styles.flightType}>S</BodyText>
-        <HeaderText style={styles.flightValue}>1</HeaderText>
+        <HeaderText style={styles.flightValue}>{speed}</HeaderText>
       </Text>
       <Text style={styles.flightLabel}>
         <BodyText style={styles.flightType}>G</BodyText>
-        <HeaderText style={styles.flightValue}>1</HeaderText>
+        <HeaderText style={styles.flightValue}>{glide}</HeaderText>
       </Text>
       <Text style={styles.flightLabel}>
         <BodyText style={styles.flightType}>T</BodyText>
-        <HeaderText style={styles.flightValue}>1</HeaderText>
+        <HeaderText style={styles.flightValue}>{turn}</HeaderText>
       </Text>
       <Text style={styles.flightLabel}>
         <BodyText style={styles.flightType}>F</BodyText>
-        <HeaderText style={styles.flightValue}>1</HeaderText>
+        <HeaderText style={styles.flightValue}>{fade}</HeaderText>
       </Text>
     </View>
   );
@@ -57,6 +58,9 @@ export const EmptyDiscItem = (props) => {
 };
 
 const DiscItem = (props) => {
+  const { discData } = props;
+  const disc = discData.disc ? discData.disc : discData;
+
   const TouchComp =
     Platform.OS === "android" && Platform.Version >= 21
       ? TouchableNativeFeedback
@@ -68,15 +72,20 @@ const DiscItem = (props) => {
         <TouchComp onPress={props.onPress} useForeground>
           <View style={styles.discInfo}>
             <View style={styles.imageContainer}>
-              <Image source={{ uri: props.imageUri }} style={styles.image} />
+              <Image source={{ uri: disc.img_url }} style={styles.image} />
             </View>
-            <FlightRatingBar />
+            <FlightRatingBar
+              speed={disc.speed}
+              glide={disc.glide}
+              turn={disc.turn}
+              fade={disc.fade}
+            />
           </View>
         </TouchComp>
       </View>
       <View style={styles.discCardHeader}>
-        <SubHeaderText style={styles.discHeaderText}>
-          {props.discName}
+        <SubHeaderText style={styles.discHeaderText} numberOfLines={1}>
+          {disc.name}
         </SubHeaderText>
       </View>
     </View>
@@ -120,9 +129,8 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   discCardHeader: {
-    color: "black",
-    justifyContent: "center",
-    alignItems: "flex-start",
+    flexDirection: "row",
+    justifyContent: "flex-start",
     width: "100%",
     height: "20%",
     paddingHorizontal: 5,
