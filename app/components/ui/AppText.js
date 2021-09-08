@@ -3,13 +3,15 @@ import { Text, StyleSheet } from "react-native";
 
 export const BodyText = (props) => {
   return (
-    <Text style={{ ...styles.body, ...props.style }}>{props.children}</Text>
+    <Text {...props} style={{ ...styles.body, ...props.style }}>
+      {props.children}
+    </Text>
   );
 };
 
 export const SubHeaderText = (props) => {
   return (
-    <Text style={{ ...styles.subHeader, ...props.style }}>
+    <Text {...props} style={{ ...styles.subHeader, ...props.style }}>
       {props.children}
     </Text>
   );
@@ -17,7 +19,9 @@ export const SubHeaderText = (props) => {
 
 export const HeaderText = (props) => {
   return (
-    <Text style={{ ...styles.header, ...props.style }}>{props.children}</Text>
+    <Text {...props} style={{ ...styles.header, ...props.style }}>
+      {props.children}
+    </Text>
   );
 };
 
