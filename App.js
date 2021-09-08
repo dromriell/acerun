@@ -1,8 +1,6 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+
 import NavigationRouter from "./app/navigation/NavigationRouter";
-import AppNavigator from "./app/navigation/AppNavigator";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
@@ -16,9 +14,11 @@ import {
 } from "@expo-google-fonts/titillium-web";
 
 import discsReducer from "./app/store/reducers/discsReducer";
+import authReducer from "./app/store/reducers/authReducer";
 
 const rootReducer = combineReducers({
   discs: discsReducer,
+  auth: authReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
