@@ -1,20 +1,31 @@
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AUTHENTICATE = "AUTHENTICATE";
-export const LOGOUT = "LOG_OUT";
+export const LOG_OUT = "LOG_OUT";
+
+import { authEP } from "../../utils/apiEndPoints";
 
 let timer;
 
-export const authenticate = (userId, token, expiryTime) => {
+export const authenticate = (userId, token, profile, expiryTime) => {
   return (dispatch) => {
-    dispatch(setLogoutTimer(expiryTime));
-    dispatch({ type: AUTHENTICATE, userId: userId, token: token });
+    // dispatch(setLogoutTimer(180000)); DISPATCH TOKEN TIMEOUT WHEN AVAILABLE
+    dispatch({
+      type: AUTHENTICATE,
+      userId: userId,
+      token: token,
+      profile: profile,
+    });
   };
 };
 
 export const login = (username, password) => {
+  const credentials = {
+    username: username,
+    password: password,
+  };
   return async (dispatch) => {
-    const response = await fetch(`http://localhost:8000/api-token-auth/`, {
+    const response = await fetch(authEP, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,12 +35,78 @@ export const login = (username, password) => {
 
     if (!response.ok) {
       const errorResponse = await response.json();
-      const errorId = errorResponse.error.message;
-      console.log(errorId, errorResponse);
-      throw Error("An error occured!");
+      let errorMsg = "";
+      console.log(errorResponse);
+
+      Object.entries(errorResponse).forEach(([key, value]) => {
+        switch (key) {
+          case "username":
+            errorMsg = errorMsg + "Username is a required field. \n";
+            return;
+          case "password":
+            errorMsg = errorMsg + "Password is a required field. \n";
+            return;
+          case "non_field_errors":
+            errorMsg = errorMsg + value;
+            return;
+          default:
+            errorMsg = errorMsg + value;
+            return;
+        }
+      });
+      console.log(errorMsg);
+      throw Error(errorMsg || "An error occured!");
     }
 
     const authResponse = await response.json();
+
     console.log(authResponse);
+
+    dispatch(
+      authenticate(
+        authResponse.user_id,
+        authResponse.token,
+        authResponse.profile
+        // parseInt(authResponse.expiresIn) * 1000
+      )
+    );
+
+    saveDataToStorage(
+      authResponse.user_id,
+      authResponse.token,
+      authResponse.profile
+    );
   };
+};
+
+export const logout = () => {
+  clearLogoutTimer();
+  AsyncStorage.removeItem("userData");
+  return { type: LOG_OUT };
+};
+
+const clearLogoutTimer = () => {
+  if (timer) {
+    clearTimeout(timer);
+  }
+};
+
+export const setLogoutTimer = (expirationTime) => {
+  return (dispatch) => {
+    timer = setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime);
+  };
+};
+
+const saveDataToStorage = (userId, token, profile, expirationDate) => {
+  AsyncStorage.setItem(
+    "userData",
+    JSON.stringify({
+      userId: userId,
+      token: token,
+      profile: profile,
+      // expiryDate: expirationDate.toISOString(),
+    })
+  );
 };
