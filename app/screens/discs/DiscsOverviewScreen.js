@@ -17,16 +17,17 @@ import AppColors from "../../utils/AppColors";
 import { SubHeaderText } from "../../components/ui/AppText";
 
 const DiscsOverviewScreen = (props) => {
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const dispatch = useDispatch();
-  const userDiscs = useSelector((state) => state.discs.userDiscs);
+  const overviewDiscs = useSelector((state) => state.discs.overviewDiscs);
 
   const loadUserDiscs = useCallback(async () => {
     setError(null);
     try {
-      await dispatch(discActions.fetchUserDiscs());
+      await dispatch(discActions.fetchOverviewDiscs());
     } catch (error) {
       setError(error.message);
     }
@@ -52,7 +53,7 @@ const DiscsOverviewScreen = (props) => {
     );
   }
 
-  if (!isLoading && userDiscs.length === 0) {
+  if (!isLoading && overviewDiscs.length === 0) {
     return (
       <View style={styles.centered}>
         <Text>No discs found! Start adding some!</Text>
@@ -72,16 +73,14 @@ const DiscsOverviewScreen = (props) => {
     <View style={styles.screen}>
       <DiscHomeMenu navigation={props.navigation} />
       <DiscCarousel
-        data={userDiscs}
+        data={overviewDiscs}
         title={"Trending Discs"}
         navigation={props.navigation}
-        listType="owned"
       />
       <DiscCarousel
         data={[]} // Change data source
         title={"New Discs"}
         navigation={props.navigation}
-        listType="owned"
       />
     </View>
   );
