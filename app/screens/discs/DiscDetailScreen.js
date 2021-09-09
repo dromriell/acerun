@@ -64,7 +64,7 @@ const DiscsDetailScreen = (props) => {
   const [disc, setDisc] = useState(null);
 
   const { navigation } = props;
-  const { discId } = props.route.params;
+  const { discId, userDiscId } = props.route.params;
 
   const token = useSelector((state) => state.auth.token);
   const profileId = useSelector((state) => state.auth.profile.id);
@@ -114,29 +114,30 @@ const DiscsDetailScreen = (props) => {
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(discActions.addDiscToUserBag(token, profileId, disc.id));
+      await dispatch(discActions.addDiscToUserBag(token, profileId, discId));
     } catch (error) {
+      console.log(error);
       setError(error.message);
     }
     setIsUserDisc(true);
     setIsLoading(false);
-  }, [dispatch, setError]);
+  }, [dispatch, setError, setIsLoading, setIsUserDisc]);
 
   const handleDiscRemove = useCallback(async () => {
     /*
      Handle removing disc to user bag.
     */
-    const userDiscId = discData.id;
     setError(null);
     setIsLoading(true);
     try {
       await dispatch(discActions.removeDiscFromUserBag(token, userDiscId));
     } catch (error) {
+      console.log(error);
       setError(error.message);
     }
     setIsUserDisc(false);
     setIsLoading(false);
-  }, [dispatch, setError, setIsUserDisc]);
+  }, [dispatch, setError, setIsLoading, setIsUserDisc]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
