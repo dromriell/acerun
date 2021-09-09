@@ -35,6 +35,7 @@ const DiscList = (props) => {
     }
     props.navigation.navigate("DiscDetail", {
       discId: id,
+      userDiscId: discData.id,
     });
   };
 
