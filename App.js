@@ -15,10 +15,12 @@ import {
 
 import discsReducer from "./app/store/reducers/discsReducer";
 import authReducer from "./app/store/reducers/authReducer";
+import eventReducer from "./app/store/reducers/eventReducer";
 
 const rootReducer = combineReducers({
   discs: discsReducer,
   auth: authReducer,
+  events: eventReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
