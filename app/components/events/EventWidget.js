@@ -80,9 +80,7 @@ const EventWidget = (props) => {
   }, [dispatch, setIsLoading, setError]);
 
   const renderEvents = (itemData) => {
-    return (
-      <EventItem key={itemData.item.tournament_id} event={itemData.item} />
-    );
+    return <EventItem event={itemData.item} />;
   };
 
   useEffect(() => {
@@ -125,6 +123,7 @@ const EventWidget = (props) => {
         ref={eventListRef}
         data={homeEvents.events}
         renderItem={renderEvents}
+        keyExtractor={(item) => item.tournament_id}
         horizontal={true}
         decelerationRate={0}
         snapToInterval={width}
