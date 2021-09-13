@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  FlatList,
+  Dimensions,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as eventActions from "../../store/actions/eventActions";
@@ -22,20 +28,30 @@ const monthArray = [
   "DEC",
 ];
 
+const { width } = Dimensions.get("window");
+
 const EventItem = (props) => {
+  const { event } = props;
+  const startDate = new Date(event.start_date);
   return (
     <View style={styles.eventItem}>
       <View style={styles.eventBar}>
         <View style={styles.dateBox}>
-          <SubHeaderText style={styles.day}>13</SubHeaderText>
-          <SubHeaderText style={styles.month}>JAN</SubHeaderText>
+          <SubHeaderText style={styles.day}>
+            {startDate.getDate()}
+          </SubHeaderText>
+          <SubHeaderText style={styles.month}>
+            {monthArray[startDate.getMonth()]}
+          </SubHeaderText>
         </View>
-        <BodyText style={styles.eventBadge}>Class</BodyText>
-        <BodyText style={styles.eventBadge}>Tier</BodyText>
+        <BodyText style={styles.eventBadge}>{event.class}</BodyText>
+        <BodyText style={styles.eventBadge}>{event.tier}</BodyText>
       </View>
       <View style={styles.eventInfo}>
-        <SubHeaderText>Full Event Name</SubHeaderText>
-        <BodyText>City, State</BodyText>
+        <SubHeaderText>{event.tournament_name}</SubHeaderText>
+        <BodyText>
+          {event.city}, {event.state_prov}
+        </BodyText>
       </View>
     </View>
   );
@@ -43,10 +59,10 @@ const EventItem = (props) => {
 
 const EventWidget = (props) => {
   const dispatch = useDispatch();
+  const eventListRef = useRef();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-  const token = useSelector((state) => state.auth.token);
   const userLocation = useSelector((state) => state.auth.profile.state);
   const homeEvents = useSelector((state) => state.events.homeEvents);
 
@@ -55,20 +71,22 @@ const EventWidget = (props) => {
     setError(null);
     setIsLoading(true);
     try {
-      dispatch(eventActions.fetchHomeEvents(token, userLocation));
-    } catch (error) {}
+      await dispatch(eventActions.fetchHomeEvents(props.token, userLocation));
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    }
     setIsLoading(false);
   }, [dispatch, setIsLoading, setError]);
 
+  const renderEvents = (itemData) => {
+    return (
+      <EventItem key={itemData.item.tournament_id} event={itemData.item} />
+    );
+  };
+
   useEffect(() => {
-    if (homeEvents.length > 0) {
-      console.log("EVENT FETCH SKIPPED");
-      return;
-    }
-    setIsLoading(true);
-    loadEvents().then(() => {
-      setIsLoading(false);
-    });
+    loadEvents();
   }, [dispatch, loadEvents, setError]);
 
   if (isLoading) {
@@ -79,7 +97,7 @@ const EventWidget = (props) => {
     );
   }
 
-  if (!isLoading && homeEvents.length === 0) {
+  if (!isLoading && !homeEvents) {
     return (
       <View style={styles.container}>
         <View style={styles.eventHeader}>
@@ -92,14 +110,32 @@ const EventWidget = (props) => {
     );
   }
 
-  console.log(homeEvents.length);
-
   return (
     <View style={styles.container}>
       <View style={styles.eventHeader}>
-        <HeaderText>Upcoming Events</HeaderText>
+        <HeaderText
+          onPress={() =>
+            eventListRef.current.scrollToIndex({ animated: true, index: 0 })
+          }
+        >
+          Upcoming Events
+        </HeaderText>
       </View>
-      <EventItem />
+      <FlatList
+        ref={eventListRef}
+        data={homeEvents.events}
+        renderItem={renderEvents}
+        horizontal={true}
+        decelerationRate={0}
+        snapToInterval={width}
+        snapToAlignment={"center"}
+        contentInset={{
+          top: 0,
+          left: 30,
+          bottom: 0,
+          right: 30,
+        }}
+      />
     </View>
   );
 };
@@ -127,8 +163,9 @@ const styles = StyleSheet.create({
   eventItem: {
     flexDirection: "row",
     justifyContent: "center",
-    width: "100%",
+    width: width,
     height: "100%",
+    paddingHorizontal: 10,
   },
   eventBar: {
     alignItems: "center",
@@ -136,6 +173,7 @@ const styles = StyleSheet.create({
   },
   eventInfo: {
     flex: 1,
+    paddingHorizontal: 10,
   },
   dateBox: {
     alignItems: "center",
