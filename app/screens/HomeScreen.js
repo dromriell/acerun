@@ -1,15 +1,25 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
 import Constants from "expo-constants";
 
 import EventWidget from "../components/events/EventWidget";
+import GameHistoryWidget from "../components/games/GameHistoryWidget";
+import { ScrollView } from "react-native-gesture-handler";
 
 const HomeScreen = (props) => {
+  const token = useSelector((state) => state.auth.token);
+
   return (
     <View style={styles.screen}>
-      <View style={styles.container}>
-        <EventWidget />
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          <EventWidget token={token} />
+        </View>
+        <View style={styles.container}>
+          <GameHistoryWidget token={token} />
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -25,6 +35,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 10,
   },
 });
 
