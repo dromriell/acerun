@@ -3,7 +3,14 @@ import { Text, StyleSheet } from "react-native";
 
 export const BodyText = (props) => {
   return (
-    <Text {...props} style={{ ...styles.body, ...props.style }}>
+    <Text
+      {...props}
+      style={{
+        ...styles.body,
+        ...props.style,
+        ...(props.capitalize ? styles.capitalize : {}),
+      }}
+    >
       {props.children}
     </Text>
   );
@@ -11,7 +18,14 @@ export const BodyText = (props) => {
 
 export const SubHeaderText = (props) => {
   return (
-    <Text {...props} style={{ ...styles.subHeader, ...props.style }}>
+    <Text
+      {...props}
+      style={{
+        ...styles.subHeader,
+        ...props.style,
+        ...(props.capitalize ? styles.capitalize : {}),
+      }}
+    >
       {props.children}
     </Text>
   );
@@ -19,7 +33,14 @@ export const SubHeaderText = (props) => {
 
 export const HeaderText = (props) => {
   return (
-    <Text {...props} style={{ ...styles.header, ...props.style }}>
+    <Text
+      {...props}
+      style={{
+        ...styles.header,
+        ...props.style,
+        ...(props.capitalize ? styles.capitalize : {}),
+      }}
+    >
       {props.children}
     </Text>
   );
@@ -37,5 +58,8 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: "TitilliumWeb_700Bold",
     fontSize: 21,
+  },
+  capitalize: {
+    textTransform: "capitalize",
   },
 });
