@@ -19,3 +19,7 @@ export const searchDiscsEP = `${uri}/api/v1/discs/search/`;
 // EVENT ENDPOINTS
 
 export const eventHomeEP = `${uri}/api-pdga/auth/?events=`; // Param is state
+
+// GAME ENDPOINTS
+
+export const gameHistoryEP = `${uri}/api/v1/games/game-summary/`;
