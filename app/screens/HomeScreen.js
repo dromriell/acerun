@@ -27,6 +27,7 @@ const HomeScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    width: "100%",
     justifyContent: "flex-start",
     alignItems: "center",
     paddingTop: Constants.statusBarHeight,
