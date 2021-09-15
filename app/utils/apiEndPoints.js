@@ -23,3 +23,9 @@ export const eventHomeEP = `${uri}/api-pdga/auth/?events=`; // Param is state
 // GAME ENDPOINTS
 
 export const gameHistoryEP = `${uri}/api/v1/games/game-summary/`;
+export const nearbyCoursesEP = (location) => {
+  return `${uri}/api-pdga/auth/?courses&lat=${location.lat}&lng=${location.lng}`;
+};
+export const createGameEP = `${uri}/api/v1/games/list/`;
+export const gameCourseDataEP = (courseId) =>
+  `${uri}/api/v1/courses/list/${courseId}`;
