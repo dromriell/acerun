@@ -1,11 +1,19 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { View, StyleSheet, ActivityIndicator, Image, Text } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  ImageBackground,
+  Text,
+} from "react-native";
+import { useDispatch } from "react-redux";
+
+import { LinearGradient } from "expo-linear-gradient";
+
 import { BodyText, HeaderText, SubHeaderText } from "../ui/AppText";
 
 import { gameHistoryEP } from "../../utils/apiEndPoints";
 import AppColors from "../../utils/AppColors";
-import { ScrollView } from "react-native-gesture-handler";
 
 const GameSummaryLarge = (props) => {
   const { game, total_score, player } = props.game;
@@ -16,7 +24,20 @@ const GameSummaryLarge = (props) => {
   return (
     <View style={styles.gameSummaryLrg}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: course.image_url }} style={styles.image} />
+        <ImageBackground
+          source={{ uri: course.image_url }}
+          style={styles.image}
+        >
+          <LinearGradient
+            colors={[
+              AppColors.blackTrans,
+              AppColors.black,
+              AppColors.blackTrans,
+            ]}
+            style={styles.background}
+            start={{ x: 0.7, y: 0.1 }}
+          />
+        </ImageBackground>
       </View>
       <View style={styles.gameHeader}>
         <HeaderText capitalize style={styles.header}>
@@ -80,7 +101,6 @@ const GameHistoryWidget = (props) => {
         },
       });
       const gameHistoryResponse = await response.json();
-      console.log("RES", gameHistoryResponse);
       setGameHistory(gameHistoryResponse);
     } catch (error) {
       setError(error);
@@ -96,7 +116,7 @@ const GameHistoryWidget = (props) => {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
+      <View style={{ ...styles.container, ...styles.loadingContainer }}>
         <ActivityIndicator size="large" color={AppColors.accent} />
       </View>
     );
@@ -127,10 +147,15 @@ const GameHistoryWidget = (props) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    minHeight: 500,
     padding: 10,
     elevation: 5,
     borderBottomColor: AppColors.black,
     borderRadius: 5,
+  },
+  loadingContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   containerHeader: {
     paddingVertical: 10,
@@ -150,6 +175,14 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+  },
+  background: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: "100%",
+    opacity: 0.7,
   },
   headerContainer: {
     width: "100%",
@@ -188,6 +221,9 @@ const styles = StyleSheet.create({
     color: AppColors.red,
   },
   scoreBadge: {
+    position: "absolute",
+    top: 15,
+    right: 15,
     alignItems: "center",
     justifyContent: "center",
     width: 50,
