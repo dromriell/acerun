@@ -60,11 +60,16 @@ const EventItem = (props) => {
 const EventWidget = (props) => {
   const dispatch = useDispatch();
   const eventListRef = useRef();
+  const [currentEventIndex, setCurrentEventIndex] = useState();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   const userLocation = useSelector((state) => state.auth.profile.state);
   const homeEvents = useSelector((state) => state.events.homeEvents);
+
+  const viewabilityConfig = {
+    viewAreaCoveragePercentThreshold: 50,
+  };
 
   const loadEvents = useCallback(async () => {
     console.log("LOOOADING");
@@ -77,11 +82,44 @@ const EventWidget = (props) => {
       console.log(error);
     }
     setIsLoading(false);
+    setCurrentEventIndex(0);
   }, [dispatch, setIsLoading, setError]);
 
   const renderEvents = (itemData) => {
     return <EventItem event={itemData.item} />;
   };
+
+  const handleViewableItemsChanged = useCallback(({ changed }) => {
+    /**
+     * Called on FlatList when viewable item changes from either user
+     * or timeout interaction and sets the currentEventIndex to the
+     * most recent item index (forwards or backwards).
+     */
+    setCurrentEventIndex(changed[0].index);
+  }, []);
+
+  const handleAutoScroll = () => {
+    /**
+     * Autoscrolls the Flatlist items and resets once it has reached
+     * the last item. Tracking and setting currentEventIndex is done
+     * in handleViewableItemsChanged
+     */
+    const eventListLength = homeEvents.events.length;
+    const nextIndex = currentEventIndex + 1;
+    if (nextIndex >= eventListLength) {
+      eventListRef.current.scrollToIndex({ animated: true, index: 0 });
+    } else {
+      eventListRef.current.scrollToIndex({ animated: true, index: nextIndex });
+    }
+  };
+
+  useEffect(() => {
+    const scrollTimeout = setTimeout(handleAutoScroll, 9000);
+    return () => {
+      console.log("CLEAR TO");
+      return clearTimeout(scrollTimeout);
+    };
+  }, [currentEventIndex]);
 
   useEffect(() => {
     loadEvents();
@@ -89,7 +127,7 @@ const EventWidget = (props) => {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
+      <View style={{ ...styles.container, ...styles.loadingContainer }}>
         <ActivityIndicator size="large" color={AppColors.accent} />
       </View>
     );
@@ -112,9 +150,10 @@ const EventWidget = (props) => {
     <View style={styles.container}>
       <View style={styles.eventHeader}>
         <HeaderText
-          onPress={() =>
-            eventListRef.current.scrollToIndex({ animated: true, index: 0 })
-          }
+          onPress={() => {
+            eventListRef.current.scrollToIndex({ animated: true, index: 0 });
+            setCurrentEventIndex(0);
+          }}
         >
           Upcoming Events
         </HeaderText>
@@ -128,6 +167,9 @@ const EventWidget = (props) => {
         decelerationRate={0}
         snapToInterval={width}
         snapToAlignment={"center"}
+        viewabilityConfig={viewabilityConfig}
+        onViewableItemsChanged={handleViewableItemsChanged}
+        // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         contentInset={{
           top: 0,
           left: 30,
@@ -141,13 +183,16 @@ const EventWidget = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    minHeight: 200,
-    maxHeight: 300,
+    width: Dimensions.get("screen").width,
+    height: 250,
     padding: 10,
     elevation: 5,
     borderBottomColor: AppColors.black,
     borderRadius: 5,
+  },
+  loadingContainer: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   emptyItem: {
     flex: 1,
