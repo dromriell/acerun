@@ -1,11 +1,10 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import Constants from "expo-constants";
 
 import EventWidget from "../components/events/EventWidget";
 import GameHistoryWidget from "../components/games/GameHistoryWidget";
-import { ScrollView } from "react-native-gesture-handler";
 
 const HomeScreen = (props) => {
   const token = useSelector((state) => state.auth.token);
