@@ -29,14 +29,25 @@ import DiscSearchScreen, {
   screenOptions as discSearchScreenOptions,
 } from "../screens/discs/DiscSearchScreen";
 
+// GAME SCREENS
+import GameHomeScreen from "../screens/game/GameHomeScreen";
+import GameSetupScreen, {
+  screenOptions as gameSetupScreenOptions,
+} from "../screens/game/GameSetupScreen";
+import GameCourseSelectScreen from "../screens/game/GameCourseSelectScreen";
+import GameLaunchScreen from "../screens/game/GameLaunchScreen";
+import GameScreen, {
+  screenOptions as gameScreenOptions,
+} from "../screens/game/GameScreen";
+
 import CoursesOverviewScreen from "../screens/courses/CoursesOverviewScreen";
 import ProfileScreen from "../screens/profile/ProfileScreen";
-import GameSetupScreen from "../screens/game/GameSetupScreen";
 
 import AppColors from "../utils/AppColors";
 
 const Tab = createBottomTabNavigator();
 const DiscStack = createStackNavigator();
+const GameStack = createStackNavigator();
 const AuthStack = createNativeStackNavigator();
 
 const defaultStackNavOptions = {
@@ -100,6 +111,29 @@ const DiscStackNavigator = () => {
         options={discSearchScreenOptions}
       />
     </DiscStack.Navigator>
+  );
+};
+
+const GameStackNavigator = () => {
+  return (
+    <GameStack.Navigator screenOptions={defaultStackNavOptions}>
+      <GameStack.Screen name="GameHome" component={GameHomeScreen} />
+      <GameStack.Screen
+        name="GameSetup"
+        component={GameSetupScreen}
+        options={gameSetupScreenOptions}
+      />
+      <GameStack.Screen
+        name="GameCourseSelect"
+        component={GameCourseSelectScreen}
+      />
+      <GameStack.Screen name="GameLaunch" component={GameLaunchScreen} />
+      <GameStack.Screen
+        name="GamePlayScreen"
+        component={GameScreen}
+        options={gameScreenOptions}
+      />
+    </GameStack.Navigator>
   );
 };
 
@@ -168,7 +202,7 @@ export const AppNavigator = (props) => {
     >
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Courses" component={CoursesOverviewScreen} />
-      <Tab.Screen name="Game" component={GameSetupScreen} />
+      <Tab.Screen name="Game" component={GameStackNavigator} />
       <Tab.Screen name="Discs" component={DiscStackNavigator} />
       <Tab.Screen name="Home" component={HomeScreen} />
     </Tab.Navigator>
