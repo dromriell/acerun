@@ -2,14 +2,11 @@ import React, { useState, useReducer, useCallback, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   View,
-  Text,
   StyleSheet,
   Button,
-  Platform,
   ImageBackground,
   ActivityIndicator,
   KeyboardAvoidingView,
-  ScrollView,
   Alert,
   Keyboard,
 } from "react-native";
