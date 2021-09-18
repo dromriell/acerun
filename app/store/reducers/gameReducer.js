@@ -1,15 +1,15 @@
 import {
   SET_GAME_COURSE,
   CLEAR_GAME_COURSE,
-  CREATE_GAME,
+  SET_GAME_DATA,
   SET_COURSE_GAME_DATA,
 } from "../actions/gameActions";
 
 const initialState = {
   course: null,
   courseData: null,
-  gameID: null,
-  scorecardID: null,
+  game: null,
+  scorecard: null,
 };
 
 export default (state = initialState, action) => {
@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
         ...state,
         course: null,
       };
-    case CREATE_GAME:
+    case SET_GAME_DATA:
       const currentUserScoreCard = action.gameData.players.filter(
         (scorecard) => {
           return scorecard.player === parseInt(action.currentUser);
@@ -32,8 +32,8 @@ export default (state = initialState, action) => {
       );
       return {
         ...state,
-        gameID: action.gameData.id,
-        scorecardID: currentUserScoreCard[0].id,
+        game: action.gameData,
+        scorecard: currentUserScoreCard[0],
       };
     case SET_COURSE_GAME_DATA:
       return {
