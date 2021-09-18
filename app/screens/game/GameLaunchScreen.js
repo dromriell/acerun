@@ -14,23 +14,23 @@ const GameLaunchScreen = (props) => {
   const courseID = useSelector((state) => state.game.course.id);
   const { players } = props.route.params;
 
-  const gameID = useSelector((state) => state.game.gameID);
+  const game = useSelector((state) => state.game.game);
 
   useEffect(() => {
     if (!hasAttemptedCreateGame) {
       return;
     }
 
-    if (!!gameID && hasAttemptedCreateGame && error) {
+    if (!!game && hasAttemptedCreateGame && error) {
       props.navigation.navigate("GameSetup", { errorCreating: error });
       return;
     }
 
-    if (gameID && hasAttemptedCreateGame) {
-      props.navigation.navigate("GamePlayScreen");
+    if (game && hasAttemptedCreateGame) {
+      props.navigation.navigate("AppGame", { screen: "GamePlayScreen" });
       return;
     }
-  }, [gameID, hasAttemptedCreateGame, error]);
+  }, [game, hasAttemptedCreateGame, error]);
 
   useEffect(() => {
     const launchGame = async () => {
