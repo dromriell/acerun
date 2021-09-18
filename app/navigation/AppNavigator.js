@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -47,8 +48,11 @@ import AppColors from "../utils/AppColors";
 
 const Tab = createBottomTabNavigator();
 const DiscStack = createStackNavigator();
-const GameStack = createStackNavigator();
+const GameHomeStack = createStackNavigator();
+const GamePlayDrawer = createDrawerNavigator();
 const AuthStack = createNativeStackNavigator();
+
+const AppStack = createStackNavigator();
 
 const defaultStackNavOptions = {
   screenInterpolator: () => {},
@@ -64,6 +68,11 @@ const defaultStackNavOptions = {
   },
   headerTintColor:
     Platform.OS === "android" ? AppColors.white : AppColors.primary,
+};
+
+const gameDrawerNavOptions = {
+  drawerStyle: { backgroundColor: AppColors.black },
+  drawerPosition: "right",
 };
 
 const defaultAuthNavOptions = {
@@ -114,30 +123,37 @@ const DiscStackNavigator = () => {
   );
 };
 
-const GameStackNavigator = () => {
+const GameHomeStackNavigator = () => {
   return (
-    <GameStack.Navigator screenOptions={defaultStackNavOptions}>
-      <GameStack.Screen name="GameHome" component={GameHomeScreen} />
-      <GameStack.Screen
+    <GameHomeStack.Navigator screenOptions={defaultStackNavOptions}>
+      <GameHomeStack.Screen name="GameHome" component={GameHomeScreen} />
+      <GameHomeStack.Screen
         name="GameSetup"
         component={GameSetupScreen}
         options={gameSetupScreenOptions}
       />
-      <GameStack.Screen
+      <GameHomeStack.Screen
         name="GameCourseSelect"
         component={GameCourseSelectScreen}
       />
-      <GameStack.Screen name="GameLaunch" component={GameLaunchScreen} />
-      <GameStack.Screen
+      <GameHomeStack.Screen name="GameLaunch" component={GameLaunchScreen} />
+    </GameHomeStack.Navigator>
+  );
+};
+
+const GamePlayDrawerNavigator = () => {
+  return (
+    <GamePlayDrawer.Navigator screenOptions={gameDrawerNavOptions}>
+      <GamePlayDrawer.Screen
         name="GamePlayScreen"
         component={GameScreen}
         options={gameScreenOptions}
       />
-    </GameStack.Navigator>
+    </GamePlayDrawer.Navigator>
   );
 };
 
-export const AppNavigator = (props) => {
+const AppTabNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -161,7 +177,7 @@ export const AppNavigator = (props) => {
                   color={color}
                 />
               );
-            case "Game":
+            case "Games":
               iconName = focused ? "gamepad-round" : "gamepad-round-outline";
               return (
                 <MaterialCommunityIcons
@@ -202,9 +218,18 @@ export const AppNavigator = (props) => {
     >
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Courses" component={CoursesOverviewScreen} />
-      <Tab.Screen name="Game" component={GameStackNavigator} />
+      <Tab.Screen name="Games" component={GameHomeStackNavigator} />
       <Tab.Screen name="Discs" component={DiscStackNavigator} />
       <Tab.Screen name="Home" component={HomeScreen} />
     </Tab.Navigator>
+  );
+};
+
+export const AppNavigator = (props) => {
+  return (
+    <AppStack.Navigator screenOptions={{ headerShown: false }}>
+      <AppStack.Screen name="AppHome" component={AppTabNavigator} />
+      <AppStack.Screen name="AppGame" component={GamePlayDrawerNavigator} />
+    </AppStack.Navigator>
   );
 };
