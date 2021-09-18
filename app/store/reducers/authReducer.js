@@ -22,7 +22,6 @@ export default (state = initialState, action) => {
     //      userId: action.userId,
     //    };
     case LOG_OUT:
-      console.log("initial state set");
       return initialState;
     default:
       return state;
