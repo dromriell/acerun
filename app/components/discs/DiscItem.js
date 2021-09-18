@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "white",
     height: 150,
-    width: "40%",
+    aspectRatio: 1,
     margin: 5,
   },
   touchableDI: {
