@@ -2,6 +2,7 @@ import React from "react";
 import { Text, StyleSheet } from "react-native";
 
 export const BodyText = (props) => {
+  const { color, size } = props;
   return (
     <Text
       {...props}
@@ -9,6 +10,8 @@ export const BodyText = (props) => {
         ...styles.body,
         ...props.style,
         ...(props.capitalize ? styles.capitalize : {}),
+        ...(color ? { color: color } : {}),
+        ...(size ? { fontSize: size } : {}),
       }}
     >
       {props.children}
@@ -17,6 +20,8 @@ export const BodyText = (props) => {
 };
 
 export const SubHeaderText = (props) => {
+  const { color, size } = props;
+
   return (
     <Text
       {...props}
@@ -24,6 +29,8 @@ export const SubHeaderText = (props) => {
         ...styles.subHeader,
         ...props.style,
         ...(props.capitalize ? styles.capitalize : {}),
+        ...(color ? { color: color } : {}),
+        ...(size ? { fontSize: size } : {}),
       }}
     >
       {props.children}
@@ -32,6 +39,8 @@ export const SubHeaderText = (props) => {
 };
 
 export const HeaderText = (props) => {
+  const { color, size } = props;
+
   return (
     <Text
       {...props}
@@ -39,6 +48,8 @@ export const HeaderText = (props) => {
         ...styles.header,
         ...props.style,
         ...(props.capitalize ? styles.capitalize : {}),
+        ...(color ? { color: color } : {}),
+        ...(size ? { fontSize: size } : {}),
       }}
     >
       {props.children}
