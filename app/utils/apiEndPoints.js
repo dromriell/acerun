@@ -29,3 +29,4 @@ export const nearbyCoursesEP = (location) => {
 export const createGameEP = `${uri}/api/v1/games/list/`;
 export const gameCourseDataEP = (courseId) =>
   `${uri}/api/v1/courses/list/${courseId}`;
+export const currentGameEP = (gameId) => `${uri}/api/v1/games/list/${gameId}/`;
