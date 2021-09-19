@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, Image } from "react-native";
+import { useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 
-import { SubHeaderText } from "../ui/AppText";
+import { BodyText, SubHeaderText } from "../ui/AppText";
 
 const GameMap = (props) => {
+  const currentStrokes = useSelector((state) => state.game.currentStrokes);
   const { holeData } = props;
   const { tee_box, center, basket } = holeData;
 
@@ -16,7 +18,6 @@ const GameMap = (props) => {
     longitudeDelta: 0.05,
   };
   useEffect(() => {
-    console.log("MAP HOLE DATA", holeData);
     mapRef.current.setMapBoundaries(
       {
         latitude: center.lat + 0.0005,
@@ -55,6 +56,38 @@ const GameMap = (props) => {
           style={{ height: 50, width: 50 }}
         />
       </Marker>
+      {currentStrokes.map((stroke, i) => {
+        const strokeIcon =
+          stroke.throw === "penalty"
+            ? "../../assets/icons/map/penalty.png"
+            : "../../assets/icons/map/stroke.png";
+        console.log(strokeIcon, stroke);
+        return (
+          <Marker
+            key={`stroke-${i}`}
+            coordinate={{
+              latitude: stroke.position.lat,
+              longitude: stroke.position.lng,
+            }}
+          >
+            {stroke.throw === "penalty" ? (
+              <Image
+                source={require("../../assets/icons/map/penalty.png")}
+                resizeMethod="resize"
+                resizeMode="contain"
+                style={{ height: 30, width: 30 }}
+              />
+            ) : (
+              <Image
+                source={require("../../assets/icons/map/stroke.png")}
+                resizeMethod="resize"
+                resizeMode="contain"
+                style={{ height: 30, width: 30 }}
+              />
+            )}
+          </Marker>
+        );
+      })}
     </MapView>
   );
 };
