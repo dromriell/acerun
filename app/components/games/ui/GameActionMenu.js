@@ -1,17 +1,21 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   StyleSheet,
-  StatusBar,
-  Text,
   Switch,
-  Dimensions,
   Animated,
-  Button,
+  Easing,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
+import * as Location from "expo-location";
+import * as gameActions from "../../../store/actions/gameActions";
 
 import DiscItem, { EmptyDiscItem } from "../../discs/DiscItem";
+import StrokeMenu from "./StrokeMenu";
+import getHaversineDistance from "../../../utils/getHaversineDist";
 
 import AppColors from "../../../utils/AppColors";
 
@@ -19,39 +23,137 @@ import { HeaderText, SubHeaderText, BodyText } from "../../ui/AppText";
 import { TouchComp } from "../../ui/TouchComp";
 
 const GameActionMenu = (props) => {
-  const { onStrokeMenuPress } = props;
-  const [isBackHandThrow, setIsBackHandThrow] = useState(true);
-  const actionMenuHeight = Dimensions.get("screen").height;
+  const dispatch = useDispatch();
+  const { holeData, currentHoleIndex } = props;
+  const scorecard = useSelector((state) => state.game.scorecard);
+  const currentStrokes = useSelector((state) => state.game.currentStrokes);
 
-  // console.log(yScaleAnim);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+  const [isStrokeMenuOpen, setIsStrokeMenuOpen] = useState(false);
+
+  const [location, setLocation] = useState();
+  const [equippedDisc, setEquippedDisc] = useState();
+  const [isHole, setIsHole] = useState(false);
+  const [isBackHandThrow, setIsBackHandThrow] = useState(true);
+  const [isPenalty, setIsPenalty] = useState(false);
+
+  const getDistance = () => {
+    if (!location) {
+      return 0;
+    }
+    if (currentStrokes.length === 0) {
+      return getHaversineDistance(holeData.tee_box, location);
+    }
+    const prevPosition = currentStrokes[currentStrokes.length - 1].position;
+    return getHaversineDistance(prevPosition, location);
+  };
+
+  useEffect(() => {
+    if (!location) {
+      return;
+    }
+    const distance = getDistance();
+    const type = isPenalty
+      ? "penalty"
+      : isBackHandThrow
+      ? "backhand"
+      : "forehand";
+
+    const stroke = {
+      position: {
+        lat: location.lat,
+        lng: location.lng,
+      },
+      throw: type,
+      dist: distance,
+      isHole: isHole,
+      disc: null,
+    };
+    dispatch(gameActions.addStroke(stroke));
+    setIsPenalty(false);
+    setLocation();
+  }, [location]);
+
+  const verifyPermissions = async () => {
+    const result = await Location.requestForegroundPermissionsAsync();
+    console.log("LOCRESULT", result);
+
+    if (result.status !== "granted") {
+      Alert.alert(
+        "Insufficient Permissions",
+        "You need to grant location permissions to use this app",
+        [{ text: "Okay" }]
+      );
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleGetLocation = async () => {
+    const hasPermission = await verifyPermissions();
+    if (!hasPermission) {
+      return;
+    }
+    const currentLocation = await Location.getCurrentPositionAsync();
+    try {
+      setIsLoading(true);
+      setLocation({
+        lat: currentLocation.coords.latitude,
+        lng: currentLocation.coords.longitude,
+      });
+      console.log(currentLocation);
+    } catch (error) {
+      console.log(error);
+      Alert.alert(
+        "Could Not Fetch Location",
+        "Please try again later or pick a location on the map",
+        [{ text: "Okay" }]
+      );
+    }
+    setIsLoading(false);
+  };
+
+  const handleStrokeRecord = async (type) => {
+    if (type === "STROKE") {
+      await handleGetLocation();
+    } else if (type === "PENALTY") {
+      setIsPenalty(true);
+      await handleGetLocation();
+    } else if (type === "HOLE") {
+      setIsHole(true);
+      setLocation(holeData.basket);
+    }
+    setIsStrokeMenuOpen(false);
+  };
 
   return (
-    <View style={styles.screen}>
+    <View
+      style={{
+        ...styles.screen,
+        height: isStrokeMenuOpen ? 300 : 150,
+      }}
+    >
       <View style={styles.container}>
         <View style={styles.gameHud}>
           <View style={styles.infoBar}>
             <View style={styles.infoCard}>
-              <SubHeaderText>Stroke: 1</SubHeaderText>
+              <SubHeaderText>Stroke: {currentStrokes.length + 1}</SubHeaderText>
             </View>
             <View style={styles.infoCard}>
-              <SubHeaderText>Dist: 500ft</SubHeaderText>
+              <SubHeaderText>
+                Dist: {currentStrokes[currentStrokes.length - 1]?.dist || 0}ft
+              </SubHeaderText>
             </View>
             <View style={styles.infoCard}>
               <SubHeaderText>COMP 13mph</SubHeaderText>
             </View>
           </View>
-          <View style={styles.strokeMenu}>
-            <View style={styles.strokeButtonContainer}>
-              <TouchComp onPress={onStrokeMenuPress}>
-                <Ionicons
-                  name="add-circle-sharp"
-                  color={AppColors.accent}
-                  style={styles.strokeButton}
-                  size={55}
-                />
-              </TouchComp>
-            </View>
-          </View>
+          <StrokeMenuButton
+            isStrokeMenuOpen={isStrokeMenuOpen}
+            setIsStrokeMenuOpen={setIsStrokeMenuOpen}
+          />
           <View style={styles.discMenu}>
             <View style={styles.toggleContainer}>
               <BodyText color={AppColors.white}>FH</BodyText>
@@ -65,12 +167,88 @@ const GameActionMenu = (props) => {
               </View>
               <BodyText color={AppColors.white}>BH</BodyText>
             </View>
-            <EmptyDiscItem discData={{}} style={styles.discDisplay} />
+            <DiscSelector setEquippedDisc={setEquippedDisc} />
           </View>
         </View>
       </View>
+      <StrokeMenu
+        isStrokeMenuOpen={isStrokeMenuOpen}
+        handleStrokeRecord={handleStrokeRecord}
+      />
     </View>
   );
+};
+
+const StrokeMenuButton = (props) => {
+  const { isStrokeMenuOpen, setIsStrokeMenuOpen } = props;
+  const firstRender = useRef(true);
+
+  const rotateButtonAnim = useRef(new Animated.Value(0)).current;
+
+  const rotateInterpolate = rotateButtonAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "135deg"],
+  });
+
+  const rotateToCancelButtonAnimation = Animated.parallel([
+    Animated.timing(rotateButtonAnim, {
+      toValue: 1,
+      duration: 150,
+      easing: Easing.bounce,
+      useNativeDriver: true,
+    }),
+  ]);
+
+  const rotateToAddButtonAnimation = Animated.parallel([
+    Animated.timing(rotateButtonAnim, {
+      toValue: 0,
+      duration: 150,
+      easing: Easing.bounce,
+      useNativeDriver: true,
+    }),
+  ]);
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    if (!isStrokeMenuOpen) {
+      rotateToAddButtonAnimation.start();
+    } else {
+      rotateToCancelButtonAnimation.start();
+    }
+  }, [isStrokeMenuOpen]);
+
+  const handleStrokeMenuToggle = () => {
+    setIsStrokeMenuOpen(!isStrokeMenuOpen);
+  };
+
+  return (
+    <View style={styles.strokeMenu}>
+      <Animated.View
+        style={{
+          ...styles.strokeButtonContainer,
+          transform: [{ rotateZ: rotateInterpolate }],
+        }}
+      >
+        <TouchComp onPress={handleStrokeMenuToggle}>
+          <Ionicons
+            name="add-circle-sharp"
+            color={isStrokeMenuOpen ? AppColors.red : AppColors.accent}
+            style={styles.strokeButton}
+            size={55}
+          />
+        </TouchComp>
+      </Animated.View>
+    </View>
+  );
+};
+
+const DiscSelector = (props) => {
+  const { setEquippedDisc } = props;
+
+  return <EmptyDiscItem discData={{}} style={styles.discDisplay} />;
 };
 
 const styles = StyleSheet.create({
@@ -83,8 +261,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
-    height: 150,
-    minHeight: 100,
   },
   container: {
     position: "relative",
