@@ -9,6 +9,8 @@ export const SET_GAME_COURSE = "SET_GAME_COURSE";
 export const CLEAR_GAME_COURSE = "CLEAR_GAME_COURSE";
 export const SET_GAME_DATA = "SET_GAME_DATA";
 export const SET_COURSE_GAME_DATA = "SET_COURSE_GAME_DATA";
+export const SET_HOLE_INDEX = "SET_HOLE_INDEX";
+export const ADD_STROKE = "ADD_STROKE";
 
 export const setGameCourse = (courseData) => {
   return async (dispatch) => {
@@ -92,7 +94,7 @@ export const fetchCurrentGameData = (token, gameId, currentUser) => {
     }
 
     const currentGameResponse = await response.json();
-    console.log("Found Game!", currentGameResponse);
+    console.log("Found Game!");
     dispatch({
       type: SET_GAME_DATA,
       gameData: currentGameResponse,
@@ -131,12 +133,34 @@ export const setCourseGameData = (token, courseId) => {
     }
 
     const courseDataResponse = await response.json();
-    console.log("Course Data Fetched!", courseDataResponse);
+    console.log("Course Data Fetched!");
     dispatch({
       type: SET_COURSE_GAME_DATA,
       courseData: courseDataResponse,
     });
   };
+};
+
+export const setHoleIndex = (holeIndex) => {
+  return (dispatch) => {
+    dispatch({
+      type: SET_HOLE_INDEX,
+      holeIndex: holeIndex,
+    });
+  };
+};
+
+export const addStroke = (strokeData) => {
+  return (dispatch) => {
+    dispatch({
+      type: ADD_STROKE,
+      strokeData: strokeData,
+    });
+  };
+};
+
+export const setHoleEnd = () => {
+  return async (dispatch) => {};
 };
 
 const saveGameStateToStorage = (gameData) => {
