@@ -1,19 +1,27 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet, Dimensions, Animated } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Animated,
+  Easing,
+  Pressable,
+} from "react-native";
 
 import AppColors from "../../../utils/AppColors";
 
-import { HeaderText, SubHeaderText, BodyText } from "../../ui/AppText";
-import { TouchComp } from "../../ui/TouchComp";
+import { SubHeaderText } from "../../ui/AppText";
 
 const screenWidth = Dimensions.get("screen").width;
 
 const StrokeMenu = (props) => {
-  const { isStrokeMenuOpen } = props;
+  const { isStrokeMenuOpen, handleStrokeRecord } = props;
 
   useEffect(() => {
     handleStrokeMenuToggle(isStrokeMenuOpen);
   }, [isStrokeMenuOpen]);
+
+  //#region ~~~~~ ANIMATIONS ~~~~~
 
   // Animation values for bubble field
   const yscale = useRef(new Animated.Value(0)).current;
@@ -33,12 +41,14 @@ const StrokeMenu = (props) => {
   const strokeBubbleHideAnimation = Animated.parallel([
     Animated.timing(strokeXTranslateAnim, {
       toValue: 0,
-      duration: 500,
+      duration: 400,
+      easing: Easing.back(),
       useNativeDriver: true,
     }),
     Animated.timing(strokeYTranslateAnim, {
       toValue: 0,
-      duration: 500,
+      duration: 400,
+      easing: Easing.back(),
       useNativeDriver: true,
     }),
   ]);
@@ -47,6 +57,7 @@ const StrokeMenu = (props) => {
     Animated.timing(holeYTranslateAnim, {
       toValue: 0,
       duration: 500,
+      easing: Easing.elastic(1),
       useNativeDriver: true,
     }),
   ]);
@@ -54,12 +65,14 @@ const StrokeMenu = (props) => {
   const penaltyBubbleHideAnimation = Animated.parallel([
     Animated.timing(penaltyXTranslateAnim, {
       toValue: 0,
-      duration: 500,
+      duration: 400,
+      easing: Easing.back(),
       useNativeDriver: true,
     }),
     Animated.timing(penaltyYTranslateAnim, {
       toValue: 0,
-      duration: 500,
+      duration: 400,
+      easing: Easing.back(),
       useNativeDriver: true,
     }),
   ]);
@@ -68,34 +81,39 @@ const StrokeMenu = (props) => {
   const strokeBubbleShowAnimation = Animated.parallel([
     Animated.timing(strokeXTranslateAnim, {
       toValue: screenWidth * 0.33,
-      duration: 250,
+      duration: 400,
       useNativeDriver: true,
+      easing: Easing.elastic(0.9),
     }),
     Animated.timing(strokeYTranslateAnim, {
       toValue: -120,
-      duration: 250,
+      duration: 400,
       useNativeDriver: true,
+      easing: Easing.elastic(0.0),
     }),
   ]);
 
   const holeBubbleShowAnimation = Animated.parallel([
     Animated.timing(holeYTranslateAnim, {
       toValue: -160,
-      duration: 300,
+      duration: 450,
       useNativeDriver: true,
+      easing: Easing.bounce,
     }),
   ]);
 
   const penaltyBubbleShowAnimation = Animated.parallel([
     Animated.timing(penaltyXTranslateAnim, {
       toValue: -screenWidth * 0.33,
-      duration: 350,
+      duration: 500,
       useNativeDriver: true,
+      easing: Easing.elastic(0.9),
     }),
     Animated.timing(penaltyYTranslateAnim, {
       toValue: -120,
-      duration: 350,
+      duration: 500,
       useNativeDriver: true,
+      easing: Easing.elastic(0.1),
     }),
   ]);
 
@@ -152,9 +170,9 @@ const StrokeMenu = (props) => {
       ]),
     ]).start();
   };
+  //#endregion
 
   const handleStrokeMenuToggle = () => {
-    console.log("CHECK STATUS", isStrokeMenuOpen);
     if (isStrokeMenuOpen) {
       showMenu();
     } else {
@@ -185,11 +203,7 @@ const StrokeMenu = (props) => {
             ],
           }}
         >
-          <TouchComp useForeground>
-            <View style={styles.bubble}>
-              <SubHeaderText>STROKE</SubHeaderText>
-            </View>
-          </TouchComp>
+          <MenuBubble onPressComplete={handleStrokeRecord} type="STROKE" />
         </Animated.View>
         <Animated.View
           style={{
@@ -198,11 +212,7 @@ const StrokeMenu = (props) => {
             transform: [{ translateY: holeYTranslateAnim }],
           }}
         >
-          <TouchComp useForeground>
-            <View style={styles.bubble}>
-              <SubHeaderText>HOLE</SubHeaderText>
-            </View>
-          </TouchComp>
+          <MenuBubble onPressComplete={handleStrokeRecord} type="HOLE" />
         </Animated.View>
         <Animated.View
           style={{
@@ -214,14 +224,75 @@ const StrokeMenu = (props) => {
             ],
           }}
         >
-          <TouchComp useForeground>
-            <View style={styles.bubble}>
-              <SubHeaderText>PENALTY</SubHeaderText>
-            </View>
-          </TouchComp>
+          <MenuBubble onPressComplete={handleStrokeRecord} type="PENALTY" />
         </Animated.View>
       </View>
     </Animated.View>
+  );
+};
+
+const MenuBubble = (props) => {
+  const { type, onPressComplete } = props;
+  // Bubble animation values
+  const scaleXAnim = useRef(new Animated.Value(0)).current;
+  const scaleYAnim = useRef(new Animated.Value(0)).current;
+
+  const overlayGrowAnimation = Animated.parallel([
+    Animated.timing(scaleXAnim, {
+      toValue: 1,
+      duration: 970,
+      easing: Easing.elastic(),
+      useNativeDriver: true,
+    }),
+    Animated.timing(scaleYAnim, {
+      toValue: 1,
+      duration: 970,
+      easing: Easing.elastic(),
+      useNativeDriver: true,
+    }),
+  ]);
+
+  const overlayShrinkAnimation = Animated.parallel([
+    Animated.timing(scaleXAnim, {
+      toValue: 0,
+      duration: 150,
+      easing: Easing.back(),
+      useNativeDriver: true,
+    }),
+    Animated.timing(scaleYAnim, {
+      toValue: 0,
+      duration: 150,
+      easing: Easing.back(),
+      useNativeDriver: true,
+    }),
+  ]);
+
+  return (
+    <Pressable
+      onPressIn={() => {
+        overlayGrowAnimation.start();
+      }}
+      delayLongPress={600}
+      onLongPress={() => onPressComplete(type)}
+      onPressOut={() => {
+        overlayShrinkAnimation.start();
+      }}
+    >
+      <View style={styles.bubble}>
+        <Animated.View
+          style={{
+            width: "100%",
+            position: "absolute",
+            height: "100%",
+            opacity: 0.5,
+            borderRadius: 100,
+            backgroundColor: AppColors.primary,
+            transform: [{ scaleX: scaleXAnim }, { scaleY: scaleYAnim }],
+          }}
+        ></Animated.View>
+        <SubHeaderText>{type}</SubHeaderText>
+      </View>
+    </Pressable>
   );
 };
 
@@ -252,7 +323,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: 100,
     backgroundColor: AppColors.accent,
-    borderColor: AppColors.blue,
+    borderColor: AppColors.primary,
     borderWidth: 2,
     overflow: "hidden",
   },
