@@ -13,20 +13,10 @@ import StrokeMenu from "../../components/games/ui/StrokeMenu";
 import AppColors from "../../utils/AppColors";
 
 const GameScreen = (props) => {
-  const [isStrokeMenuOpen, setIsStrokeMenuOpen] = useState(false);
-
   const courseData = useSelector((state) => state.game.courseData);
-  const [currentHoleIndex, setCurrentHoleIndex] = useState(0);
+  const currentHoleIndex = useSelector((state) => state.game.currentHoleIndex);
 
   const holeData = courseData.holes[currentHoleIndex];
-
-  useEffect(() => {
-    console.log(courseData);
-  }, []);
-
-  const onStrokeMenuPress = () => {
-    setIsStrokeMenuOpen(!isStrokeMenuOpen);
-  };
 
   return (
     <View style={styles.mapContainer}>
@@ -35,8 +25,7 @@ const GameScreen = (props) => {
         courseName={courseData.name}
         holeData={holeData}
       />
-      <GameActionMenu onStrokeMenuPress={onStrokeMenuPress} />
-      <StrokeMenu isStrokeMenuOpen={isStrokeMenuOpen} />
+      <GameActionMenu holeData={holeData} currentHoleIndex={currentHoleIndex} />
       <GameMap holeData={holeData} />
     </View>
   );
