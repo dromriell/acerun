@@ -3,6 +3,8 @@ import {
   CLEAR_GAME_COURSE,
   SET_GAME_DATA,
   SET_COURSE_GAME_DATA,
+  SET_HOLE_INDEX,
+  ADD_STROKE,
 } from "../actions/gameActions";
 
 const initialState = {
@@ -10,6 +12,8 @@ const initialState = {
   courseData: null,
   game: null,
   scorecard: null,
+  currentHoleIndex: 0,
+  currentStrokes: [],
 };
 
 export default (state = initialState, action) => {
@@ -39,6 +43,17 @@ export default (state = initialState, action) => {
       return {
         ...state,
         courseData: action.courseData,
+      };
+    case SET_HOLE_INDEX:
+      return {
+        ...state,
+        currentHoleIndex: action.holeIndex,
+      };
+    case ADD_STROKE:
+      const newStrokes = [...state.currentStrokes, action.strokeData];
+      return {
+        ...state,
+        currentStrokes: newStrokes,
       };
     default:
       return state;
