@@ -2,6 +2,8 @@ import React from "react";
 import { View, StyleSheet, StatusBar, Text } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
+import getHaversineDistance from "../../../utils/getHaversineDist";
+
 import AppColors from "../../../utils/AppColors";
 
 import { HeaderText, SubHeaderText, BodyText } from "../../ui/AppText";
@@ -9,6 +11,8 @@ import { TouchComp } from "../../ui/TouchComp";
 
 const GameHeader = (props) => {
   const { courseName, holeData } = props;
+  const holeDist = getHaversineDistance(holeData.tee_box, holeData.basket);
+
   return (
     <View style={styles.header}>
       <StatusBar barStyle={AppColors.white} />
@@ -32,7 +36,7 @@ const GameHeader = (props) => {
           Par {holeData.par}
         </BodyText>
         <BodyText style={styles.holeInfoText} color={AppColors.white} size={18}>
-          189.21ft
+          {holeDist} ft
         </BodyText>
       </View>
       <View></View>
