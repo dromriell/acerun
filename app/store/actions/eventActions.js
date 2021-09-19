@@ -4,7 +4,6 @@ import { eventHomeEP } from "../../utils/apiEndPoints";
 
 export const fetchHomeEvents = (token, location) => {
   return async (dispatch) => {
-    console.log("FETCHING");
     const response = await fetch(`${eventHomeEP}${location}`, {
       headers: {
         Authorization: `Token ${token}`,

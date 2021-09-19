@@ -20,7 +20,6 @@ const GameHomeScreen = (props) => {
         return;
       }
       const transformedData = JSON.parse(currentGame);
-      console.log(transformedData);
       const { course, id } = transformedData.gameData;
 
       dispatch(gameActions.fetchCurrentGameData(token, id, userID));

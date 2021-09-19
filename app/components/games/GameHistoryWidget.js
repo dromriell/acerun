@@ -93,7 +93,6 @@ const GameHistoryWidget = (props) => {
     setError(null);
     setIsLoading(true);
     try {
-      console.log("Fetching Game History...");
       const response = await fetch(gameHistoryEP, {
         headers: {
           Authorization: `Token ${props.token}`,
@@ -104,7 +103,6 @@ const GameHistoryWidget = (props) => {
       setGameHistory(gameHistoryResponse);
     } catch (error) {
       setError(error);
-      console.log(error);
     }
     setIsLoading(false);
   }, [dispatch, setIsLoading, setError]);
@@ -134,7 +132,6 @@ const GameHistoryWidget = (props) => {
     <View style={styles.container}>
       <HeaderText style={styles.containerHeader}>Game History</HeaderText>
       {gameHistory.map((game, i) => {
-        console.log(i);
         if (i === 0) {
           return <GameSummaryLarge key={game.id} game={game} />;
         }

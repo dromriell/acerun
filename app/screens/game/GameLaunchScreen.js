@@ -34,14 +34,12 @@ const GameLaunchScreen = (props) => {
 
   useEffect(() => {
     const launchGame = async () => {
-      console.log(token, courseID, players, userID);
       try {
         await dispatch(gameActions.setCourseGameData(token, courseID));
         await dispatch(
           gameActions.createGame(token, courseID, players, userID)
         );
       } catch (error) {
-        console.log(error);
         setError(error.message);
       }
       setHasAttemptedCreateGame(true);

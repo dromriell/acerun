@@ -32,7 +32,6 @@ const DiscCarousel = (props) => {
       {props.data.length > 0 ? (
         <ScrollView style={styles.discList} horizontal={true}>
           {props.data.map((disc) => {
-            console.log(disc);
             const discDataId = disc.disc ? disc.disc.id : disc.id;
             return (
               <DiscItem

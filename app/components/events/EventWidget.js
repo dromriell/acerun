@@ -72,14 +72,12 @@ const EventWidget = (props) => {
   };
 
   const loadEvents = useCallback(async () => {
-    console.log("LOOOADING");
     setError(null);
     setIsLoading(true);
     try {
       await dispatch(eventActions.fetchHomeEvents(props.token, userLocation));
     } catch (error) {
       setError(error);
-      console.log(error);
     }
     setIsLoading(false);
     setCurrentEventIndex(0);
@@ -116,7 +114,6 @@ const EventWidget = (props) => {
   useEffect(() => {
     const scrollTimeout = setTimeout(handleAutoScroll, 9000);
     return () => {
-      console.log("CLEAR TO");
       return clearTimeout(scrollTimeout);
     };
   }, [currentEventIndex]);
