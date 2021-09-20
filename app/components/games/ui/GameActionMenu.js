@@ -7,6 +7,7 @@ import {
   Easing,
   Alert,
   ActivityIndicator,
+  Button,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,6 +15,7 @@ import * as Location from "expo-location";
 import * as gameActions from "../../../store/actions/gameActions";
 
 import DiscItem, { EmptyDiscItem } from "../../discs/DiscItem";
+import HoleEndModal from "./HoleEndModal";
 import StrokeMenu from "./StrokeMenu";
 import getHaversineDistance from "../../../utils/getHaversineDist";
 
@@ -24,7 +26,7 @@ import { TouchComp } from "../../ui/TouchComp";
 
 const GameActionMenu = (props) => {
   const dispatch = useDispatch();
-  const { holeData, currentHoleIndex } = props;
+  const { holeData, currentHoleIndex, setIsHoleEndModalOpen } = props;
   const scorecard = useSelector((state) => state.game.scorecard);
   const currentStrokes = useSelector((state) => state.game.currentStrokes);
 
@@ -45,7 +47,8 @@ const GameActionMenu = (props) => {
     if (currentStrokes.length === 0) {
       return getHaversineDistance(holeData.tee_box, location);
     }
-    const prevPosition = currentStrokes[currentStrokes.length - 1].position;
+    const prevStroke = currentStrokes[currentStrokes.length - 1];
+    const prevPosition = { lat: prevStroke.lat, lng: prevStroke.lng };
     return getHaversineDistance(prevPosition, location);
   };
 
@@ -54,22 +57,20 @@ const GameActionMenu = (props) => {
       return;
     }
     const distance = getDistance();
-    const type = isPenalty
-      ? "penalty"
-      : isBackHandThrow
-      ? "backhand"
-      : "forehand";
+    const equippedThrow = isBackHandThrow ? "backhand" : "forehand";
+    const type = isHole ? "hole" : isPenalty ? "penalty" : "stroke";
 
     const stroke = {
-      position: {
-        lat: location.lat,
-        lng: location.lng,
-      },
-      throw: type,
+      type: type,
+      lat: location.lat,
+      lng: location.lng,
       dist: distance,
       isHole: isHole,
-      disc: null,
+      disc: 24, // PLACEHOLDER VALUE, CHANGE TO EQUIPPED USERDISC ID
+      throw: equippedThrow,
+      time: new Date(),
     };
+
     dispatch(gameActions.addStroke(stroke));
     setIsPenalty(false);
     setLocation();
@@ -124,6 +125,7 @@ const GameActionMenu = (props) => {
     } else if (type === "HOLE") {
       setIsHole(true);
       setLocation(holeData.basket);
+      setIsHoleEndModalOpen(true);
     }
     setIsStrokeMenuOpen(false);
   };
