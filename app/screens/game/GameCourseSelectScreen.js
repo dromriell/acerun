@@ -45,7 +45,7 @@ const GameCourseSelectScreen = (props) => {
     if (!hasPermission) {
       return;
     }
-    const currentLocation = await Location.getCurrentPositionAsync();
+    const currentLocation = await Location.getLastKnownPositionAsync();
     try {
       setIsLoading(true);
       setLocation({
