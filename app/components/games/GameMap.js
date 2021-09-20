@@ -66,8 +66,8 @@ const GameMap = (props) => {
           <Marker
             key={`stroke-${i}`}
             coordinate={{
-              latitude: stroke.position.lat,
-              longitude: stroke.position.lng,
+              latitude: stroke.lat,
+              longitude: stroke.lng,
             }}
           >
             {stroke.throw === "penalty" ? (
