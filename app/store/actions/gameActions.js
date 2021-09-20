@@ -2,6 +2,7 @@ import {
   createGameEP,
   gameCourseDataEP,
   currentGameEP,
+  holeScoreEP,
 } from "../../utils/apiEndPoints";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -11,6 +12,8 @@ export const SET_GAME_DATA = "SET_GAME_DATA";
 export const SET_COURSE_GAME_DATA = "SET_COURSE_GAME_DATA";
 export const SET_HOLE_INDEX = "SET_HOLE_INDEX";
 export const ADD_STROKE = "ADD_STROKE";
+export const RESET_HOLE = "RESET_HOLE";
+export const SET_HOLE_SCORE = "SET_HOLE_SCORE";
 
 export const setGameCourse = (courseData) => {
   return async (dispatch) => {
@@ -159,8 +162,46 @@ export const addStroke = (strokeData) => {
   };
 };
 
-export const setHoleEnd = () => {
-  return async (dispatch) => {};
+export const resetHole = () => {
+  return (dispatch) => {
+    dispatch({
+      type: RESET_HOLE,
+    });
+  };
+};
+
+export const setHoleEnd = (token, holeScore) => {
+  return async (dispatch) => {
+    const response = await fetch(holeScoreEP, {
+      method: "POST",
+      headers: {
+        Authorization: `Token ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(holeScore),
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      let errorMsg = "";
+
+      Object.entries(errorResponse).forEach(([key, value]) => {
+        switch (key) {
+          case "non_field_errors":
+            errorMsg = errorMsg + value;
+            return;
+          default:
+            errorMsg = errorMsg + value;
+            return;
+        }
+      });
+      throw Error(errorMsg || "An error occured!");
+    }
+
+    dispatch({
+      type: SET_HOLE_SCORE,
+    });
+  };
 };
 
 const saveGameStateToStorage = (gameData) => {

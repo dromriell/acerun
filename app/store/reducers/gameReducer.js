@@ -5,6 +5,8 @@ import {
   SET_COURSE_GAME_DATA,
   SET_HOLE_INDEX,
   ADD_STROKE,
+  RESET_HOLE,
+  SET_HOLE_SCORE,
 } from "../actions/gameActions";
 
 const initialState = {
@@ -54,6 +56,17 @@ export default (state = initialState, action) => {
       return {
         ...state,
         currentStrokes: newStrokes,
+      };
+    case RESET_HOLE:
+      return {
+        ...state,
+        currentStrokes: [],
+      };
+    case SET_HOLE_SCORE:
+      return {
+        ...state,
+        currentHoleIndex: state.currentHoleIndex + 1,
+        currentStrokes: [],
       };
     default:
       return state;
