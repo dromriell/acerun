@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/routers";
+
 import * as gameActions from "../../store/actions/gameActions";
 import AppColors from "../../utils/AppColors";
 
@@ -27,6 +28,12 @@ const GameLaunchScreen = (props) => {
     }
 
     if (game && hasAttemptedCreateGame) {
+      props.navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "GameHome" }],
+        })
+      );
       props.navigation.navigate("AppGame", { screen: "GamePlayScreen" });
       return;
     }
@@ -57,6 +64,7 @@ const GameLaunchScreen = (props) => {
 export const screenOptions = () => {
   return {
     headerLeft: () => null,
+    unmountOnBlur: true,
   };
 };
 
