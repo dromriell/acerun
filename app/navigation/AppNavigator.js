@@ -30,16 +30,19 @@ import DiscSearchScreen, {
   screenOptions as discSearchScreenOptions,
 } from "../screens/discs/DiscSearchScreen";
 
-// GAME SCREENS
+// GAME CONFIG SCREENS
 import GameHomeScreen from "../screens/game/GameHomeScreen";
 import GameSetupScreen, {
   screenOptions as gameSetupScreenOptions,
 } from "../screens/game/GameSetupScreen";
 import GameCourseSelectScreen from "../screens/game/GameCourseSelectScreen";
 import GameLaunchScreen from "../screens/game/GameLaunchScreen";
+
+// GAME SCREENS
 import GameScreen, {
   screenOptions as gameScreenOptions,
 } from "../screens/game/GameScreen";
+import GameDrawerScreen from "../screens/game/GameDrawerScreen";
 
 import CoursesOverviewScreen from "../screens/courses/CoursesOverviewScreen";
 import ProfileScreen from "../screens/profile/ProfileScreen";
@@ -143,7 +146,10 @@ const GameHomeStackNavigator = () => {
 
 const GamePlayDrawerNavigator = () => {
   return (
-    <GamePlayDrawer.Navigator screenOptions={gameDrawerNavOptions}>
+    <GamePlayDrawer.Navigator
+      screenOptions={gameDrawerNavOptions}
+      drawerContent={(props) => <GameDrawerScreen {...props} />}
+    >
       <GamePlayDrawer.Screen
         name="GamePlayScreen"
         component={GameScreen}
