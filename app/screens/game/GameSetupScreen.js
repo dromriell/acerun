@@ -20,7 +20,6 @@ const GameSetupScreen = (props) => {
   const dispatch = useDispatch();
   const selectedCourse = useSelector((state) => state.game.course);
   const userID = useSelector((state) => state.auth.profile.user);
-  console.log("uid", userID);
 
   const handleStartGame = () => {
     if (!selectedCourse) {
