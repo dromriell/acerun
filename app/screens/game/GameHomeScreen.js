@@ -8,17 +8,20 @@ import * as gameActions from "../../store/actions/gameActions";
 import { HeaderText } from "../../components/ui/AppText";
 
 const GameHomeScreen = (props) => {
+  const { navigation } = props;
   const dispatch = useDispatch();
   const [isGameInProgress, setIsGameInProgress] = useState(false);
   const token = useSelector((state) => state.auth.token);
   const userID = useSelector((state) => state.auth.profile.user);
 
   useEffect(() => {
-    const checkIfGameInProgress = async () => {
+    const checkExisitingGame = navigation.addListener("focus", async () => {
       const currentGame = await AsyncStorage.getItem("currentGame");
       if (!currentGame) {
+        setIsGameInProgress(false);
         return;
       }
+      dispatch(gameActions.resetGame());
       const transformedData = JSON.parse(currentGame);
       const { course, id } = transformedData.gameData;
 
@@ -26,9 +29,9 @@ const GameHomeScreen = (props) => {
       dispatch(gameActions.setCourseGameData(token, course));
 
       setIsGameInProgress(true);
-    };
-    checkIfGameInProgress();
-  }, [dispatch]);
+    });
+    return checkExisitingGame;
+  }, [navigation, dispatch]);
 
   return (
     <View style={styles.screen}>
