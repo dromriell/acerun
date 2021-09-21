@@ -26,7 +26,6 @@ const GameCourseSelectScreen = (props) => {
 
   const verifyPermissions = async () => {
     const result = await Location.requestForegroundPermissionsAsync();
-    console.log("LOCRESULT", result);
 
     if (result.status !== "granted") {
       Alert.alert(
@@ -52,9 +51,7 @@ const GameCourseSelectScreen = (props) => {
         lat: currentLocation.coords.latitude,
         lng: currentLocation.coords.longitude,
       });
-      console.log(currentLocation);
     } catch (error) {
-      console.log(error);
       Alert.alert(
         "Could Not Fetch Location",
         "Please try again later or pick a location on the map",
@@ -91,10 +88,8 @@ const GameCourseSelectScreen = (props) => {
 
   useEffect(() => {
     if (!location) {
-      console.log("NO LOCATION!");
       return;
     }
-    console.log("LOAD COURSES");
     loadCourses();
   }, [location, loadCourses]);
 
