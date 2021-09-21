@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Button, StyleSheet, Dimensions } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as gameActions from "../../../store/actions/gameActions";
@@ -10,17 +10,17 @@ import AppColors from "../../../utils/AppColors";
 
 const HoleEndModal = (props) => {
   const dispatch = useDispatch();
-  const { holeData, setIsHoleEndModalOpen } = props;
+  const { holeData, setIsHoleEndModalOpen, setIsGameEnd } = props;
   const { par, id: holeID } = holeData;
 
   const token = useSelector((state) => state.auth.token);
   const userID = useSelector((state) => state.auth.profile.user);
   const currentStrokes = useSelector((state) => state.game.currentStrokes);
   const courseData = useSelector((state) => state.game.courseData); // MAY NEED TO USE FOR GAME END
+  const currentHoleIndex = useSelector((state) => state.game.currentHoleIndex);
   const scorecard = useSelector((state) => state.game.scorecard);
   const score = currentStrokes.length;
-
-  console.log(holeID);
+  const isEndGame = currentHoleIndex + 1 === courseData.holes.length;
 
   const getScoreName = () => {
     switch (score) {
@@ -50,16 +50,23 @@ const HoleEndModal = (props) => {
     setIsHoleEndModalOpen(false);
   };
 
-  const handleHoleEnd = () => {
+  const handleHoleEnd = async () => {
     const holeScore = {
       score_card: scorecard.id,
       hole: holeID,
       score: score,
       strokes: currentStrokes,
     };
-    dispatch(gameActions.setHoleEnd(token, holeScore));
+    await dispatch(
+      gameActions.setHoleEnd(token, holeScore, scorecard.game, userID)
+    );
+    if (isEndGame) {
+      setIsGameEnd(true);
+    }
+    dispatch(
+      gameActions.fetchCurrentGameData(token, scorecard.game, userID, false)
+    );
     setIsHoleEndModalOpen(false);
-    dispatch(gameActions.fetchCurrentGameData(token, scorecard.game, userID));
   };
 
   return (
@@ -79,7 +86,7 @@ const HoleEndModal = (props) => {
             <TouchComp onPress={handleHoleEnd}>
               <View style={styles.button}>
                 <SubHeaderText color={AppColors.darkGrey} size={18}>
-                  Next Hole
+                  {isEndGame ? "End Game" : "Next Hole"}
                 </SubHeaderText>
               </View>
             </TouchComp>
