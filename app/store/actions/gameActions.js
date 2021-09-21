@@ -14,6 +14,8 @@ export const SET_HOLE_INDEX = "SET_HOLE_INDEX";
 export const ADD_STROKE = "ADD_STROKE";
 export const RESET_HOLE = "RESET_HOLE";
 export const SET_HOLE_SCORE = "SET_HOLE_SCORE";
+export const SET_GAME_END = "SET_GAME_END";
+export const RESET_GAME = "RESET_GAME";
 
 export const setGameCourse = (courseData) => {
   return async (dispatch) => {
@@ -60,7 +62,7 @@ export const createGame = (token, courseID, players, currentUser) => {
     }
 
     const newGameResponse = await response.json();
-    console.log("Game Created!", newGameResponse);
+
     dispatch({
       type: SET_GAME_DATA,
       gameData: newGameResponse,
@@ -70,7 +72,12 @@ export const createGame = (token, courseID, players, currentUser) => {
   };
 };
 
-export const fetchCurrentGameData = (token, gameId, currentUser) => {
+export const fetchCurrentGameData = (
+  token,
+  gameId,
+  currentUser,
+  setIndex = true
+) => {
   return async (dispatch) => {
     const response = await fetch(currentGameEP(gameId), {
       headers: {
@@ -97,11 +104,12 @@ export const fetchCurrentGameData = (token, gameId, currentUser) => {
     }
 
     const currentGameResponse = await response.json();
-    console.log("Found Game!");
+
     dispatch({
       type: SET_GAME_DATA,
       gameData: currentGameResponse,
       currentUser: currentUser,
+      setIndex: setIndex,
     });
     saveGameStateToStorage(currentGameResponse);
     return currentGameResponse.course;
@@ -109,7 +117,6 @@ export const fetchCurrentGameData = (token, gameId, currentUser) => {
 };
 
 export const setCourseGameData = (token, courseId) => {
-  console.log("ACTION", courseId);
   return async (dispatch) => {
     const response = await fetch(gameCourseDataEP(courseId), {
       headers: {
@@ -136,7 +143,6 @@ export const setCourseGameData = (token, courseId) => {
     }
 
     const courseDataResponse = await response.json();
-    console.log("Course Data Fetched!");
     dispatch({
       type: SET_COURSE_GAME_DATA,
       courseData: courseDataResponse,
@@ -167,6 +173,13 @@ export const resetHole = () => {
     dispatch({
       type: RESET_HOLE,
     });
+  };
+};
+
+export const resetGame = () => {
+  return (dispatch) => {
+    dispatch({ type: RESET_GAME });
+    removeGameStateFromStorage();
   };
 };
 
@@ -204,6 +217,41 @@ export const setHoleEnd = (token, holeScore) => {
   };
 };
 
+export const setGameEnd = (token, gameId) => {
+  return async (dispatch) => {
+    const response = await fetch(currentGameEP(gameId), {
+      method: "PATCH",
+      headers: {
+        Authorization: `Token ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isInProgress: false }),
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      let errorMsg = "";
+
+      Object.entries(errorResponse).forEach(([key, value]) => {
+        switch (key) {
+          case "non_field_errors":
+            errorMsg = errorMsg + value;
+            return;
+          default:
+            errorMsg = errorMsg + value;
+            return;
+        }
+      });
+      throw Error(errorMsg || "An error occured!");
+    }
+
+    dispatch({
+      type: SET_GAME_END,
+    });
+    removeGameStateFromStorage();
+  };
+};
+
 const saveGameStateToStorage = (gameData) => {
   AsyncStorage.setItem(
     "currentGame",
@@ -211,4 +259,12 @@ const saveGameStateToStorage = (gameData) => {
       gameData: gameData,
     })
   );
+};
+
+const removeGameStateFromStorage = () => {
+  try {
+    AsyncStorage.removeItem("currentGame");
+  } catch (error) {
+    throw error;
+  }
 };

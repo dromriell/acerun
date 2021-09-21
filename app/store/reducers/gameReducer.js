@@ -7,6 +7,8 @@ import {
   ADD_STROKE,
   RESET_HOLE,
   SET_HOLE_SCORE,
+  SET_GAME_END,
+  RESET_GAME,
 } from "../actions/gameActions";
 
 const initialState = {
@@ -36,11 +38,20 @@ export default (state = initialState, action) => {
           return scorecard.player === parseInt(action.currentUser);
         }
       );
-      return {
-        ...state,
-        game: action.gameData,
-        scorecard: currentUserScoreCard[0],
-      };
+      if (action.setIndex) {
+        return {
+          ...state,
+          game: action.gameData,
+          scorecard: currentUserScoreCard[0],
+          currentHoleIndex: currentUserScoreCard[0].scores.length,
+        };
+      } else {
+        return {
+          ...state,
+          game: action.gameData,
+          scorecard: currentUserScoreCard[0],
+        };
+      }
     case SET_COURSE_GAME_DATA:
       return {
         ...state,
@@ -63,11 +74,18 @@ export default (state = initialState, action) => {
         currentStrokes: [],
       };
     case SET_HOLE_SCORE:
+      if (state.currentHoleIndex + 1 === state.courseData.holes.length) {
+        return state;
+      }
       return {
         ...state,
         currentHoleIndex: state.currentHoleIndex + 1,
         currentStrokes: [],
       };
+    case RESET_GAME:
+      return initialState;
+    case SET_GAME_END:
+      return initialState;
     default:
       return state;
   }
