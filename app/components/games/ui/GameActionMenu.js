@@ -17,6 +17,8 @@ import * as gameActions from "../../../store/actions/gameActions";
 import DiscItem, { EmptyDiscItem } from "../../discs/DiscItem";
 import HoleEndModal from "./HoleEndModal";
 import StrokeMenu from "./StrokeMenu";
+import MapCompass from "./MapCompass";
+
 import getHaversineDistance from "../../../utils/getHaversineDist";
 
 import AppColors from "../../../utils/AppColors";
@@ -26,9 +28,11 @@ import { TouchComp } from "../../ui/TouchComp";
 
 const GameActionMenu = (props) => {
   const dispatch = useDispatch();
-  const { holeData, currentHoleIndex, setIsHoleEndModalOpen } = props;
+  const { holeData, currentHoleIndex, setIsHoleEndModalOpen, courseZip } =
+    props;
   const scorecard = useSelector((state) => state.game.scorecard);
   const currentStrokes = useSelector((state) => state.game.currentStrokes);
+  const weather = useSelector((state) => state.game.weather);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
@@ -53,6 +57,15 @@ const GameActionMenu = (props) => {
   };
 
   useEffect(() => {
+    console.log(weather);
+    if (!weather) {
+      dispatch(gameActions.fetchWeather(courseZip));
+    } else {
+      console.log("WEATHER", weather);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!location) {
       return;
     }
@@ -66,7 +79,7 @@ const GameActionMenu = (props) => {
       lng: location.lng,
       dist: distance,
       isHole: isHole,
-      disc: 24, // PLACEHOLDER VALUE, CHANGE TO EQUIPPED USERDISC ID
+      disc: 1, // PLACEHOLDER VALUE, CHANGE TO EQUIPPED USERDISC ID
       throw: equippedThrow,
       time: new Date(),
     };
@@ -97,7 +110,10 @@ const GameActionMenu = (props) => {
     if (!hasPermission) {
       return;
     }
-    const currentLocation = await Location.getCurrentPositionAsync();
+    console.log("HAVE PERMS");
+    const currentLocation = await Location.getCurrentPositionAsync({
+      accuracy: 1,
+    });
     try {
       setIsLoading(true);
       setLocation({
@@ -149,7 +165,11 @@ const GameActionMenu = (props) => {
               </SubHeaderText>
             </View>
             <View style={styles.infoCard}>
-              <SubHeaderText>COMP 13mph</SubHeaderText>
+              <MapCompass degree={weather ? weather.wind.deg : 0} />
+              <SubHeaderText>
+                {" "}
+                {weather ? weather.wind.speed : 0}mph
+              </SubHeaderText>
             </View>
           </View>
           <StrokeMenuButton
@@ -284,6 +304,8 @@ const styles = StyleSheet.create({
     width: "40%",
   },
   infoCard: {
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
     backgroundColor: AppColors.white,
     paddingVertical: 10,
