@@ -31,7 +31,9 @@ import DiscSearchScreen, {
 } from "../screens/discs/DiscSearchScreen";
 
 // GAME CONFIG SCREENS
-import GameHomeScreen from "../screens/game/GameHomeScreen";
+import GameHomeScreen, {
+  screenOptions as gameHomeScreenOptions,
+} from "../screens/game/GameHomeScreen";
 import GameSetupScreen, {
   screenOptions as gameSetupScreenOptions,
 } from "../screens/game/GameSetupScreen";
@@ -129,7 +131,11 @@ const DiscStackNavigator = () => {
 const GameHomeStackNavigator = () => {
   return (
     <GameHomeStack.Navigator screenOptions={defaultStackNavOptions}>
-      <GameHomeStack.Screen name="GameHome" component={GameHomeScreen} />
+      <GameHomeStack.Screen
+        name="GameHome"
+        component={GameHomeScreen}
+        options={gameHomeScreenOptions}
+      />
       <GameHomeStack.Screen
         name="GameSetup"
         component={GameSetupScreen}
