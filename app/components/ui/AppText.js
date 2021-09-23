@@ -20,7 +20,7 @@ export const BodyText = (props) => {
 };
 
 export const SubHeaderText = (props) => {
-  const { color, size } = props;
+  const { color, size, centered, centerVertical } = props;
 
   return (
     <Text
@@ -31,6 +31,7 @@ export const SubHeaderText = (props) => {
         ...(props.capitalize ? styles.capitalize : {}),
         ...(color ? { color: color } : {}),
         ...(size ? { fontSize: size } : {}),
+        ...(centered ? { textAlign: "center" } : {}),
       }}
     >
       {props.children}
