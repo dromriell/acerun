@@ -22,6 +22,13 @@ const HoleEndModal = (props) => {
   const score = currentStrokes.length;
   const isEndGame = currentHoleIndex + 1 === courseData.holes.length;
 
+  const longestThrow = currentStrokes
+    ? Math.max.apply(
+        Math,
+        currentStrokes.map((stroke) => stroke.dist)
+      )
+    : 0;
+
   const getScoreName = () => {
     switch (score) {
       case par - (par - 1):
@@ -74,6 +81,9 @@ const HoleEndModal = (props) => {
       <View style={styles.modal}>
         <HeaderText style={styles.header}>Hole Complete!</HeaderText>
         <SubHeaderText style={styles.score}>{getScoreName()}</SubHeaderText>
+        <BodyText style={styles.longest}>
+          Longest Throw: {longestThrow}ft
+        </BodyText>
         <View style={styles.buttonRow}>
           <View style={styles.buttonContainer}>
             <TouchComp onPress={handleCourseReset}>
@@ -112,7 +122,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     width: "90%",
-    height: "30%",
+    height: "35%",
     backgroundColor: AppColors.primary,
     borderRadius: 15,
   },
@@ -133,6 +143,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     backgroundColor: AppColors.primary,
     color: AppColors.accent,
+  },
+  longest: {
+    width: "100%",
+    fontSize: 21,
+    textAlign: "center",
+    backgroundColor: AppColors.primary,
+    color: AppColors.white,
     paddingVertical: 10,
   },
   buttonRow: {
