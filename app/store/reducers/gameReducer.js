@@ -1,6 +1,7 @@
 import {
   SET_GAME_COURSE,
   CLEAR_GAME_COURSE,
+  FETCH_WEATHER,
   SET_GAME_DATA,
   SET_COURSE_GAME_DATA,
   SET_HOLE_INDEX,
@@ -14,6 +15,7 @@ import {
 const initialState = {
   course: null,
   courseData: null,
+  weather: null,
   game: null,
   scorecard: null,
   currentHoleIndex: 0,
@@ -31,6 +33,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         course: null,
+      };
+    case FETCH_WEATHER:
+      return {
+        ...state,
+        weather: action.weather,
       };
     case SET_GAME_DATA:
       const currentUserScoreCard = action.gameData.players.filter(

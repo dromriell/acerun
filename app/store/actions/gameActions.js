@@ -3,6 +3,7 @@ import {
   gameCourseDataEP,
   currentGameEP,
   holeScoreEP,
+  weatherEP,
 } from "../../utils/apiEndPoints";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -16,6 +17,7 @@ export const RESET_HOLE = "RESET_HOLE";
 export const SET_HOLE_SCORE = "SET_HOLE_SCORE";
 export const SET_GAME_END = "SET_GAME_END";
 export const RESET_GAME = "RESET_GAME";
+export const FETCH_WEATHER = "FETCH_WEATHER";
 
 export const setGameCourse = (courseData) => {
   return async (dispatch) => {
@@ -69,6 +71,36 @@ export const createGame = (token, courseID, players, currentUser) => {
       currentUser: currentUser,
     });
     saveGameStateToStorage(newGameResponse);
+  };
+};
+
+export const fetchWeather = (zipCode) => {
+  return async (dispatch) => {
+    const response = await fetch(weatherEP(zipCode), {});
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      let errorMsg = "";
+
+      Object.entries(errorResponse).forEach(([key, value]) => {
+        switch (key) {
+          case "non_field_errors":
+            errorMsg = errorMsg + value;
+            return;
+          default:
+            errorMsg = errorMsg + value;
+            return;
+        }
+      });
+      throw Error(errorMsg || "An error occured!");
+    }
+
+    const currentWeatherResponse = await response.json();
+
+    dispatch({
+      type: FETCH_WEATHER,
+      weather: currentWeatherResponse,
+    });
   };
 };
 
