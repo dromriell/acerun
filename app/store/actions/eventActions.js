@@ -1,6 +1,7 @@
 export const SET_EVENTS = "SET_EVENT";
 
 import { eventHomeEP } from "../../utils/apiEndPoints";
+import { logout } from "./authActions";
 
 export const fetchHomeEvents = (token, location) => {
   return async (dispatch) => {
@@ -25,6 +26,10 @@ export const fetchHomeEvents = (token, location) => {
             return;
         }
       });
+      if (errorMsg === "Invalid token.") {
+        logout();
+        return;
+      }
       throw Error(errorMsg || "An error occured!");
     }
 
