@@ -132,6 +132,9 @@ const GameHistoryWidget = (props) => {
     <View style={styles.container}>
       <HeaderText style={styles.containerHeader}>Game History</HeaderText>
       {gameHistory.map((game, i) => {
+        if (!game.game) {
+          return;
+        }
         if (i === 0) {
           return <GameSummaryLarge key={game.id} game={game} />;
         }
