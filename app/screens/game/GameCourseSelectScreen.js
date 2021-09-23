@@ -126,6 +126,16 @@ const GameCourseSelectScreen = (props) => {
   );
 };
 
+export const screenOptions = (navData) => {
+  return {
+    presentation: "transparentModal",
+    headerTitleAlign: "center",
+    headerTitle: "New Game Setup",
+    headerLeft: () => null,
+    headerShown: false,
+  };
+};
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
