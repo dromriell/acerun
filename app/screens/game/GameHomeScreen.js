@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Button } from "react-native";
+import { View, StyleSheet, Button, ImageBackground } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { LinearGradient } from "expo-linear-gradient";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as gameActions from "../../store/actions/gameActions";
 
-import { HeaderText } from "../../components/ui/AppText";
+import { TouchComp } from "../../components/ui/TouchComp";
+import { HeaderText, SubHeaderText } from "../../components/ui/AppText";
+import AppColors from "../../utils/AppColors";
 
 const GameHomeScreen = (props) => {
   const { navigation } = props;
@@ -35,21 +39,54 @@ const GameHomeScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <HeaderText>Game Home Screen</HeaderText>
-      <Button
-        title="Start New Game"
-        onPress={() => props.navigation.navigate("GameSetup")}
-      />
-      {isGameInProgress ? (
-        <Button
-          title="Return to Game"
-          onPress={() =>
-            props.navigation.navigate("AppGame", { screen: "GamePlayScreen" })
-          }
+      <ImageBackground
+        source={require("../../assets/images/disc-golf-002.jpg")}
+        style={styles.backgroundImage}
+      >
+        <LinearGradient
+          // Background Linear Gradient
+          colors={[AppColors.black, AppColors.black, AppColors.primary]}
+          style={styles.background}
+          start={{ x: 0.1, y: 0.1 }}
         />
-      ) : null}
+      </ImageBackground>
+      <View style={styles.buttonContainer}>
+        <View style={styles.newGameButtonContainer}>
+          <TouchComp onPress={() => props.navigation.navigate("GameSetup")}>
+            <View style={styles.newGameButton}>
+              <SubHeaderText centered color={AppColors.white}>
+                New Game
+              </SubHeaderText>
+            </View>
+          </TouchComp>
+        </View>
+        {isGameInProgress ? (
+          <View style={styles.newGameButtonContainer}>
+            <TouchComp
+              onPress={() =>
+                props.navigation.navigate("AppGame", {
+                  screen: "GamePlayScreen",
+                })
+              }
+            >
+              <View style={styles.newGameButton}>
+                <SubHeaderText centered color={AppColors.white}>
+                  Resume Game
+                </SubHeaderText>
+              </View>
+            </TouchComp>
+          </View>
+        ) : null}
+      </View>
     </View>
   );
+};
+
+export const screenOptions = () => {
+  return {
+    headerTitle: "",
+    headerShown: false,
+  };
 };
 
 const styles = StyleSheet.create({
@@ -57,6 +94,42 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  backgroundImage: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    flex: 1,
+  },
+  background: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: "100%",
+    opacity: 0.7,
+  },
+  buttonContainer: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  newGameButtonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "75%",
+    borderRadius: 15,
+    backgroundColor: AppColors.primary,
+    borderWidth: 3,
+    borderColor: AppColors.accent,
+    overflow: "hidden",
+    elevation: 5,
+  },
+  newGameButton: {
+    width: "100%",
+    padding: 15,
+    textAlign: "center",
   },
 });
 
