@@ -69,12 +69,12 @@ const GameSetupScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "space-around",
+    backgroundColor: AppColors.blackTrans,
   },
   containerRow: {
-    width: "100%",
+    width: "90%",
     height: "35%",
   },
   card: {
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
+    backgroundColor: AppColors.white,
   },
 
   buttonContainer: {
@@ -103,9 +104,11 @@ const styles = StyleSheet.create({
 
 export const screenOptions = (navData) => {
   return {
+    presentation: "transparentModal",
     headerTitleAlign: "center",
     headerTitle: "New Game Setup",
     headerLeft: () => null,
+    headerShown: false,
   };
 };
 

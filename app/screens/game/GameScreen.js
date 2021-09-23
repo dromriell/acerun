@@ -22,7 +22,7 @@ const GameScreen = (props) => {
 
   if (!courseData) {
     return (
-      <View style={styles.mapContainer}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={AppColors.accent} />
       </View>
     );
@@ -56,6 +56,7 @@ const GameScreen = (props) => {
       />
       <GameActionMenu
         holeData={holeData}
+        courseZip={courseData.zip_code}
         currentHoleIndex={currentHoleIndex}
         setIsHoleEndModalOpen={setIsHoleEndModalOpen}
       />
@@ -71,6 +72,12 @@ export const screenOptions = (navData) => {
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   mapContainer: {
     width: "100%",
     height: "100%",

@@ -18,18 +18,18 @@ const GameCourseItem = (props) => {
 
   if (!course) {
     return (
-      <View>
+      <View style={styles.empty}>
         <TouchComp
           style={styles.touchable}
           onPress={onEmptyCoursePress || onCoursePress}
           useForeground
         >
           <View style={styles.courseItem}>
-            <SubHeaderText style={styles.emptyHeader}>
-              Course Select
-            </SubHeaderText>
             <View style={styles.emptyCourse}>
-              <Text>Select a Course</Text>
+              <Ionicons name="add" size={32} color={AppColors.accent} />
+              <SubHeaderText color={AppColors.white}>
+                Select a Course
+              </SubHeaderText>
             </View>
           </View>
         </TouchComp>
@@ -137,8 +137,14 @@ const GameCourseItem = (props) => {
 
 const styles = StyleSheet.create({
   courseItem: {
-    height: 250,
-    marginBottom: 20,
+    flex: 1,
+    minHeight: 250,
+  },
+  empty: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: AppColors.accent,
+    borderRadius: 10,
   },
   touchable: {
     width: "100%",
@@ -153,10 +159,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-  },
-  emptyHeader: {
-    padding: 10,
-    color: AppColors.black,
   },
   imageContainer: {
     position: "absolute",

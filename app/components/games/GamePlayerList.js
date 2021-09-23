@@ -13,9 +13,16 @@ const dummyPlayerData = [
 const GamePlayerList = (props) => {
   return (
     <View style={styles.list}>
-      <SubHeaderText style={styles.header}>Player List</SubHeaderText>
+      <SubHeaderText
+        style={styles.header}
+        color={AppColors.white}
+        size={21}
+        centered
+      >
+        Player List
+      </SubHeaderText>
       <View style={styles.listHeader}>
-        <SubHeaderText>Player</SubHeaderText>
+        <SubHeaderText centered>Player Name - AmPro</SubHeaderText>
       </View>
     </View>
   );
@@ -23,15 +30,24 @@ const GamePlayerList = (props) => {
 
 const styles = StyleSheet.create({
   list: {
-    width: "100%",
-    padding: 10,
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: AppColors.white,
+    borderRadius: 15,
+    overflow: "hidden",
   },
   header: {
-    padding: 10,
+    width: "100%",
+    padding: 20,
     color: AppColors.black,
+    backgroundColor: AppColors.primary,
+    borderBottomWidth: 2,
+    borderBottomColor: AppColors.accent,
   },
   listHeader: {
     flexDirection: "row",
+    justifyContent: "center",
+    width: "90%",
     paddingVertical: 10,
     borderBottomColor: AppColors.darkGrey,
     borderBottomWidth: 1,
