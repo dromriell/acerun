@@ -91,7 +91,8 @@ const GameActionMenu = (props) => {
 
   const verifyPermissions = async () => {
     const result = await Location.requestForegroundPermissionsAsync();
-    console.log("LOCRESULT", result);
+    const highAccResult = await Location.enableNetworkProviderAsync();
+    console.log("LOCRESULT", highAccResult);
 
     if (result.status !== "granted") {
       Alert.alert(
@@ -112,7 +113,7 @@ const GameActionMenu = (props) => {
     }
     console.log("HAVE PERMS");
     const currentLocation = await Location.getCurrentPositionAsync({
-      accuracy: 1,
+      accuracy: 6,
     });
     try {
       setIsLoading(true);
