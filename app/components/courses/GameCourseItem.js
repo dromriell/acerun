@@ -9,7 +9,7 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 
-import { TouchComp } from "../../components/ui/TouchComp";
+import { TouchComp } from "../ui/TouchComp";
 import { HeaderText, SubHeaderText, BodyText } from "../ui/AppText";
 import AppColors from "../../utils/AppColors";
 
@@ -65,9 +65,11 @@ const GameCourseItem = (props) => {
               <BodyText capitalize>{course.city}, </BodyText>
               <BodyText>{course.state_province.toUpperCase()}</BodyText>
             </Text>
-            <BodyText style={styles.headerSub}>
-              {parseFloat(course.distance).toFixed("2")} mi away
-            </BodyText>
+            {course.distance !== "" && (
+              <BodyText style={styles.headerSub}>
+                {parseFloat(course.distance).toFixed("2")} mi away
+              </BodyText>
+            )}
           </View>
           <View style={styles.courseInfoBar}>
             <View style={styles.badge}>
