@@ -27,7 +27,11 @@ const inputReducer = (state, action) => {
 const Input = (props) => {
   const [errorMessage, setErrorMessage] = useState("Please Enter A Value");
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: props.initialValue ? props.initialValue : "",
+    value: props.initialValue
+      ? props.initialValue
+      : props.defaultValue
+      ? props.defaultValue
+      : "",
     isValid: props.isValid,
     touched: false,
   });
@@ -64,6 +68,10 @@ const Input = (props) => {
       isValid = false;
       setErrorMessage(`Must be at least ${props.minLength} characters long!`);
     }
+    if (props.number && isNaN(+text)) {
+      isValid = false;
+      setErrorMessage(`Must be a number`);
+    }
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
   };
 
@@ -72,15 +80,15 @@ const Input = (props) => {
   };
 
   return (
-    <View style={styles.formControl}>
+    <View style={{ ...styles.formControl, ...props.formControlStyle }}>
       <SubHeaderText style={{ ...styles.label, ...props.labelStyle }}>
         {props.label}
       </SubHeaderText>
-      <View style={styles.inputContainer}>
+      <View style={{ ...styles.inputContainer, ...props.inputContainerStyle }}>
         {props.icon}
         <TextInput
           {...props}
-          style={styles.input}
+          style={{ ...styles.input, ...props.inputStyle }}
           value={inputState.value}
           onChangeText={handleTextChange}
           onBlur={handleBlurFocus}
