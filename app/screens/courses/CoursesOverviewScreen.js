@@ -34,6 +34,7 @@ export const screenOptions = (navData) => {
         placeholder="Search Courses..."
         onPress={() => navData.navigation.navigate("CourseSearch")}
         button
+        searchButton={true}
       />
     ),
     headerTitleAlign: "center",
