@@ -6,12 +6,14 @@ import React, {
 } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { SubHeaderText } from "../../components/ui/AppText";
 
-//  import * as discActions from "../../store/actions/discsActions";
+import { MaterialIcons } from "@expo/vector-icons";
 
+import * as courseActions from "../../store/actions/courseActions";
+
+import CourseList from "../../components/courses/CourseList";
 import SearchBar from "../../components/ui/SearchBar";
-//  import DiscList from "../../components/discs/DiscList";
+import { TouchComp } from "../../components/ui/TouchComp";
 
 import AppColors from "../../utils/AppColors";
 
@@ -23,36 +25,52 @@ const CourseSearchScreen = (props) => {
   const [error, setError] = useState();
 
   const token = useSelector((state) => state.auth.token);
-  const searchResults = useSelector((state) => state.discs.searchResults);
-
-  console.log(route);
+  const searchResults = useSelector((state) => state.courses.filteredResults);
 
   const handleSearch = useCallback(
     async (term) => {
-      if (term.length < 3) {
-        //   dispatch(discActions.resetSearch());
-        return;
-      }
+      // if (term.length < 3) {
+      //   return;
+      // }
       setError(null);
       setIsLoading(true);
       try {
-        // await dispatch(discActions.searchDiscs(token, term));
+        await dispatch(courseActions.searchCourses(token, term));
       } catch (error) {
         setError(error.message);
       }
       setIsLoading(false);
     },
-    [dispatch, setError]
+    [dispatch, setError, token]
   );
+
+  const handleCourseSelect = (course) => {
+    navigation.navigate("CourseDetail", { courseID: course.course_id });
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
         <SearchBar
           placeholder="Search Courses..."
-          onPress={() => navData.navigation.navigate("CourseSearch")}
-          onSearch={(text) => handleSearch(text)}
+          onPress={() => props.navigation.navigate("CourseSearch")}
+          onSearch={() => {}}
+          searchButton={true}
+          onManualSearch={(text) => handleSearch(text)}
         />
+      ),
+      headerRight: () => (
+        <View style={styles.headerRightContainer}>
+          <TouchComp onPress={() => props.navigation.navigate("CourseFilters")}>
+            <View style={styles.filterButton}>
+              <MaterialIcons
+                name="filter-list"
+                size={32}
+                color={AppColors.accent}
+              />
+            </View>
+          </TouchComp>
+        </View>
       ),
     });
   }, [navigation]);
@@ -66,6 +84,7 @@ const CourseSearchScreen = (props) => {
   }, [navigation]);
 
   if (error) {
+    console.log(error);
     return (
       <View style={styles.centered}>
         <Text>An Error Occured</Text>
@@ -90,13 +109,12 @@ const CourseSearchScreen = (props) => {
   }
 
   return (
-    //   <DiscList
-    //     data={searchResults}
-    //     navigation={navigation}
-    //     onDiscSelect={route.params?.onDiscSelect}
-    //   />
-    <View>
-      <SubHeaderText>RESULTS</SubHeaderText>
+    <View style={styles.centered}>
+      <CourseList
+        data={searchResults}
+        navigation={props.navigation}
+        onCoursePress={handleCourseSelect}
+      />
     </View>
   );
 };
@@ -117,6 +135,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: AppColors.white,
+  },
+  headerRightContainer: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 5,
+    overflow: "hidden",
+    borderRadius: 5,
+  },
+  filterButton: {
+    width: "100%",
   },
 });
 
