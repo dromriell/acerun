@@ -8,16 +8,19 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+
 import * as Location from "expo-location";
+import * as gameActions from "../../store/actions/gameActions";
 
 import { nearbyCoursesEP } from "../../utils/apiEndPoints";
 
 import { HeaderText, SubHeaderText } from "../../components/ui/AppText";
 import AppColors from "../../utils/AppColors";
 
-import GameCourseList from "../../components/games/GameCourseList";
+import CourseList from "../../components/courses/CourseList";
 
 const GameCourseSelectScreen = (props) => {
+  const dispatch = useDispatch();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState();
@@ -37,6 +40,16 @@ const GameCourseSelectScreen = (props) => {
     }
 
     return true;
+  };
+
+  const handleCourseSelect = async (course) => {
+    try {
+      await dispatch(gameActions.setGameCourse(course));
+      props.navigation.goBack();
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    }
   };
 
   const handleGetLocation = async () => {
@@ -121,7 +134,11 @@ const GameCourseSelectScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <GameCourseList data={courses} navigation={props.navigation} />
+      <CourseList
+        data={courses}
+        navigation={props.navigation}
+        onCoursePress={handleCourseSelect}
+      />
     </View>
   );
 };
