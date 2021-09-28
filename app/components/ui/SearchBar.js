@@ -8,14 +8,42 @@ import {
   Text,
   TextInput,
 } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+
+import { TouchComp } from "./TouchComp";
 import { useFocusEffect } from "@react-navigation/native";
 import AppColors from "../../utils/AppColors";
 
+const SearchButton = (props) => {
+  const { onPress } = props;
+  return (
+    <View
+      style={{
+        position: "absolute",
+        right: 10,
+        overflow: "hidden",
+        borderRadius: 50,
+      }}
+    >
+      <TouchComp onPress={onPress}>
+        <View
+          style={{
+            padding: 2,
+          }}
+        >
+          <FontAwesome name="search" size={24} color={AppColors.accent} />
+        </View>
+      </TouchComp>
+    </View>
+  );
+};
+
 const SearchBar = (props) => {
-  const { onSearch } = props;
+  const { onSearch, searchButton, onManualSearch } = props;
   const [isRefSet, setIsRefSet] = useState(false);
   const [isInitialFocus, setIsInitialFocus] = useState(true);
   const searchRef = useRef();
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (searchRef.current && !isRefSet) {
@@ -30,25 +58,41 @@ const SearchBar = (props) => {
     }
   }, [isRefSet, setIsInitialFocus]);
 
-  const TouchComp =
-    Platform.OS === "android" && Platform.Version >= 22
-      ? TouchableNativeFeedback
-      : TouchableOpacity;
+  const handleSearchSubmit = () => {
+    if (onManualSearch && isRefSet) {
+      console.log(searchTerm);
+      onManualSearch(searchTerm);
+    }
+  };
+
+  if (props.button) {
+    return (
+      <View style={{ ...styles.searchBar, ...props.style }}>
+        <TouchComp onPress={props.onPress}>
+          <Text style={styles.placeholder}>{props.placeholder}</Text>
+        </TouchComp>
+        {searchButton && <SearchButton />}
+      </View>
+    );
+  }
 
   return (
     <View style={{ ...styles.searchBar, ...props.style }}>
       <TouchComp onPress={props.onPress}>
-        {props.button ? (
-          <Text style={styles.placeholder}>{props.placeholder}</Text>
-        ) : (
-          <TextInput
-            // autoFocus={props.autoFocus}
-            style={styles.searchField}
-            ref={searchRef}
-            onChangeText={(text) => onSearch(text)}
-          />
-        )}
+        <TextInput
+          // autoFocus={props.autoFocus}
+          style={styles.searchField}
+          ref={searchRef}
+          onChangeText={
+            searchButton
+              ? (text) => setSearchTerm(text)
+              : (text) => onSearch(text)
+          }
+        />
       </TouchComp>
+      {searchButton && (
+        <SearchButton termRef={searchRef} onPress={handleSearchSubmit} />
+      )}
     </View>
   );
 };
