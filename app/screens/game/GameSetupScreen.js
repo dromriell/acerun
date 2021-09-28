@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-import GameCourseItem from "../../components/games/GameCourseItem";
+import GameCourseItem from "../../components/courses/GameCourseItem";
 import GamePlayerList from "../../components/games/GamePlayerList";
 
 import * as gameActions from "../../store/actions/gameActions";

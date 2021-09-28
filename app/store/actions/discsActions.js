@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { userDiscs } from "../../dummyData/userDiscs";
 
 export const SET_USER_DISCS = "SET_USER_DISCS";
