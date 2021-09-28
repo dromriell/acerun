@@ -17,12 +17,14 @@ import discsReducer from "./app/store/reducers/discsReducer";
 import authReducer from "./app/store/reducers/authReducer";
 import eventReducer from "./app/store/reducers/eventReducer";
 import gameReducer from "./app/store/reducers/gameReducer";
+import courseReducer from "./app/store/reducers/courseReducer";
 
 const rootReducer = combineReducers({
   discs: discsReducer,
   auth: authReducer,
   events: eventReducer,
   game: gameReducer,
+  courses: courseReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
