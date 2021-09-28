@@ -53,12 +53,23 @@ import CoursesOverviewScreen, {
 import CourseSearchScreen, {
   screenOptions as courseSearchScreenOptions,
 } from "../screens/courses/CourseSearchScreen";
+import CourseDetailScreen from "../screens/courses/CourseDetailScreen";
+import CourseFilterScreen, {
+  screenOptions as courseFilterScreenOptions,
+} from "../screens/courses/CourseFilterScreen";
 
-import ProfileScreen from "../screens/profile/ProfileScreen";
+// PROFILE SCREENS
+import ProfileScreen, {
+  screenOptions as profileOverviewScreenOptions,
+} from "../screens/profile/ProfileScreen";
+import EditProfileScreen, {
+  screenOptions as profileEditScreenOptions,
+} from "../screens/profile/EditProfileScreen";
 
 import AppColors from "../utils/AppColors";
 
 const Tab = createBottomTabNavigator();
+const ProfileStack = createStackNavigator();
 const CourseStack = createStackNavigator();
 const DiscStack = createStackNavigator();
 const GameHomeStack = createStackNavigator();
@@ -104,6 +115,23 @@ export const AuthStackNavigator = () => {
   );
 };
 
+const ProfileStackNavigator = () => {
+  return (
+    <ProfileStack.Navigator screenOptions={defaultStackNavOptions}>
+      <ProfileStack.Screen
+        name="ProfileOverview"
+        component={ProfileScreen}
+        options={profileOverviewScreenOptions}
+      />
+      <ProfileStack.Screen
+        name="ProfileEdit"
+        component={EditProfileScreen}
+        options={profileEditScreenOptions}
+      />
+    </ProfileStack.Navigator>
+  );
+};
+
 const CourseStackNavigator = () => {
   return (
     <CourseStack.Navigator screenOptions={defaultStackNavOptions}>
@@ -116,6 +144,12 @@ const CourseStackNavigator = () => {
         name="CourseSearch"
         component={CourseSearchScreen}
         options={courseSearchScreenOptions}
+      />
+      <CourseStack.Screen name="CourseDetail" component={CourseDetailScreen} />
+      <CourseStack.Screen
+        name="CourseFilters"
+        component={CourseFilterScreen}
+        options={courseFilterScreenOptions}
       />
     </CourseStack.Navigator>
   );
@@ -253,7 +287,7 @@ const AppTabNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
       <Tab.Screen name="Courses" component={CourseStackNavigator} />
       <Tab.Screen name="Games" component={GameHomeStackNavigator} />
       <Tab.Screen name="Discs" component={DiscStackNavigator} />
