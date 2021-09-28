@@ -9,6 +9,8 @@ import {
   StatusBar,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { MaterialIcons } from "@expo/vector-icons";
+
 import {
   BodyText,
   HeaderText,
@@ -16,6 +18,7 @@ import {
 } from "../../components/ui/AppText";
 import * as authActions from "../../store/actions/authActions";
 import AppColors from "../../utils/AppColors";
+import { TouchComp } from "../../components/ui/TouchComp";
 
 const ProfileScreen = (props) => {
   const dispatch = useDispatch();
@@ -35,21 +38,52 @@ const ProfileScreen = (props) => {
           {profile.city && profile.city} {profile.state}
         </SubHeaderText>
         <View style={styles.countRow}>
-          <BodyText width={"50%"} centered>
-            Friends: {profile.friends.length}
-          </BodyText>
-          <BodyText width={"50%"} centered>
-            Discs: {profile.disc_bag.length}
-          </BodyText>
-        </View>
-        <View style={styles.bioContainer}>
-          <SubHeaderText>Bio:</SubHeaderText>
-          <BodyText>{profile.bio}</BodyText>
+          <View style={{ ...styles.countCard, ...styles.borderRight }}>
+            <SubHeaderText size={24}>{profile.friends.length}</SubHeaderText>
+            <BodyText centered>Friends</BodyText>
+          </View>
+          <View style={{ ...styles.countCard, ...styles.borderRight }}>
+            <SubHeaderText size={24}>{profile.disc_bag.length}</SubHeaderText>
+            <BodyText centered>Discs</BodyText>
+          </View>
+          <View style={styles.countCard}>
+            <SubHeaderText size={24}>{profile.disc_bag.length}</SubHeaderText>
+            <BodyText centered>Games</BodyText>
+          </View>
         </View>
       </View>
-      <Button title="Logout" onPress={() => dispatch(authActions.logout())} />
+      <View style={styles.buttonGroup}>
+        <TouchComp onPress={() => props.navigation.navigate("ProfileEdit")}>
+          <View style={styles.button}>
+            <MaterialIcons name="edit" size={24} color={AppColors.primary} />
+            <BodyText> Edit Profile</BodyText>
+          </View>
+        </TouchComp>
+        <TouchComp onPress={() => console.log("CHANGE SETTINGS")}>
+          <View style={styles.button}>
+            <MaterialIcons
+              name="settings"
+              size={24}
+              color={AppColors.primary}
+            />
+            <BodyText> Settings</BodyText>
+          </View>
+        </TouchComp>
+        <TouchComp onPress={() => dispatch(authActions.logout())}>
+          <View style={styles.button}>
+            <MaterialIcons name="logout" size={24} color={AppColors.primary} />
+            <BodyText> Logout</BodyText>
+          </View>
+        </TouchComp>
+      </View>
     </View>
   );
+};
+
+export const screenOptions = () => {
+  return {
+    headerTitle: "",
+  };
 };
 
 const styles = StyleSheet.create({
@@ -80,12 +114,29 @@ const styles = StyleSheet.create({
   countRow: {
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-around",
+    paddingVertical: 15,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  bioContainer: {
-    width: "90%",
+  countCard: {
+    flex: 1,
+    alignItems: "center",
+    textAlign: "center",
+  },
+  borderRight: {
+    borderRightWidth: 2,
+    borderRightColor: AppColors.grey,
+  },
+  buttonGroup: {
+    width: "100%",
     padding: 10,
-    elevation: 2,
+  },
+  button: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    padding: 10,
+    marginBottom: 5,
   },
 });
 
