@@ -19,7 +19,7 @@ import AppColors from "../../utils/AppColors";
 const GameSetupScreen = (props) => {
   const dispatch = useDispatch();
   const selectedCourse = useSelector((state) => state.game.course);
-  const userID = useSelector((state) => state.auth.profile.user);
+  const userProfile = useSelector((state) => state.auth.profile.user);
 
   const handleStartGame = () => {
     if (!selectedCourse) {
@@ -28,7 +28,7 @@ const GameSetupScreen = (props) => {
       ]);
       return;
     }
-    props.navigation.navigate("GameLaunch", { players: [userID] }); //Currently one user, can add others for game on API
+    props.navigation.navigate("GameLaunch", { players: [userProfile.id] }); //Currently one user, can add others for game on API
   };
 
   return (
