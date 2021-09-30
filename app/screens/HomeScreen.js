@@ -5,13 +5,23 @@ import Constants from "expo-constants";
 
 import EventWidget from "../components/events/EventWidget";
 import GameHistoryWidget from "../components/games/GameHistoryWidget";
+import { HeaderText } from "../components/ui/AppText";
+import AppColors from "../utils/AppColors";
 
 const HomeScreen = (props) => {
   const token = useSelector((state) => state.auth.token);
+  const profile = useSelector((state) => state.auth.profile);
+  const { first_name, username } = profile.user;
+  console.log(!first_name ? username : first_name);
 
   return (
     <View style={styles.screen}>
       <ScrollView>
+        <View style={styles.header}>
+          <HeaderText color={AppColors.black} size={24}>
+            Hello, {!first_name ? username : first_name}
+          </HeaderText>
+        </View>
         <View style={styles.container}>
           <EventWidget token={token} />
         </View>
@@ -30,6 +40,12 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingTop: Constants.statusBarHeight,
+  },
+  header: {
+    width: "100%",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    padding: 10,
   },
   container: {
     width: "100%",
