@@ -28,8 +28,13 @@ import { TouchComp } from "../../ui/TouchComp";
 
 const GameActionMenu = (props) => {
   const dispatch = useDispatch();
-  const { holeData, currentHoleIndex, setIsHoleEndModalOpen, courseZip } =
-    props;
+  const {
+    holeData,
+    currentHoleIndex,
+    setIsHoleEndModalOpen,
+    courseZip,
+    navigation,
+  } = props;
   const scorecard = useSelector((state) => state.game.scorecard);
   const currentStrokes = useSelector((state) => state.game.currentStrokes);
   const weather = useSelector((state) => state.game.weather);
@@ -56,8 +61,93 @@ const GameActionMenu = (props) => {
     return getHaversineDistance(prevPosition, location);
   };
 
+  const verifyPermissions = async () => {
+    const result = await Location.requestForegroundPermissionsAsync();
+    const bgResult = await Location.requestBackgroundPermissionsAsync();
+    // const highAccResult = await Location.enableNetworkProviderAsync();
+
+    if (result.status !== "granted") {
+      Alert.alert(
+        "Insufficient Permissions",
+        "You need to grant location permissions to use this app",
+        [{ text: "Okay" }]
+      );
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleGetLocation = async () => {
+    const hasPermission = await verifyPermissions();
+    if (!hasPermission) {
+      return;
+    }
+    // const currentLocation = await testGetLocation();
+    try {
+      setIsLoading(true);
+      await navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (err) => {
+          console.log("ERROR(" + err.code + "): " + err.message);
+          return null;
+        },
+        { maximumAge: 0, timeout: 5000, enableHighAccuracy: true }
+      );
+    } catch (error) {
+      console.log(error);
+      Alert.alert(
+        "Could Not Fetch Location",
+        "Please try again later or pick a location on the map",
+        [{ text: "Okay" }]
+      );
+    }
+    setIsLoading(false);
+  };
+
+  const handleStrokeRecord = async (type) => {
+    if (type === "STROKE") {
+      await handleGetLocation();
+    } else if (type === "PENALTY") {
+      setIsPenalty(true);
+      await handleGetLocation();
+    } else if (type === "HOLE") {
+      setIsHole(true);
+      setLocation(holeData.basket);
+      setIsHoleEndModalOpen(true);
+    }
+    setIsStrokeMenuOpen(false);
+  };
+
+  // const testGetLocation = async () => {
+  //   await Location.enableNetworkProviderAsync()
+  //     .then()
+  //     .catch((_) => null);
+  //   const status = await Location.hasServicesEnabledAsync();
+  //   if (status) {
+  //     const getCurrentPosition = async () =>
+  //       await Location.getCurrentPositionAsync({
+  //         accuracy: Location.Accuracy.BestForNavigation,
+  //       })
+  //         .then((loc) => loc)
+  //         .catch((_) => null);
+  //     let location = await getCurrentPosition();
+  //     while (location === null) {
+  //       console.log(location);
+  //       location = await getCurrentPosition();
+  //     }
+  //     return location;
+  //   } else {
+  //     throw new Error("Please activate the location");
+  //   }
+  // };
+
   useEffect(() => {
-    console.log(weather);
     if (!weather) {
       dispatch(gameActions.fetchWeather(courseZip));
     } else {
@@ -88,64 +178,6 @@ const GameActionMenu = (props) => {
     setIsPenalty(false);
     setLocation();
   }, [location]);
-
-  const verifyPermissions = async () => {
-    const result = await Location.requestForegroundPermissionsAsync();
-    const highAccResult = await Location.enableNetworkProviderAsync();
-    console.log("LOCRESULT", highAccResult);
-
-    if (result.status !== "granted") {
-      Alert.alert(
-        "Insufficient Permissions",
-        "You need to grant location permissions to use this app",
-        [{ text: "Okay" }]
-      );
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleGetLocation = async () => {
-    const hasPermission = await verifyPermissions();
-    if (!hasPermission) {
-      return;
-    }
-    console.log("HAVE PERMS");
-    const currentLocation = await Location.getCurrentPositionAsync({
-      accuracy: 6,
-    });
-    try {
-      setIsLoading(true);
-      setLocation({
-        lat: currentLocation.coords.latitude,
-        lng: currentLocation.coords.longitude,
-      });
-      console.log(currentLocation);
-    } catch (error) {
-      console.log(error);
-      Alert.alert(
-        "Could Not Fetch Location",
-        "Please try again later or pick a location on the map",
-        [{ text: "Okay" }]
-      );
-    }
-    setIsLoading(false);
-  };
-
-  const handleStrokeRecord = async (type) => {
-    if (type === "STROKE") {
-      await handleGetLocation();
-    } else if (type === "PENALTY") {
-      setIsPenalty(true);
-      await handleGetLocation();
-    } else if (type === "HOLE") {
-      setIsHole(true);
-      setLocation(holeData.basket);
-      setIsHoleEndModalOpen(true);
-    }
-    setIsStrokeMenuOpen(false);
-  };
 
   return (
     <View
