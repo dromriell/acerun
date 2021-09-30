@@ -32,6 +32,7 @@ export const clearGameCourse = () => {
 };
 
 export const createGame = (token, courseID, players, currentUser) => {
+  removeGameStateFromStorage();
   return async (dispatch) => {
     const response = await fetch(createGameEP, {
       method: "POST",
