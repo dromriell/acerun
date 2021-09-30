@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useLayoutEffect, Button } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useSelector } from "react-redux";
-import { HeaderText } from "../../components/ui/AppText";
+import * as Location from "expo-location";
 
+import { HeaderText } from "../../components/ui/AppText";
 import { Ionicons } from "@expo/vector-icons";
 
 import GameMap from "../../components/games/GameMap";
@@ -14,11 +15,62 @@ import GameScorecardModal from "../../components/games/GameScorecardModal";
 import AppColors from "../../utils/AppColors";
 
 const GameScreen = (props) => {
+  const { navigation } = props;
   const [isHoleEndModalOpen, setIsHoleEndModalOpen] = useState(false);
   const [isGameEnd, setIsGameEnd] = useState(false);
+  const [geoLocationWatch, setGeoLocationWatch] = useState(null);
+
   const courseData = useSelector((state) => state.game.courseData);
   const currentHoleIndex = useSelector((state) => state.game.currentHoleIndex);
   const userScorecard = useSelector((state) => state.game.scorecard);
+
+  useEffect(() => {
+    // Location.installWebGeolocationPolyfill();
+    const asyncSetWatch = async () => {
+      const geoLocWatch = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.Highest,
+          distanceInterval: 15,
+        },
+        (position) => {
+          console.log(position);
+          console.log("WATCH ON");
+        }
+      );
+      // setGeoLocationWatch(
+      //   navigator.geolocation.watchPosition(
+      //     (position) => {
+      //       console.log(position);
+      //       console.log("WATCH ON");
+      //     },
+      //     () => {
+      //       console.log("WATCH ERROR");
+      //       return null;
+      //     },
+      //     {
+      //       enableHighAccuracy: true,
+      //       timeout: 5000,
+      //       maximumAge: 0,
+      //     }
+      //   )
+      // );
+
+      setGeoLocationWatch(geoLocWatch);
+    };
+    if (!geoLocationWatch) {
+      asyncSetWatch();
+      // setGeoLocationWatch(asyncSetWatch);
+    }
+  }, []);
+
+  useEffect(() => {
+    const clearWatch = navigation.addListener("beforeRemove", async () => {
+      await geoLocationWatch.remove();
+      setGeoLocationWatch(null);
+      // navigator.geolocation.clearWatch(geoLocationWatch);
+    });
+    return clearSearch;
+  }, [navigation, geoLocationWatch]);
 
   if (!courseData) {
     return (
@@ -44,13 +96,13 @@ const GameScreen = (props) => {
           <GameScorecardModal
             isGameEnd={true}
             setIsGameEnd={setIsGameEnd}
-            navigation={props.navigation}
+            navigation={navigation}
             userScorecard={userScorecard}
           />
         </View>
       )}
       <GameHeader
-        navigation={props.navigation}
+        navigation={navigation}
         courseName={courseData.name}
         holeData={holeData}
       />
@@ -59,6 +111,7 @@ const GameScreen = (props) => {
         courseZip={courseData.zip_code}
         currentHoleIndex={currentHoleIndex}
         setIsHoleEndModalOpen={setIsHoleEndModalOpen}
+        navigation={navigation}
       />
       <GameMap holeData={holeData} />
     </View>
