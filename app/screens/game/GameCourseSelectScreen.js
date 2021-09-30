@@ -19,6 +19,8 @@ import AppColors from "../../utils/AppColors";
 
 import CourseList from "../../components/courses/CourseList";
 
+// import { dummyCourse } from "../../../env";
+
 const GameCourseSelectScreen = (props) => {
   const dispatch = useDispatch();
   const [error, setError] = useState();
@@ -89,6 +91,7 @@ const GameCourseSelectScreen = (props) => {
       });
       const courseDataResponse = await response.json();
       setCourses(courseDataResponse.courses);
+      // setCourses(dummyCourse);
     } catch (error) {
       setError(error.message);
     }
@@ -145,11 +148,8 @@ const GameCourseSelectScreen = (props) => {
 
 export const screenOptions = (navData) => {
   return {
-    presentation: "transparentModal",
     headerTitleAlign: "center",
-    headerTitle: "New Game Setup",
-    headerLeft: () => null,
-    headerShown: false,
+    headerTitle: "Select a Course",
   };
 };
 
