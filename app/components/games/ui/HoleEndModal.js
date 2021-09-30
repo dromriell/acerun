@@ -14,7 +14,7 @@ const HoleEndModal = (props) => {
   const { par, id: holeID } = holeData;
 
   const token = useSelector((state) => state.auth.token);
-  const userID = useSelector((state) => state.auth.profile.user);
+  const userID = useSelector((state) => state.auth.profile.user.id);
   const currentStrokes = useSelector((state) => state.game.currentStrokes);
   const courseData = useSelector((state) => state.game.courseData); // MAY NEED TO USE FOR GAME END
   const currentHoleIndex = useSelector((state) => state.game.currentHoleIndex);

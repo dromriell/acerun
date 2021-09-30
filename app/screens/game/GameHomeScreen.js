@@ -16,7 +16,7 @@ const GameHomeScreen = (props) => {
   const dispatch = useDispatch();
   const [isGameInProgress, setIsGameInProgress] = useState(false);
   const token = useSelector((state) => state.auth.token);
-  const userID = useSelector((state) => state.auth.profile.user);
+  const userID = useSelector((state) => state.auth.profile.user.id);
 
   useEffect(() => {
     const checkExisitingGame = navigation.addListener("focus", async () => {

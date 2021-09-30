@@ -11,7 +11,7 @@ const GameLaunchScreen = (props) => {
   const [error, setError] = useState();
   const [hasAttemptedCreateGame, setHasAttemptedCreateGame] = useState(false);
   const token = useSelector((state) => state.auth.token);
-  const userID = useSelector((state) => state.auth.profile.user);
+  const userID = useSelector((state) => state.auth.profile.user.id);
   const courseID = useSelector((state) => state.game.course.id);
   const { players } = props.route.params;
 
@@ -56,7 +56,7 @@ const GameLaunchScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <ActivityIndicator size="large" color={AppColors.primary} />
+      <ActivityIndicator size="large" color={AppColors.accent} />
     </View>
   );
 };
@@ -65,6 +65,7 @@ export const screenOptions = () => {
   return {
     headerLeft: () => null,
     unmountOnBlur: true,
+    headerShown: false,
   };
 };
 
@@ -74,6 +75,7 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: AppColors.primary,
   },
 });
 
