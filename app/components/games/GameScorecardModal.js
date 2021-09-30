@@ -11,7 +11,8 @@ import { BodyText, SubHeaderText } from "../ui/AppText";
 
 const GameScorecardModal = (props) => {
   const dispatch = useDispatch();
-  const { isModalOpen, setIsModalOpen, isGameEnd, setIsGameEnd } = props;
+  const { navigation, isModalOpen, setIsModalOpen, isGameEnd, setIsGameEnd } =
+    props;
 
   const token = useSelector((state) => state.auth.token);
   const game = useSelector((state) => state.game.game);
@@ -37,7 +38,7 @@ const GameScorecardModal = (props) => {
 
   const handleGameEnd = async () => {
     dispatch(gameActions.setGameEnd(token, game.id));
-    props.navigation.navigate("Home");
+    navigation.navigate("AppHome", { screen: "Home" });
     setIsGameEnd(false);
   };
 
