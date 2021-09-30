@@ -37,8 +37,12 @@ import GameHomeScreen, {
 import GameSetupScreen, {
   screenOptions as gameSetupScreenOptions,
 } from "../screens/game/GameSetupScreen";
-import GameCourseSelectScreen from "../screens/game/GameCourseSelectScreen";
-import GameLaunchScreen from "../screens/game/GameLaunchScreen";
+import GameCourseSelectScreen, {
+  screenOptions as gameCourseSelectScreenOptions,
+} from "../screens/game/GameCourseSelectScreen";
+import GameLaunchScreen, {
+  screenOptions as GameLaunchScreenOptions,
+} from "../screens/game/GameLaunchScreen";
 
 // GAME SCREENS
 import GameScreen, {
@@ -203,8 +207,13 @@ const GameHomeStackNavigator = () => {
       <GameHomeStack.Screen
         name="GameCourseSelect"
         component={GameCourseSelectScreen}
+        options={gameCourseSelectScreenOptions}
       />
-      <GameHomeStack.Screen name="GameLaunch" component={GameLaunchScreen} />
+      <GameHomeStack.Screen
+        name="GameLaunch"
+        component={GameLaunchScreen}
+        options={GameLaunchScreenOptions}
+      />
     </GameHomeStack.Navigator>
   );
 };
