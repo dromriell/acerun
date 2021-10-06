@@ -90,6 +90,7 @@ const GameCourseSelectScreen = (props) => {
         },
       });
       const courseDataResponse = await response.json();
+      console.log(courseDataResponse);
       setCourses(courseDataResponse.courses);
       // setCourses(dummyCourse);
     } catch (error) {
