@@ -5,8 +5,7 @@ import {
   DrawerItemList,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { useDispatch } from "react-redux";
-import * as gameActions from "../../store/actions/gameActions";
+import { useSelector } from "react-redux";
 
 import GameScorecardModal from "../../components/games/GameScorecardModal";
 import GameQuitConfirmModal from "../../components/games/ui/GameQuitConfirmModal";
@@ -14,6 +13,9 @@ import GameQuitConfirmModal from "../../components/games/ui/GameQuitConfirmModal
 import AppColors from "../../utils/AppColors";
 
 const GameDrawerScreen = (props) => {
+  const { navigation } = props;
+  const token = useSelector((state) => state.auth.token);
+
   const [isScoreModalOpen, setIsScoreModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
@@ -21,6 +23,7 @@ const GameDrawerScreen = (props) => {
     <DrawerContentScrollView {...props}>
       <View style={styles.centeredView}>
         <GameScorecardModal
+          token={token}
           isModalOpen={isScoreModalOpen}
           setIsModalOpen={setIsScoreModalOpen}
         />
@@ -29,7 +32,7 @@ const GameDrawerScreen = (props) => {
         <GameQuitConfirmModal
           isModalOpen={isConfirmModalOpen}
           setIsModalOpen={setIsConfirmModalOpen}
-          navigation={props.navigation}
+          navigation={navigation}
         />
       </View>
       <DrawerItemList {...props} />
