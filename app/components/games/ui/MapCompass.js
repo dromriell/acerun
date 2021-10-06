@@ -7,7 +7,8 @@ import { BodyText } from "../../ui/AppText";
 import AppColors from "../../../utils/AppColors";
 
 const MapCompass = (props) => {
-  const degree = props.degree - 45;
+  const { degree } = props;
+  const zDegree = degree - 45;
   return (
     <View style={styles.compass}>
       <View style={{ ...styles.direction, ...styles.north }}>
@@ -33,7 +34,7 @@ const MapCompass = (props) => {
       <View
         style={{
           ...styles.icon,
-          transform: [{ rotateZ: `${degree}deg` }],
+          transform: [{ rotateZ: `${zDegree}deg` }],
         }}
       >
         <FontAwesome name="location-arrow" size={15} color={AppColors.accent} />
