@@ -1,55 +1,42 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Switch,
-  Animated,
-  Easing,
-  Alert,
-  ActivityIndicator,
-  Button,
-} from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { View, StyleSheet, Switch, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { Ionicons } from "@expo/vector-icons";
 import * as Location from "expo-location";
 import * as gameActions from "../../../store/actions/gameActions";
 
 import DiscItem, { EmptyDiscItem } from "../../discs/DiscItem";
-import HoleEndModal from "./HoleEndModal";
 import StrokeMenu from "./StrokeMenu";
-import MapCompass from "./MapCompass";
+import StrokeMenuToggleButton from "./StrokeMenuToggleButton";
+import InfoBar from "./InfoBar";
+import Toggle from "../../ui/Toggle";
 
 import getHaversineDistance from "../../../utils/getHaversineDist";
 
 import AppColors from "../../../utils/AppColors";
 
-import { HeaderText, SubHeaderText, BodyText } from "../../ui/AppText";
-import { TouchComp } from "../../ui/TouchComp";
-
 const GameActionMenu = (props) => {
   const dispatch = useDispatch();
   const {
     holeData,
-    currentHoleIndex,
     setIsHoleEndModalOpen,
+    currentStrokes,
     courseZip,
+    weather,
     navigation,
   } = props;
-  const scorecard = useSelector((state) => state.game.scorecard);
-  const currentStrokes = useSelector((state) => state.game.currentStrokes);
-  const weather = useSelector((state) => state.game.weather);
+
+  const equippedDisc = useSelector((state) => state.game.equippedDisc);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [isStrokeMenuOpen, setIsStrokeMenuOpen] = useState(false);
 
   const [location, setLocation] = useState();
-  const [equippedDisc, setEquippedDisc] = useState();
   const [isHole, setIsHole] = useState(false);
   const [isBackHandThrow, setIsBackHandThrow] = useState(true);
   const [isPenalty, setIsPenalty] = useState(false);
 
-  const getDistance = () => {
+  const getDistance = useCallback(() => {
     if (!location) {
       return 0;
     }
@@ -59,12 +46,11 @@ const GameActionMenu = (props) => {
     const prevStroke = currentStrokes[currentStrokes.length - 1];
     const prevPosition = { lat: prevStroke.lat, lng: prevStroke.lng };
     return getHaversineDistance(prevPosition, location);
-  };
+  }, [location, currentStrokes, holeData, getHaversineDistance]);
 
   const verifyPermissions = async () => {
     const result = await Location.requestForegroundPermissionsAsync();
     const bgResult = await Location.requestBackgroundPermissionsAsync();
-    // const highAccResult = await Location.enableNetworkProviderAsync();
 
     if (result.status !== "granted") {
       Alert.alert(
@@ -83,7 +69,6 @@ const GameActionMenu = (props) => {
     if (!hasPermission) {
       return;
     }
-    // const currentLocation = await testGetLocation();
     try {
       setIsLoading(true);
       await navigator.geolocation.getCurrentPosition(
@@ -100,7 +85,6 @@ const GameActionMenu = (props) => {
         { maximumAge: 0, timeout: 5000, enableHighAccuracy: true }
       );
     } catch (error) {
-      console.log(error);
       Alert.alert(
         "Could Not Fetch Location",
         "Please try again later or pick a location on the map",
@@ -124,34 +108,9 @@ const GameActionMenu = (props) => {
     setIsStrokeMenuOpen(false);
   };
 
-  // const testGetLocation = async () => {
-  //   await Location.enableNetworkProviderAsync()
-  //     .then()
-  //     .catch((_) => null);
-  //   const status = await Location.hasServicesEnabledAsync();
-  //   if (status) {
-  //     const getCurrentPosition = async () =>
-  //       await Location.getCurrentPositionAsync({
-  //         accuracy: Location.Accuracy.BestForNavigation,
-  //       })
-  //         .then((loc) => loc)
-  //         .catch((_) => null);
-  //     let location = await getCurrentPosition();
-  //     while (location === null) {
-  //       console.log(location);
-  //       location = await getCurrentPosition();
-  //     }
-  //     return location;
-  //   } else {
-  //     throw new Error("Please activate the location");
-  //   }
-  // };
-
   useEffect(() => {
     if (!weather) {
       dispatch(gameActions.fetchWeather(courseZip));
-    } else {
-      console.log("WEATHER", weather);
     }
   }, []);
 
@@ -169,7 +128,7 @@ const GameActionMenu = (props) => {
       lng: location.lng,
       dist: distance,
       isHole: isHole,
-      disc: 1, // PLACEHOLDER VALUE, CHANGE TO EQUIPPED USERDISC ID
+      disc: equippedDisc.id, // Use the userDisc id, not disc id
       throw: equippedThrow,
       time: new Date(),
     };
@@ -188,41 +147,22 @@ const GameActionMenu = (props) => {
     >
       <View style={styles.container}>
         <View style={styles.gameHud}>
-          <View style={styles.infoBar}>
-            <View style={styles.infoCard}>
-              <SubHeaderText>Stroke: {currentStrokes.length + 1}</SubHeaderText>
-            </View>
-            <View style={styles.infoCard}>
-              <SubHeaderText>
-                Dist: {currentStrokes[currentStrokes.length - 1]?.dist || 0}ft
-              </SubHeaderText>
-            </View>
-            <View style={styles.infoCard}>
-              <MapCompass degree={weather ? weather.wind.deg : 0} />
-              <SubHeaderText>
-                {" "}
-                {weather ? weather.wind.speed : 0}mph
-              </SubHeaderText>
-            </View>
-          </View>
-          <StrokeMenuButton
+          <InfoBar currentStrokes={currentStrokes} weather={weather} />
+          <StrokeMenuToggleButton
             isStrokeMenuOpen={isStrokeMenuOpen}
             setIsStrokeMenuOpen={setIsStrokeMenuOpen}
           />
           <View style={styles.discMenu}>
-            <View style={styles.toggleContainer}>
-              <BodyText color={AppColors.white}>FH</BodyText>
-              <View style={styles.toggle}>
-                <Switch
-                  trackColor={{ false: AppColors.grey, true: AppColors.grey }}
-                  thumbColor={AppColors.accent}
-                  onValueChange={() => setIsBackHandThrow(!isBackHandThrow)}
-                  value={isBackHandThrow}
-                />
-              </View>
-              <BodyText color={AppColors.white}>BH</BodyText>
-            </View>
-            <DiscSelector setEquippedDisc={setEquippedDisc} />
+            <Toggle
+              labelLeft={"FH"}
+              labelRight={"BH"}
+              labelColor={AppColors.white}
+              trackColor={{ false: AppColors.grey, true: AppColors.grey }}
+              thumbColor={AppColors.accent}
+              onValueChange={() => setIsBackHandThrow(!isBackHandThrow)}
+              value={isBackHandThrow}
+            />
+            <DiscSelector navigation={navigation} equippedDisc={equippedDisc} />
           </View>
         </View>
       </View>
@@ -234,76 +174,34 @@ const GameActionMenu = (props) => {
   );
 };
 
-const StrokeMenuButton = (props) => {
-  const { isStrokeMenuOpen, setIsStrokeMenuOpen } = props;
-  const firstRender = useRef(true);
+const DiscSelector = (props) => {
+  const { navigation, equippedDisc } = props;
 
-  const rotateButtonAnim = useRef(new Animated.Value(0)).current;
-
-  const rotateInterpolate = rotateButtonAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "135deg"],
-  });
-
-  const rotateToCancelButtonAnimation = Animated.parallel([
-    Animated.timing(rotateButtonAnim, {
-      toValue: 1,
-      duration: 150,
-      easing: Easing.bounce,
-      useNativeDriver: true,
-    }),
-  ]);
-
-  const rotateToAddButtonAnimation = Animated.parallel([
-    Animated.timing(rotateButtonAnim, {
-      toValue: 0,
-      duration: 150,
-      easing: Easing.bounce,
-      useNativeDriver: true,
-    }),
-  ]);
-
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-    if (!isStrokeMenuOpen) {
-      rotateToAddButtonAnimation.start();
-    } else {
-      rotateToCancelButtonAnimation.start();
-    }
-  }, [isStrokeMenuOpen]);
-
-  const handleStrokeMenuToggle = () => {
-    setIsStrokeMenuOpen(!isStrokeMenuOpen);
+  const handleDiscMenuPress = () => {
+    navigation.navigate("GameDiscSelect");
   };
 
+  if (!equippedDisc) {
+    return (
+      <View style={styles.discContainer}>
+        <EmptyDiscItem
+          discData={{}}
+          style={styles.discDisplay}
+          onPress={handleDiscMenuPress}
+        />
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.strokeMenu}>
-      <Animated.View
-        style={{
-          ...styles.strokeButtonContainer,
-          transform: [{ rotateZ: rotateInterpolate }],
-        }}
-      >
-        <TouchComp onPress={handleStrokeMenuToggle}>
-          <Ionicons
-            name="add-circle-sharp"
-            color={isStrokeMenuOpen ? AppColors.red : AppColors.accent}
-            style={styles.strokeButton}
-            size={55}
-          />
-        </TouchComp>
-      </Animated.View>
+    <View style={styles.discContainer}>
+      <DiscItem
+        discData={equippedDisc}
+        style={styles.discDisplay}
+        onPress={handleDiscMenuPress}
+      />
     </View>
   );
-};
-
-const DiscSelector = (props) => {
-  const { setEquippedDisc } = props;
-
-  return <EmptyDiscItem discData={{}} style={styles.discDisplay} />;
 };
 
 const styles = StyleSheet.create({
@@ -328,59 +226,23 @@ const styles = StyleSheet.create({
     left: 0,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 10,
+    padding: 5,
     backgroundColor: AppColors.blackTrans,
-  },
-
-  infoBar: {
-    justifyContent: "space-around",
-    width: "40%",
-  },
-  infoCard: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: AppColors.white,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    elevation: 5,
-  },
-  strokeMenu: {
-    width: "20%",
-    position: "relative",
-    alignItems: "center",
-  },
-  strokeButtonContainer: {
-    position: "absolute",
-    flexDirection: "row",
-    width: 50,
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  strokeButton: {
-    justifyContent: "center",
-    alignItems: "center",
   },
   discMenu: {
     alignContent: "center",
-    justifyContent: "space-around",
+    justifyContent: "center",
     width: "40%",
   },
-  toggleContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+  discContainer: {
     width: "100%",
-    height: "20%",
-  },
-  toggle: {
-    alignItems: "center",
+    height: "75%",
     justifyContent: "center",
+    alignItems: "center",
+    margin: 0,
   },
   discDisplay: {
-    height: "70%",
+    height: "100%",
   },
 });
 
