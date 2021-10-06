@@ -53,7 +53,7 @@ const DiscList = (props) => {
   };
 
   return (
-    <View style={styles.listContainer}>
+    <View style={{ ...styles.listContainer, ...props.style }}>
       <FlatList
         data={discs}
         renderItem={renderDiscs}
