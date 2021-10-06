@@ -6,8 +6,7 @@ import MapView, { Marker } from "react-native-maps";
 import { BodyText, SubHeaderText } from "../ui/AppText";
 
 const GameMap = (props) => {
-  const currentStrokes = useSelector((state) => state.game.currentStrokes);
-  const { holeData } = props;
+  const { holeData, currentStrokes } = props;
   const { tee_box, center, basket } = holeData;
 
   const mapRef = useRef();
@@ -40,7 +39,7 @@ const GameMap = (props) => {
         longitude: center.lng + 0.0005,
       }
     );
-  }, []);
+  }, [center]);
 
   return (
     <MapView
