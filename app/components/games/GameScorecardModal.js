@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useCallback } from "react";
 import { Modal, View, Button, StyleSheet, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,24 +11,28 @@ import { BodyText, SubHeaderText } from "../ui/AppText";
 
 const GameScorecardModal = (props) => {
   const dispatch = useDispatch();
-  const { navigation, isModalOpen, setIsModalOpen, isGameEnd, setIsGameEnd } =
-    props;
+  const {
+    token,
+    gameID,
+    navigation,
+    isModalOpen,
+    setIsModalOpen,
+    isGameEnd,
+    setIsGameEnd,
+  } = props;
 
-  const token = useSelector((state) => state.auth.token);
-  const game = useSelector((state) => state.game.game);
-  const courseData = useSelector((state) => state.game.courseData);
   const userScorecard = useSelector((state) => state.game.scorecard);
 
-  const [focusedPlayer, setFocusedPlayer] = useState(userScorecard); // UNUSED, USE FOR MULTI USER GAMES
+  // const [focusedPlayer, setFocusedPlayer] = useState(userScorecard); // UNUSED, USE FOR MULTI USER GAMES
 
   const renderScores = (item, index) => {
     const { hole, score } = item;
-    const par = courseData.holes[hole - 1].par;
+    const { hole_number: holeNumber, par } = hole;
     const isEven = index % 2 === 0;
 
     return (
       <View style={{ ...styles.tableRow, ...(isEven ? styles.evenRow : {}) }}>
-        <BodyText style={styles.tableData}>{hole}</BodyText>
+        <BodyText style={styles.tableData}>{holeNumber}</BodyText>
         <BodyText style={styles.tableData}>{par}</BodyText>
         <BodyText style={styles.tableData}>{score}</BodyText>
         <BodyText style={styles.tableData}>145ft</BodyText>
@@ -36,11 +40,11 @@ const GameScorecardModal = (props) => {
     );
   };
 
-  const handleGameEnd = async () => {
-    dispatch(gameActions.setGameEnd(token, game.id));
+  const handleGameEnd = useCallback(async () => {
+    dispatch(gameActions.setGameEnd(token, gameID));
     navigation.navigate("AppHome", { screen: "Home" });
     setIsGameEnd(false);
-  };
+  }, [token, gameID, dispatch, navigation]);
 
   if (!userScorecard) {
     return null;
