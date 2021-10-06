@@ -48,6 +48,9 @@ import GameLaunchScreen, {
 import GameScreen, {
   screenOptions as gameScreenOptions,
 } from "../screens/game/GameScreen";
+import GameDiscSelectScreen, {
+  screenOptions as gameDiscSelectScreenOptions,
+} from "../screens/game/GameDiscSelectScreen";
 import GameDrawerScreen from "../screens/game/GameDrawerScreen";
 
 // COURSE SCREENS
@@ -77,6 +80,7 @@ const ProfileStack = createStackNavigator();
 const CourseStack = createStackNavigator();
 const DiscStack = createStackNavigator();
 const GameHomeStack = createStackNavigator();
+const GamePlayStack = createStackNavigator();
 const GamePlayDrawer = createDrawerNavigator();
 const AuthStack = createNativeStackNavigator();
 
@@ -218,6 +222,23 @@ const GameHomeStackNavigator = () => {
   );
 };
 
+const GamePlayStackNavigator = () => {
+  return (
+    <GamePlayStack.Navigator>
+      <GamePlayStack.Screen
+        name="GamePlayScreen"
+        component={GameScreen}
+        options={gameScreenOptions}
+      />
+      <GamePlayStack.Screen
+        name="GameDiscSelect"
+        component={GameDiscSelectScreen}
+        options={gameDiscSelectScreenOptions}
+      />
+    </GamePlayStack.Navigator>
+  );
+};
+
 const GamePlayDrawerNavigator = () => {
   return (
     <GamePlayDrawer.Navigator
@@ -225,9 +246,9 @@ const GamePlayDrawerNavigator = () => {
       drawerContent={(props) => <GameDrawerScreen {...props} />}
     >
       <GamePlayDrawer.Screen
-        name="GamePlayScreen"
-        component={GameScreen}
-        options={gameScreenOptions}
+        name="GamePlay"
+        component={GamePlayStackNavigator}
+        options={{ headerShown: false }}
       />
     </GamePlayDrawer.Navigator>
   );
