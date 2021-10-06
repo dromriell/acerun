@@ -3,9 +3,6 @@ import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useSelector } from "react-redux";
 import * as Location from "expo-location";
 
-import { HeaderText } from "../../components/ui/AppText";
-import { Ionicons } from "@expo/vector-icons";
-
 import GameMap from "../../components/games/GameMap";
 import GameHeader from "../../components/games/ui/GameHeader";
 import GameActionMenu from "../../components/games/ui/GameActionMenu";
@@ -15,64 +12,54 @@ import GameScorecardModal from "../../components/games/GameScorecardModal";
 import AppColors from "../../utils/AppColors";
 
 const GameScreen = (props) => {
+  /**
+   * Main screen to display all game related actions and user interactions.
+   **/
+
   const { navigation } = props;
   const [isHoleEndModalOpen, setIsHoleEndModalOpen] = useState(false);
   const [isGameEnd, setIsGameEnd] = useState(false);
   const [geoLocationWatch, setGeoLocationWatch] = useState(null);
 
+  const token = useSelector((state) => state.auth.token);
+  const game = useSelector((state) => state.game.game);
   const courseData = useSelector((state) => state.game.courseData);
   const currentHoleIndex = useSelector((state) => state.game.currentHoleIndex);
   const userScorecard = useSelector((state) => state.game.scorecard);
+  const currentStrokes = useSelector((state) => state.game.currentStrokes);
+  const weather = useSelector((state) => state.game.weather);
 
   useEffect(() => {
-    // Location.installWebGeolocationPolyfill();
+    // Set watchPosition in order to track user movement during game
+    // and increase stroke getLocation accuracy.
+
+    Location.installWebGeolocationPolyfill();
     const asyncSetWatch = async () => {
       const geoLocWatch = await Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.Highest,
-          distanceInterval: 15,
+          distanceInterval: 5,
         },
-        (position) => {
-          console.log(position);
-          console.log("WATCH ON");
-        }
+        (position) => {} // Nothing is done with location data collected here
       );
-      // setGeoLocationWatch(
-      //   navigator.geolocation.watchPosition(
-      //     (position) => {
-      //       console.log(position);
-      //       console.log("WATCH ON");
-      //     },
-      //     () => {
-      //       console.log("WATCH ERROR");
-      //       return null;
-      //     },
-      //     {
-      //       enableHighAccuracy: true,
-      //       timeout: 5000,
-      //       maximumAge: 0,
-      //     }
-      //   )
-      // );
-
       setGeoLocationWatch(geoLocWatch);
     };
     if (!geoLocationWatch) {
       asyncSetWatch();
-      // setGeoLocationWatch(asyncSetWatch);
     }
   }, []);
 
   useEffect(() => {
+    // Event listener to remove watchPosition when user leaves the screen.
     const clearWatch = navigation.addListener("beforeRemove", async () => {
       await geoLocationWatch.remove();
       setGeoLocationWatch(null);
-      // navigator.geolocation.clearWatch(geoLocationWatch);
     });
-    return clearSearch;
+    return clearWatch;
   }, [navigation, geoLocationWatch]);
 
   if (!courseData) {
+    // Loading display
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={AppColors.accent} />
@@ -80,7 +67,7 @@ const GameScreen = (props) => {
     );
   }
 
-  const holeData = courseData.holes[currentHoleIndex];
+  const holeData = courseData?.holes[currentHoleIndex]; // Assign after courseData is retrieved
 
   return (
     <View style={styles.mapContainer}>
@@ -94,6 +81,8 @@ const GameScreen = (props) => {
       {isGameEnd && (
         <View style={styles.centeredView}>
           <GameScorecardModal
+            token={token}
+            gameID={game.id}
             isGameEnd={true}
             setIsGameEnd={setIsGameEnd}
             navigation={navigation}
@@ -111,14 +100,16 @@ const GameScreen = (props) => {
         courseZip={courseData.zip_code}
         currentHoleIndex={currentHoleIndex}
         setIsHoleEndModalOpen={setIsHoleEndModalOpen}
+        currentStrokes={currentStrokes}
+        weather={weather}
         navigation={navigation}
       />
-      <GameMap holeData={holeData} />
+      <GameMap holeData={holeData} currentStrokes={currentStrokes} />
     </View>
   );
 };
 
-export const screenOptions = (navData) => {
+export const screenOptions = () => {
   return {
     headerShown: false,
   };
