@@ -10,6 +10,7 @@ import {
   SET_HOLE_SCORE,
   SET_GAME_END,
   RESET_GAME,
+  EQUIP_DISC,
 } from "../actions/gameActions";
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
   scorecard: null,
   currentHoleIndex: 0,
   currentStrokes: [],
+  equippedDisc: null,
 };
 
 export default (state = initialState, action) => {
@@ -33,6 +35,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         course: null,
+      };
+    case EQUIP_DISC:
+      return {
+        ...state,
+        equippedDisc: action.disc,
       };
     case FETCH_WEATHER:
       return {
@@ -81,7 +88,7 @@ export default (state = initialState, action) => {
         currentStrokes: [],
       };
     case SET_HOLE_SCORE:
-      if (state.currentHoleIndex + 1 === state.courseData.holes.length) {
+      if (state.currentHoleIndex + 1 >= state.courseData.holes.length) {
         return state;
       }
       return {

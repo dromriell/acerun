@@ -18,6 +18,7 @@ export const SET_HOLE_SCORE = "SET_HOLE_SCORE";
 export const SET_GAME_END = "SET_GAME_END";
 export const RESET_GAME = "RESET_GAME";
 export const FETCH_WEATHER = "FETCH_WEATHER";
+export const EQUIP_DISC = "EQUIP_DISC";
 
 export const setGameCourse = (courseData) => {
   return async (dispatch) => {
@@ -282,6 +283,12 @@ export const setGameEnd = (token, gameId) => {
       type: SET_GAME_END,
     });
     removeGameStateFromStorage();
+  };
+};
+
+export const setEquippedDisc = (disc) => {
+  return (dispatch) => {
+    dispatch({ type: EQUIP_DISC, disc: disc });
   };
 };
 
