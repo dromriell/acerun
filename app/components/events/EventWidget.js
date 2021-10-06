@@ -48,7 +48,9 @@ const EventItem = (props) => {
         <BodyText style={styles.eventBadge}>{event.tier}</BodyText>
       </View>
       <View style={styles.eventInfo}>
-        <SubHeaderText>{event.tournament_name}</SubHeaderText>
+        <SubHeaderText size={24} capitalize>
+          {event.tournament_name}
+        </SubHeaderText>
         <BodyText>
           {event.city}, {event.state_prov}
         </BodyText>
@@ -134,7 +136,7 @@ const EventWidget = (props) => {
     return (
       <View style={styles.container}>
         <View style={styles.eventHeader}>
-          <HeaderText>Upcoming Events</HeaderText>
+          <HeaderText>Events</HeaderText>
         </View>
         <View style={styles.emptyItem}>
           <SubHeaderText>No Events Found!</SubHeaderText>
@@ -147,12 +149,14 @@ const EventWidget = (props) => {
     <View style={styles.container}>
       <View style={styles.eventHeader}>
         <HeaderText
+          size={32}
+          color={AppColors.accent}
           onPress={() => {
             eventListRef.current.scrollToIndex({ animated: true, index: 0 });
             setCurrentEventIndex(0);
           }}
         >
-          Upcoming Events
+          Events
         </HeaderText>
       </View>
       <FlatList
@@ -180,12 +184,13 @@ const EventWidget = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("screen").width,
+    width: "100%",
     height: 250,
-    padding: 10,
     elevation: 5,
     borderBottomColor: AppColors.black,
     borderRadius: 5,
+    backgroundColor: AppColors.grey,
+    overflow: "hidden",
   },
   loadingContainer: {
     alignItems: "center",
@@ -199,22 +204,23 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   eventHeader: {
-    paddingVertical: 10,
+    padding: 5,
+    backgroundColor: AppColors.primary,
   },
   eventItem: {
     flexDirection: "row",
     justifyContent: "center",
     width: width,
     height: "100%",
-    paddingHorizontal: 10,
+    padding: 5,
   },
   eventBar: {
     alignItems: "center",
     width: "25%",
   },
   eventInfo: {
-    flex: 1,
-    paddingHorizontal: 10,
+    width: "75%",
+    paddingHorizontal: 5,
   },
   dateBox: {
     alignItems: "center",

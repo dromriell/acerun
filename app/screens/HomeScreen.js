@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Image, StatusBar } from "react-native";
 import { useSelector } from "react-redux";
 import Constants from "expo-constants";
+import Svg from "react-native-svg";
 
 import EventWidget from "../components/events/EventWidget";
 import GameHistoryWidget from "../components/games/GameHistoryWidget";
@@ -16,12 +17,13 @@ const HomeScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <ScrollView>
-        <View style={styles.header}>
-          <HeaderText color={AppColors.black} size={24}>
-            Hello, {!first_name ? username : first_name}
-          </HeaderText>
-        </View>
+      <StatusBar backgroundColor={AppColors.primary} />
+      <View style={styles.header}>
+        <HeaderText color={AppColors.white} size={24}>
+          Hello, {!first_name ? username : first_name}
+        </HeaderText>
+      </View>
+      <ScrollView style={{ width: "95%" }}>
         <View style={styles.container}>
           <EventWidget token={token} />
         </View>
@@ -39,13 +41,17 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingTop: Constants.statusBarHeight,
+    backgroundColor: AppColors.darkGrey,
   },
   header: {
     width: "100%",
-    alignItems: "flex-start",
-    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
     padding: 10,
+    backgroundColor: AppColors.primary,
+    elevation: 5,
+    borderBottomRightRadius: 30,
   },
   container: {
     width: "100%",

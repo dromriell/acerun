@@ -130,7 +130,11 @@ const GameHistoryWidget = (props) => {
 
   return (
     <View style={styles.container}>
-      <HeaderText style={styles.containerHeader}>Game History</HeaderText>
+      {/* <View style={styles.containerHeader}>
+        <HeaderText size={32} color={AppColors.accent}>
+          My Games
+        </HeaderText>
+      </View> */}
       {gameHistory.map((game, i) => {
         if (!game.game) {
           return;
@@ -146,23 +150,30 @@ const GameHistoryWidget = (props) => {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: "center",
     width: "100%",
-    minHeight: 500,
-    padding: 10,
+    minHeight: 450,
     elevation: 5,
     borderBottomColor: AppColors.black,
     borderRadius: 5,
+    backgroundColor: AppColors.grey,
+    overflow: "hidden",
   },
   loadingContainer: {
     justifyContent: "center",
     alignItems: "center",
   },
   containerHeader: {
-    paddingVertical: 10,
+    padding: 5,
+    backgroundColor: AppColors.primary,
   },
   gameSummaryLrg: {
     width: "100%",
     height: 250,
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    overflow: "hidden",
+    elevation: 5,
   },
   imageContainer: {
     position: "absolute",
@@ -245,10 +256,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     padding: 5,
-    marginVertical: 2,
+    marginVertical: 5,
     textTransform: "capitalize",
     borderBottomWidth: 1,
-    borderBottomColor: AppColors.grey,
+    borderBottomColor: AppColors.black,
+    width: "95%",
   },
 });
 

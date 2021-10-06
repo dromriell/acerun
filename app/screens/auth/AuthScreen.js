@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Alert,
   Keyboard,
+  Image,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import * as authActions from "../../store/actions/authActions";
@@ -16,6 +17,7 @@ import Input from "../../components/ui/Input";
 
 import { Ionicons } from "@expo/vector-icons";
 import AppColors from "../../utils/AppColors";
+import { HeaderText } from "../../components/ui/AppText";
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -117,64 +119,107 @@ const AuthScreen = (props) => {
           start={{ x: 1.1, y: 0.9 }}
         />
       </ImageBackground>
-      <View style={styles.authCard}>
-        <View style={styles.loginForm}>
-          <Input
-            id="username"
-            icon={
-              <Ionicons
-                name="person"
-                size={24}
-                color={AppColors.accent}
-                style={styles.inputIcon}
-              />
-            }
-            label="Username"
-            labelStyle={styles.label}
-            keyBoardType="text"
-            required
-            autoCapitalize="none"
-            errorText="Please enter a valid username"
-            onInputChange={handleInputChange}
-            initialValue=""
-          />
-          <Input
-            id="password"
-            icon={
-              <Ionicons
-                name="md-lock-closed"
-                size={24}
-                color={AppColors.accent}
-                style={styles.inputIcon}
-              />
-            }
-            label="Password"
-            labelStyle={styles.label}
-            keyBoardType="password"
-            secureTextEntry
-            required
-            autoCapitalize="none"
-            errorText="Invalid Password"
-            onInputChange={handleInputChange}
-            initialValue=""
-          />
-          <View style={styles.buttonContainer}>
-            {isLoading ? (
-              <ActivityIndicator size="small" color={AppColors.primary} />
-            ) : (
-              <Button
-                title={isSignUp ? "Sign-Up" : "Login"}
-                color={AppColors.primary}
-                onPress={handleAuthSubmit}
-              />
-            )}
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              title={`Switch to ${isSignUp ? "Login" : "Sign-Up"}`}
-              color={AppColors.accent}
-              onPress={handleSignUpToggle}
+      <View style={styles.container}>
+        <View style={styles.brandContainer}>
+          <View
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              backgroundColor: AppColors.primary,
+              borderBottomLeftRadius: 50,
+              borderTopLeftRadius: 50,
+              borderTopRightRadius: 50,
+            }}
+          ></View>
+          <View style={styles.icon}>
+            <Image
+              source={require("../../assets/icons/bitmap.png")}
+              style={{
+                height: 155,
+                width: 165,
+              }}
             />
+          </View>
+        </View>
+        <View style={styles.authCard}>
+          <View
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              backgroundColor: AppColors.darkGrey,
+              borderBottomRightRadius: 50,
+              borderTopRightRadius: 50,
+              borderBottomLeftRadius: 50,
+            }}
+          ></View>
+          <View style={styles.loginForm}>
+            <Input
+              id="username"
+              icon={
+                <Ionicons
+                  name="person"
+                  size={24}
+                  color={AppColors.primary}
+                  style={styles.inputIcon}
+                />
+              }
+              label="Username"
+              formControlStyle={styles.formControl}
+              inputContainerStyle={styles.inputContainer}
+              labelStyle={styles.label}
+              inputStyle={styles.input}
+              keyBoardType="text"
+              required
+              autoCapitalize="none"
+              errorText="Please enter a valid username"
+              onInputChange={handleInputChange}
+              initialValue=""
+            />
+            <Input
+              id="password"
+              icon={
+                <Ionicons
+                  name="md-lock-closed"
+                  size={24}
+                  color={AppColors.primary}
+                  style={styles.inputIcon}
+                />
+              }
+              label="Password"
+              formControlStyle={styles.formControl}
+              inputContainerStyle={styles.inputContainer}
+              labelStyle={styles.label}
+              inputStyle={styles.input}
+              keyBoardType="password"
+              secureTextEntry
+              required
+              autoCapitalize="none"
+              errorText="Invalid Password"
+              onInputChange={handleInputChange}
+              initialValue=""
+            />
+            <View style={styles.buttonGroup}>
+              <View style={styles.buttonContainer}>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color={AppColors.primary} />
+                ) : (
+                  <Button
+                    title={isSignUp ? "Sign-Up" : "Login"}
+                    color={AppColors.primary}
+                    onPress={handleAuthSubmit}
+                  />
+                )}
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button
+                  title={`Switch to ${isSignUp ? "Login" : "Sign-Up"}`}
+                  color={AppColors.accent}
+                  onPress={handleSignUpToggle}
+                />
+              </View>
+            </View>
           </View>
         </View>
       </View>
@@ -210,28 +255,71 @@ const styles = StyleSheet.create({
     height: "100%",
     opacity: 0.7,
   },
+  container: {
+    width: "100%",
+    alignItems: "center",
+  },
+  brandContainer: {
+    width: "90%",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 200,
+    backgroundColor: AppColors.darkGrey,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+  },
+  icon: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+  },
   authCard: {
     alignItems: "center",
-    width: "80%",
-    height: 300,
-    backgroundColor: AppColors.blackTrans,
-    borderRadius: 10,
+    width: "90%",
+    height: 350,
+    backgroundColor: AppColors.primary,
+    borderBottomRightRadius: 50,
+    borderBottomLeftRadius: 50,
   },
   loginForm: {
     width: "90%",
   },
+  buttonGroup: {
+    width: "100%",
+    alignItems: "center",
+  },
   buttonContainer: {
-    marginTop: 10,
+    margin: 10,
+    borderRadius: 10,
+    overflow: "hidden",
+    width: "75%",
+    paddingVertical: 5,
+  },
+  formControl: {
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 0,
+  },
+  inputContainer: {
+    height: 45,
+    width: "90%",
+  },
+  input: {
+    backgroundColor: AppColors.white,
+    paddingHorizontal: 10,
   },
   label: {
-    color: AppColors.white,
+    color: AppColors.grey,
   },
   inputIcon: {
     textAlignVertical: "center",
     textAlign: "center",
-    width: "10%",
     height: "100%",
-    backgroundColor: AppColors.white,
+    aspectRatio: 1,
+    backgroundColor: AppColors.accent,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
   },
