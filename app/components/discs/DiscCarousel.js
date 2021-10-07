@@ -21,9 +21,7 @@ const EmptyListPlaceHolder = (props) => {
 
 const DiscCarousel = (props) => {
   const handleDiscSelect = (id) => {
-    props.navigation.navigate("DiscDetail", {
-      discId: id,
-    });
+    props.navigation.navigate("DiscDetail", {});
   };
 
   return (
@@ -32,7 +30,7 @@ const DiscCarousel = (props) => {
       {props.data.length > 0 ? (
         <ScrollView style={styles.discList} horizontal={true}>
           {props.data.map((disc) => {
-            const discDataId = disc.disc ? disc.disc.id : disc.id;
+            const discDataId = disc.disc;
             return (
               <DiscItem
                 key={discDataId}
