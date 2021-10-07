@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   listFilterButton: {
     width: "20%",
-    color: "black",
+    color: AppColors.white,
   },
 });
 

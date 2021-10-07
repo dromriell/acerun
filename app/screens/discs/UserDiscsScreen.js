@@ -66,13 +66,17 @@ const UserDiscsScreen = (props) => {
 
   if (isLoading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={AppColors.primary} />
+      <View style={{ ...styles.screen, ...styles.loading }}>
+        <ActivityIndicator size="large" color={AppColors.accent} />
       </View>
     );
   }
 
-  return <DiscList data={userDiscs} navigation={props.navigation} />;
+  return (
+    <View style={styles.screen}>
+      <DiscList data={userDiscs} navigation={props.navigation} />
+    </View>
+  );
 };
 
 export const screenOptions = (navData) => {
@@ -81,6 +85,15 @@ export const screenOptions = (navData) => {
   };
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: AppColors.darkGrey,
+  },
+  loading: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default UserDiscsScreen;

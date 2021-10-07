@@ -177,7 +177,7 @@ const DiscsDetailScreen = (props) => {
 
   if (isScreenLoading || !disc) {
     return (
-      <View style={styles.screen}>
+      <View style={{ ...styles.screen, ...styles.loading }}>
         <ActivityIndicator size="large" color={AppColors.accent} />
       </View>
     );
@@ -268,7 +268,11 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: AppColors.white,
+    backgroundColor: AppColors.darkGrey,
+  },
+  loading: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   scroll: {
     width: "100%",
@@ -292,7 +296,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   detailHeaderText: {
-    color: AppColors.black,
+    color: AppColors.white,
     fontSize: 24,
   },
   imageContainer: {
@@ -354,7 +358,7 @@ const styles = StyleSheet.create({
     fontSize: 21,
     borderBottomColor: AppColors.accent,
     borderBottomWidth: 1,
-    color: AppColors.black,
+    color: AppColors.white,
   },
   dataContainer: {
     width: "50%",
@@ -362,9 +366,11 @@ const styles = StyleSheet.create({
   },
   dataLabel: {
     fontSize: 16,
-    color: AppColors.blackTrans,
+    color: AppColors.grey,
   },
-  data: {},
+  data: {
+    color: AppColors.white,
+  },
   dataCard: {
     justifyContent: "space-around",
     alignItems: "flex-start",
@@ -373,7 +379,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   dataCardText: {
-    color: AppColors.black,
+    color: AppColors.white,
   },
   discChart: {
     flex: 1,
@@ -382,6 +388,11 @@ const styles = StyleSheet.create({
     width: "90%",
     height: 350,
     marginVertical: 10,
+    backgroundColor: "white",
+    borderRadius: 300,
+    borderWidth: 2,
+    borderColor: AppColors.accent,
+    elevation: 10,
   },
 });
 

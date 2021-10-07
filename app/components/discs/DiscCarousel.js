@@ -14,7 +14,7 @@ const EmptyListPlaceHolder = (props) => {
         size={30}
         color={AppColors.accent}
       />
-      <SubHeaderText>No Discs Found</SubHeaderText>
+      <SubHeaderText color={AppColors.white}>No Discs Found</SubHeaderText>
     </View>
   );
 };
@@ -28,7 +28,7 @@ const DiscCarousel = (props) => {
 
   return (
     <View style={styles.listContainer}>
-      <SubHeaderText>{props.title}</SubHeaderText>
+      <SubHeaderText color={AppColors.white}>{props.title}</SubHeaderText>
       {props.data.length > 0 ? (
         <ScrollView style={styles.discList} horizontal={true}>
           {props.data.map((disc) => {

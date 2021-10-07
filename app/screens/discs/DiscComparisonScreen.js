@@ -137,7 +137,7 @@ const DiscComparisonScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: AppColors.white,
+    backgroundColor: AppColors.darkGrey,
   },
   container: {
     alignItems: "center",

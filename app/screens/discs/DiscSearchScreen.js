@@ -4,7 +4,7 @@ import React, {
   useCallback,
   useLayoutEffect,
 } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import * as discActions from "../../store/actions/discsActions";
@@ -12,6 +12,7 @@ import * as discActions from "../../store/actions/discsActions";
 import SearchBar from "../../components/ui/SearchBar";
 import DiscList from "../../components/discs/DiscList";
 
+import { SubHeaderText } from "../../components/ui/AppText";
 import AppColors from "../../utils/AppColors";
 
 const DiscSearchScreen = (props) => {
@@ -66,23 +67,23 @@ const DiscSearchScreen = (props) => {
 
   if (error) {
     return (
-      <View style={styles.centered}>
-        <Text>An Error Occured</Text>
+      <View style={styles.screen}>
+        <SubHeaderText color={AppColors.red}>An Error Occured</SubHeaderText>
       </View>
     );
   }
 
   if (!isLoading && searchResults.length === 0) {
     return (
-      <View style={styles.centered}>
-        <Text>No discs found</Text>
+      <View style={styles.screen}>
+        <SubHeaderText color={AppColors.white}>No discs found</SubHeaderText>
       </View>
     );
   }
 
   if (isLoading) {
     return (
-      <View style={styles.centered}>
+      <View style={styles.screen}>
         <ActivityIndicator size="large" color={AppColors.primary} />
       </View>
     );
@@ -108,11 +109,11 @@ export const screenOptions = () => {
 };
 
 const styles = StyleSheet.create({
-  centered: {
+  screen: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: AppColors.white,
+    backgroundColor: AppColors.darkGrey,
   },
 });
 

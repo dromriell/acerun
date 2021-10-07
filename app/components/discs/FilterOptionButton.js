@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
   },
   touchable: {},
   text: {
-    color: AppColors.black,
-    borderBottomColor: "black",
+    color: AppColors.white,
+    borderBottomColor: AppColors.grey,
     paddingHorizontal: "20%",
     borderBottomWidth: 1,
     paddingHorizontal: "20%",
