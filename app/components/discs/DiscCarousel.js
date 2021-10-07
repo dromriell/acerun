@@ -24,27 +24,6 @@ const DiscCarousel = (props) => {
     props.navigation.navigate("DiscDetail", {});
   };
 
-  return (
-    <View style={styles.listContainer}>
-      <SubHeaderText color={AppColors.white}>{props.title}</SubHeaderText>
-      {props.data.length > 0 ? (
-        <ScrollView style={styles.discList} horizontal={true}>
-          {props.data.map((disc) => {
-            const discDataId = disc.disc;
-            return (
-              <DiscItem
-                key={discDataId}
-                discData={disc}
-                onPress={() => handleDiscSelect(discDataId)}
-                style={styles.disc}
-              />
-            );
-          })}
-        </ScrollView>
-      ) : (
-        <EmptyListPlaceHolder />
-      )}
-    </View>
   );
 };
 
