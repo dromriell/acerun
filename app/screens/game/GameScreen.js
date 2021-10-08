@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, Button } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useSelector } from "react-redux";
 import * as Location from "expo-location";
