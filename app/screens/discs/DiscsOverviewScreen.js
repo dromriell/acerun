@@ -73,12 +73,12 @@ const DiscsOverviewScreen = (props) => {
     <View style={styles.screen}>
       <DiscHomeMenu navigation={props.navigation} />
       <DiscCarousel
-        data={overviewDiscs}
+        data={[]} // Currently no endpoint.
         title={"Trending Discs"}
         navigation={props.navigation}
       />
       <DiscCarousel
-        data={[]} // Change data source
+        data={[]} // Currently no endpoint.
         title={"New Discs"}
         navigation={props.navigation}
       />
