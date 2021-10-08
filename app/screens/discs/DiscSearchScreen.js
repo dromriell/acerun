@@ -45,6 +45,15 @@ const DiscSearchScreen = (props) => {
     [dispatch, setError]
   );
 
+  const handleDiscCompareSelect = (disc, placement) => {
+    /*
+      Handles the assignment of discs to be compared. Only called onDiscSelect
+      if 
+    */
+    dispatch(discActions.addComparisonDisc(placement, disc));
+    props.navigation.goBack();
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
@@ -93,7 +102,11 @@ const DiscSearchScreen = (props) => {
     <DiscList
       data={searchResults}
       navigation={navigation}
-      onDiscSelect={route.params?.onDiscSelect}
+      onDiscSelect={
+        route.params?.onDiscSelect === "compare"
+          ? (disc) => handleDiscCompareSelect(disc, route.params.placement)
+          : null
+      }
     />
   );
 };
