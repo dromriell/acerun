@@ -1,0 +1,18 @@
+{
+  "build": {
+    "release": {},
+    "local": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "local2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "local3": {
+      "developmentClient": true
+    }
+  }
+}
