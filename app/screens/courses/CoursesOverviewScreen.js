@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  Platform,
-  StatusBar,
-} from "react-native";
+import { View, StyleSheet, StatusBar } from "react-native";
+
+import { HeaderText } from "../../components/ui/AppText";
 
 import SearchBar from "../../components/ui/SearchBar";
 import AppColors from "../../utils/AppColors";
@@ -14,8 +9,7 @@ import AppColors from "../../utils/AppColors";
 const CoursesOverviewScreen = (props) => {
   return (
     <View style={styles.screen}>
-      <Text>Courses Overview Screen</Text>
-      <Button title="Go Back Home" onPress={() => props.navigation.goBack()} />
+      <HeaderText color={AppColors.white}>Courses Overview Screen</HeaderText>
     </View>
   );
 };
@@ -25,7 +19,7 @@ export const screenOptions = (navData) => {
     headerLeft: () => {
       return (
         <View style={styles.headerLeftContainer}>
-          <Text style={styles.headerLeftText}> </Text>
+          <HeaderText style={styles.headerLeftText}> </HeaderText>
         </View>
       );
     },
@@ -44,7 +38,7 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: AppColors.white,
+    backgroundColor: AppColors.darkGrey,
     alignItems: "center",
     justifyContent: "center",
     paddingTop: StatusBar.currentHeight,

@@ -3,6 +3,7 @@ import { View, FlatList, StyleSheet } from "react-native";
 
 import DiscListHeader from "./DiscListHeader";
 import DiscItem from "./DiscItem";
+import AppColors from "../../utils/AppColors";
 
 const discTypes = {
   dist: "dist_dr",
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
+    backgroundColor: AppColors.darkGrey,
   },
   discList: {
     width: "100%",

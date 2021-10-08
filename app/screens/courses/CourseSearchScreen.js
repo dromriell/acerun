@@ -4,7 +4,7 @@ import React, {
   useCallback,
   useLayoutEffect,
 } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { MaterialIcons } from "@expo/vector-icons";
@@ -14,6 +14,7 @@ import * as courseActions from "../../store/actions/courseActions";
 import CourseList from "../../components/courses/CourseList";
 import SearchBar from "../../components/ui/SearchBar";
 import { TouchComp } from "../../components/ui/TouchComp";
+import { SubHeaderText } from "../../components/ui/AppText";
 
 import AppColors from "../../utils/AppColors";
 
@@ -87,7 +88,7 @@ const CourseSearchScreen = (props) => {
     console.log(error);
     return (
       <View style={styles.centered}>
-        <Text>An Error Occured</Text>
+        <SubHeaderText color={AppColors.red}>An Error Occured</SubHeaderText>
       </View>
     );
   }
@@ -95,7 +96,7 @@ const CourseSearchScreen = (props) => {
   if (!isLoading && searchResults.length === 0) {
     return (
       <View style={styles.centered}>
-        <Text>No courses found</Text>
+        <SubHeaderText color={AppColors.white}>No courses found</SubHeaderText>
       </View>
     );
   }
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: AppColors.white,
+    backgroundColor: AppColors.darkGrey,
   },
   headerRightContainer: {
     width: "100%",

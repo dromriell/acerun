@@ -159,6 +159,7 @@ const EditProfileScreen = (props) => {
               title="Submit"
               color={AppColors.primary}
               onPress={handleEditSubmit}
+              disabled // TEMPA - Disable until form handling complete
             />
           )}
         </View>
@@ -178,6 +179,32 @@ export const screenOptions = () => {
   };
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: AppColors.darkGrey,
+  },
+  form: {
+    width: "90%",
+  },
+  label: {
+    color: AppColors.white,
+  },
+  inputIcon: {
+    textAlignVertical: "center",
+    textAlign: "center",
+    height: "100%",
+    aspectRatio: 1,
+    backgroundColor: AppColors.primary,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+  },
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "flex-end",
+    paddingHorizontal: 15,
+  },
+});
 
 export default EditProfileScreen;

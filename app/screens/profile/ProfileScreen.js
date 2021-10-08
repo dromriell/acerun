@@ -23,7 +23,6 @@ import { TouchComp } from "../../components/ui/TouchComp";
 const ProfileScreen = (props) => {
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.auth.profile);
-  console.log(profile);
   return (
     <View style={styles.screen}>
       <View style={styles.profileImageContainer}>
@@ -33,46 +32,56 @@ const ProfileScreen = (props) => {
         />
       </View>
       <View style={styles.infoHeaderContainer}>
-        <HeaderText size={32}>Username Here</HeaderText>
-        <SubHeaderText>
+        <HeaderText color={AppColors.white} size={32}>
+          Username Here
+        </HeaderText>
+        <SubHeaderText color={AppColors.grey}>
           {profile.city && profile.city} {profile.state}
         </SubHeaderText>
         <View style={styles.countRow}>
           <View style={{ ...styles.countCard, ...styles.borderRight }}>
-            <SubHeaderText size={24}>{profile.friends.length}</SubHeaderText>
-            <BodyText centered>Friends</BodyText>
+            <SubHeaderText size={24} style={styles.font}>
+              {profile.friends.length}
+            </SubHeaderText>
+            <BodyText color={AppColors.grey} centered>
+              Friends
+            </BodyText>
           </View>
           <View style={{ ...styles.countCard, ...styles.borderRight }}>
-            <SubHeaderText size={24}>{profile.disc_bag.length}</SubHeaderText>
-            <BodyText centered>Discs</BodyText>
+            <SubHeaderText size={24} style={styles.font}>
+              {profile.disc_bag.length}
+            </SubHeaderText>
+            <BodyText centered color={AppColors.grey}>
+              Discs
+            </BodyText>
           </View>
           <View style={styles.countCard}>
-            <SubHeaderText size={24}>{profile.disc_bag.length}</SubHeaderText>
-            <BodyText centered>Games</BodyText>
+            <SubHeaderText size={24} style={styles.font}>
+              {profile.disc_bag.length}
+            </SubHeaderText>
+            <BodyText centered color={AppColors.grey}>
+              Games
+            </BodyText>
           </View>
         </View>
       </View>
       <View style={styles.buttonGroup}>
         <TouchComp onPress={() => props.navigation.navigate("ProfileEdit")}>
           <View style={styles.button}>
-            <MaterialIcons name="edit" size={24} color={AppColors.primary} />
-            <BodyText> Edit Profile</BodyText>
+            <MaterialIcons name="edit" size={24} color={AppColors.accent} />
+            <BodyText style={styles.font}> Edit Profile</BodyText>
           </View>
         </TouchComp>
         <TouchComp onPress={() => console.log("CHANGE SETTINGS")}>
           <View style={styles.button}>
-            <MaterialIcons
-              name="settings"
-              size={24}
-              color={AppColors.primary}
-            />
-            <BodyText> Settings</BodyText>
+            <MaterialIcons name="settings" size={24} color={AppColors.accent} />
+            <BodyText style={styles.font}> Settings</BodyText>
           </View>
         </TouchComp>
         <TouchComp onPress={() => dispatch(authActions.logout())}>
           <View style={styles.button}>
-            <MaterialIcons name="logout" size={24} color={AppColors.primary} />
-            <BodyText> Logout</BodyText>
+            <MaterialIcons name="logout" size={24} color={AppColors.accent} />
+            <BodyText style={styles.font}> Logout</BodyText>
           </View>
         </TouchComp>
       </View>
@@ -90,7 +99,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
-    backgroundColor: AppColors.white,
+    backgroundColor: AppColors.darkGrey,
     alignItems: "center",
     justifyContent: "flex-start",
   },
@@ -104,7 +113,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 150,
     height: 150,
-    backgroundColor: AppColors.darkGrey,
+    backgroundColor: AppColors.primary,
     borderRadius: 100,
   },
   infoHeaderContainer: {
@@ -137,6 +146,9 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     marginBottom: 5,
+  },
+  font: {
+    color: AppColors.white,
   },
 });
 
