@@ -5,12 +5,15 @@ import {
   RESET_SEARCH,
   ADD_DISC_TO_BAG,
   REMOVE_DISC_FROM_BAG,
+  ADD_DISC_TO_COMPARE,
 } from "../actions/discsActions";
 
 const initialState = {
   userDiscs: [],
   overviewDiscs: [],
   searchResults: [],
+  comparisonDiscA: null,
+  comarisonDiscB: null,
 };
 
 export default (state = initialState, action) => {
@@ -48,6 +51,12 @@ export default (state = initialState, action) => {
         ...state,
         userDiscs: filteredArray,
       };
+    case ADD_DISC_TO_COMPARE:
+      if (action.placement === "A") {
+        return { ...state, comparisonDiscA: action.comparisonDisc };
+      } else {
+        return { ...state, comparisonDiscB: action.comparisonDisc };
+      }
     default:
       return state;
   }

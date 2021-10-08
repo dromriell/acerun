@@ -6,6 +6,7 @@ export const SEARCH_DISCS = "SEARCH_DISCS";
 export const RESET_SEARCH = "RESET_SEARCH";
 export const ADD_DISC_TO_BAG = "ADD_DISC_TO_BAG";
 export const REMOVE_DISC_FROM_BAG = "REMOVE_DISC_FROM_BAG";
+export const ADD_DISC_TO_COMPARE = "ADD_DISC_TO_COMPARE";
 
 import { userDiscsEP, searchDiscsEP } from "../../utils/apiEndPoints";
 
@@ -154,5 +155,17 @@ export const removeDiscFromUserBag = (token, userDiscId) => {
 };
 
 export const resetSearch = () => {
-  return { type: RESET_SEARCH };
+  return (dispatch) => {
+    dispatch({ type: RESET_SEARCH });
+  };
+};
+
+export const addComparisonDisc = (placement, disc) => {
+  return (dispatch) => {
+    dispatch({
+      type: ADD_DISC_TO_COMPARE,
+      placement: placement,
+      comparisonDisc: disc,
+    });
+  };
 };
