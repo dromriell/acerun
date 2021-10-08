@@ -166,16 +166,16 @@ const CourseDetailScreen = (props) => {
   );
 };
 
-export const screenOptions = (navData) => {
+export const screenOptions = () => {
   return {
-    headerTitle: "",
+    headerTitle: "Course Detail",
   };
 };
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: AppColors.white,
+    backgroundColor: AppColors.darkGrey,
   },
   scroll: {
     width: "100%",
@@ -246,7 +246,8 @@ const styles = StyleSheet.create({
   cardHeader: {
     width: "100%",
     borderBottomWidth: 2,
-    borderBottomColor: AppColors.accent,
+    borderBottomColor: AppColors.primary,
+    textAlign: "center",
   },
   coursePropList: {
     flexDirection: "row",

@@ -60,7 +60,9 @@ import CoursesOverviewScreen, {
 import CourseSearchScreen, {
   screenOptions as courseSearchScreenOptions,
 } from "../screens/courses/CourseSearchScreen";
-import CourseDetailScreen from "../screens/courses/CourseDetailScreen";
+import CourseDetailScreen, {
+  screenOptions as courseDetailScreenOptions,
+} from "../screens/courses/CourseDetailScreen";
 import CourseFilterScreen, {
   screenOptions as courseFilterScreenOptions,
 } from "../screens/courses/CourseFilterScreen";
@@ -153,7 +155,11 @@ const CourseStackNavigator = () => {
         component={CourseSearchScreen}
         options={courseSearchScreenOptions}
       />
-      <CourseStack.Screen name="CourseDetail" component={CourseDetailScreen} />
+      <CourseStack.Screen
+        name="CourseDetail"
+        component={CourseDetailScreen}
+        options={courseDetailScreenOptions}
+      />
       <CourseStack.Screen
         name="CourseFilters"
         component={CourseFilterScreen}
