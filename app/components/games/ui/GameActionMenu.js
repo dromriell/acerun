@@ -69,6 +69,14 @@ const GameActionMenu = (props) => {
     if (!hasPermission) {
       return;
     }
+    if (!equippedDisc) {
+      Alert.alert(
+        "No Disc Selected!",
+        "Please select a disc before marking your location.",
+        [{ text: "Okay" }]
+      );
+      return;
+    }
     try {
       setIsLoading(true);
       await navigator.geolocation.getCurrentPosition(
