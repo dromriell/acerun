@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { useSelector } from "react-redux";
+
 import DiscItem, { EmptyDiscItem } from "../../components/discs/DiscItem";
 import DiscRatingChart from "../../components/discs/DiscRatingChart";
 
@@ -45,23 +47,8 @@ const DiscComparisonScreen = (props) => {
   */
 
   const [discArray, setDiscArray] = useState([]);
-  const [discA, setDiscA] = useState(null);
-  const [discB, setDiscB] = useState(null);
-
-  const handleDiscSelect = (disc, targetIndex) => {
-    console.log(disc, targetIndex);
-    /*
-      Handles the assignment of discs selected from the DiscSearchScreen.
-      Navigates back to this screen once done. Function is passed up stack
-      via navigation route params.
-    */
-    if (targetIndex === 0) {
-      setDiscA(disc);
-    } else if (targetIndex === 1) {
-      setDiscB(disc);
-    }
-    props.navigation.goBack();
-  };
+  const discA = useSelector((state) => state.discs.comparisonDiscA);
+  const discB = useSelector((state) => state.discs.comparisonDiscB);
 
   useEffect(() => {
     // Update the discArray anytime discA or discB are changed.
@@ -79,13 +66,16 @@ const DiscComparisonScreen = (props) => {
 
     // Loop twice since array will only hold two possible discs.
     for (let i = 0; i < 2; i++) {
+      const placement = i === 0 ? "A" : "B";
       if (discArray[i]) {
         discItemArray.push(
           <DiscItem
+            key={`discCompare${i}`}
             discData={discArray[i]}
             onPress={() =>
               props.navigation.navigate("DiscSearch", {
-                onDiscSelect: (disc) => handleDiscSelect(disc, i),
+                onDiscSelect: "compare",
+                placement: placement,
               })
             }
           />
@@ -98,7 +88,8 @@ const DiscComparisonScreen = (props) => {
             icon={<Ionicons name="md-add" size={52} color={AppColors.accent} />}
             onPress={() =>
               props.navigation.navigate("DiscSearch", {
-                onDiscSelect: (disc) => handleDiscSelect(disc, i),
+                onDiscSelect: "compare",
+                placement: placement,
               })
             }
           />
@@ -144,16 +135,23 @@ const styles = StyleSheet.create({
   },
   discSelect: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
+    marginVertical: 15,
   },
   discChart: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     width: "90%",
     height: 350,
     marginVertical: 10,
+    backgroundColor: "white",
+    borderRadius: 300,
+    borderWidth: 2,
+    borderColor: AppColors.accent,
+    elevation: 10,
   },
   properties: {
     flexDirection: "row",
@@ -166,9 +164,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 1,
     borderBottomColor: AppColors.accent,
+    color: AppColors.white,
+    textAlign: "center",
   },
   property: {
     padding: 5,
+    color: AppColors.grey,
   },
 });
 
