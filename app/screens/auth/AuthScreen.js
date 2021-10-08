@@ -70,7 +70,7 @@ const AuthScreen = (props) => {
   }, [error]);
 
   const handleAuthSubmit = async () => {
-    const here = await Keyboard.dismiss();
+    await Keyboard.dismiss();
     const action = isSignUp
       ? authActions.signup(
           formState.inputValues.username,
@@ -107,7 +107,11 @@ const AuthScreen = (props) => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.screen}>
+    <KeyboardAvoidingView
+      style={styles.screen}
+      behavior="height"
+      keyboardShouldPersistTaps={"handled"}
+    >
       <ImageBackground
         source={require("../../assets/images/disc-golf-4985907_960_720.jpg")}
         style={styles.backgroundImage}
@@ -209,6 +213,7 @@ const AuthScreen = (props) => {
                     title={isSignUp ? "Sign-Up" : "Login"}
                     color={AppColors.primary}
                     onPress={handleAuthSubmit}
+                    disabled={!formState.isFormValid}
                   />
                 )}
               </View>
@@ -217,6 +222,7 @@ const AuthScreen = (props) => {
                   title={`Switch to ${isSignUp ? "Login" : "Sign-Up"}`}
                   color={AppColors.accent}
                   onPress={handleSignUpToggle}
+                  disabled // TEMPA - Disable until working registration
                 />
               </View>
             </View>
