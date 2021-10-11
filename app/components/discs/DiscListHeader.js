@@ -20,7 +20,7 @@ const DiscListHeader = (props) => {
       <FilterOptionButton
         onPress={() => props.onPress("frwy")}
         selected={props.selectedFilter === "frwy"}
-        title="Frwy"
+        title="Fair"
       />
       <FilterOptionButton
         onPress={() => props.onPress("mid")}
