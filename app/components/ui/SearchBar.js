@@ -1,17 +1,8 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import {
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  Platform,
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-} from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { StyleSheet, View, Text, TextInput, Dimensions } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { TouchComp } from "./TouchComp";
-import { useFocusEffect } from "@react-navigation/native";
 import AppColors from "../../utils/AppColors";
 
 const SearchButton = (props) => {
@@ -80,7 +71,6 @@ const SearchBar = (props) => {
     <View style={{ ...styles.searchBar, ...props.style }}>
       <TouchComp onPress={props.onPress}>
         <TextInput
-          // autoFocus={props.autoFocus}
           style={styles.searchField}
           ref={searchRef}
           onChangeText={
@@ -99,7 +89,7 @@ const SearchBar = (props) => {
 
 const styles = StyleSheet.create({
   searchBar: {
-    width: 300,
+    width: Dimensions.get("screen").width * 0.7,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
