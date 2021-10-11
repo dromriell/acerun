@@ -10,6 +10,7 @@ import {
   Alert,
   Keyboard,
   Image,
+  Dimensions,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import * as authActions from "../../store/actions/authActions";
@@ -136,13 +137,10 @@ const AuthScreen = (props) => {
               borderTopRightRadius: 50,
             }}
           ></View>
-          <View style={styles.icon}>
+          <View style={styles.iconContainer}>
             <Image
               source={require("../../assets/icons/bitmap.png")}
-              style={{
-                height: 155,
-                width: 165,
-              }}
+              style={styles.icon}
             />
           </View>
         </View>
@@ -219,7 +217,7 @@ const AuthScreen = (props) => {
               </View>
               <View style={styles.buttonContainer}>
                 <Button
-                  title={`Switch to ${isSignUp ? "Login" : "Sign-Up"}`}
+                  title={`${isSignUp ? "Login" : "Sign-Up"}`}
                   color={AppColors.accent}
                   onPress={handleSignUpToggle}
                   disabled // TEMPA - Disable until working registration
@@ -245,6 +243,8 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     flex: 1,
+    top: 0,
+    left: 0,
   },
   imageContainer: {
     position: "absolute",
@@ -263,28 +263,36 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "100%",
+    height: "90%",
     alignItems: "center",
+    justifyContent: "center",
+    minHeight: Dimensions.get("screen").height * 0.9,
   },
   brandContainer: {
     width: "90%",
     justifyContent: "center",
     alignItems: "center",
-    height: 200,
+    height: "37%",
     backgroundColor: AppColors.darkGrey,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
   },
-  icon: {
+  iconContainer: {
     justifyContent: "center",
     alignItems: "center",
-    width: 150,
-    height: 150,
+    width: "50%",
+    aspectRatio: 1.064516,
     borderRadius: 100,
+  },
+  icon: {
+    width: "100%",
+    height: "100%",
   },
   authCard: {
     alignItems: "center",
     width: "90%",
-    height: 350,
+    height: "63%",
+    maxHeight: 350,
     backgroundColor: AppColors.primary,
     borderBottomRightRadius: 50,
     borderBottomLeftRadius: 50,
@@ -293,14 +301,15 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   buttonGroup: {
+    flexDirection: "row",
     width: "100%",
     alignItems: "center",
   },
   buttonContainer: {
-    margin: 10,
+    margin: 5,
     borderRadius: 10,
     overflow: "hidden",
-    width: "75%",
+    width: "45%",
     paddingVertical: 5,
   },
   formControl: {
