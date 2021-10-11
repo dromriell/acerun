@@ -104,7 +104,7 @@ const EventWidget = (props) => {
      * the last item. Tracking and setting currentEventIndex is done
      * in handleViewableItemsChanged
      */
-    const eventListLength = homeEvents.events.length;
+    const eventListLength = homeEvents ? homeEvents.events.length : 0;
     const nextIndex = currentEventIndex + 1;
     if (nextIndex >= eventListLength) {
       eventListRef.current.scrollToIndex({ animated: true, index: 0 });
