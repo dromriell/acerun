@@ -265,6 +265,7 @@ const AppTabNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarStyle: { backgroundColor: AppColors.primary },
         tabBarIcon: ({ focused, color, size }) => {
