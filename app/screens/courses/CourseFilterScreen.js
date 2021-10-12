@@ -1,5 +1,5 @@
 import React, { useState, useRef, useLayoutEffect, useCallback } from "react";
-import { View, StyleSheet, Switch, Platform } from "react-native";
+import { View, StyleSheet, Switch, Platform, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as courseActions from "../../store/actions/courseActions";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -12,16 +12,16 @@ import AppColors from "../../utils/AppColors";
 const FilterSwitch = (props) => {
   return (
     <View style={styles.filterContainer}>
-      <SubHeaderText>{props.label}</SubHeaderText>
+      <SubHeaderText color={AppColors.white}>{props.label}</SubHeaderText>
       <Switch
         value={props.value}
         onValueChange={(newValue) => props.onChange(newValue)}
-        trackColor={{ true: AppColors.primary, false: "#ccc" }}
+        trackColor={{ true: AppColors.primary, false: AppColors.grey }}
         thumbColor={
           Platform.OS === "android"
             ? props.value
               ? AppColors.primary
-              : "#ccc"
+              : AppColors.grey
             : ""
         }
       />
@@ -40,7 +40,7 @@ const CourseFilterScreen = (props) => {
   const [hasFacilities, setHasFacilities] = useState(
     filters ? filters.facilities : false
   );
-  const [hasFee, setHasFee] = useState(filters ? filters.fees : false);
+  const [isFree, setIsFree] = useState(filters ? filters.fees : false);
   const [isHandicapAccessible, setIsHandicapAccessible] = useState(
     filters ? filters.handicap : false
   );
@@ -60,7 +60,7 @@ const CourseFilterScreen = (props) => {
     const courseFilters = {
       camping: hasCamping,
       facilities: hasFacilities,
-      fees: hasFee,
+      fees: isFree,
       handicap: isHandicapAccessible,
       private: isPrivate,
       signage: hasSigns,
@@ -71,7 +71,7 @@ const CourseFilterScreen = (props) => {
   }, [
     hasCamping,
     hasFacilities,
-    hasFee,
+    isFree,
     isHandicapAccessible,
     isPrivate,
     hasSigns,
@@ -94,46 +94,48 @@ const CourseFilterScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <FilterSwitch
-        label="Camping?"
-        value={hasCamping}
-        onChange={setHasCamping}
-      />
-      <FilterSwitch
-        label="Facilities?"
-        value={hasFacilities}
-        onChange={setHasFacilities}
-      />
-      <FilterSwitch label="Free?" value={hasFee} onChange={setHasFee} />
-      <FilterSwitch
-        label="Handicap Accessible?"
-        value={isHandicapAccessible}
-        onChange={setIsHandicapAccessible}
-      />
-      <FilterSwitch
-        label="Private?"
-        value={isPrivate}
-        onChange={setIsPrivate}
-      />
-      <FilterSwitch label="Signs?" value={hasSigns} onChange={setHasSigns} />
-      <View style={styles.numberInput}>
-        <SubHeaderText>Hole Min</SubHeaderText>
-        <Input
-          id="holeMin"
-          formControlStyle={styles.formControlStyle}
-          inputContainerStyle={styles.inputContainerStyle}
-          inputStyle={styles.inputStyle}
-          blurOnSubmit
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="number-pad"
-          max={30}
-          onInputChange={handleNumberInput}
-          value={holeMin}
-          number
-          defaultValue={filters ? filters.holeMin.toString() : "0"}
+      <ScrollView style={{ width: "100%" }}>
+        <FilterSwitch
+          label="Camping?"
+          value={hasCamping}
+          onChange={setHasCamping}
         />
-      </View>
+        <FilterSwitch
+          label="Facilities?"
+          value={hasFacilities}
+          onChange={setHasFacilities}
+        />
+        <FilterSwitch label="Free?" value={isFree} onChange={setIsFree} />
+        <FilterSwitch
+          label="Handicap Accessible?"
+          value={isHandicapAccessible}
+          onChange={setIsHandicapAccessible}
+        />
+        <FilterSwitch
+          label="Private?"
+          value={isPrivate}
+          onChange={setIsPrivate}
+        />
+        <FilterSwitch label="Signs?" value={hasSigns} onChange={setHasSigns} />
+        <View style={styles.numberInput}>
+          <SubHeaderText color={AppColors.white}>Hole Min</SubHeaderText>
+          <Input
+            id="holeMin"
+            formControlStyle={styles.formControlStyle}
+            inputContainerStyle={styles.inputContainerStyle}
+            inputStyle={styles.inputStyle}
+            blurOnSubmit
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="number-pad"
+            max={30}
+            onInputChange={handleNumberInput}
+            value={holeMin}
+            number
+            defaultValue={filters ? filters.holeMin.toString() : "0"}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -151,7 +153,9 @@ export const screenOptions = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    width: "100%",
     alignItems: "center",
+    backgroundColor: AppColors.darkGrey,
   },
   saveButton: {
     padding: 10,
@@ -160,16 +164,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "80%",
+    width: "100%",
     marginVertical: 15,
+    paddingHorizontal: 10,
   },
   numberInput: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "80%",
+    width: "100%",
     marginVertical: 15,
     height: 50,
+    paddingHorizontal: 10,
   },
   formControlStyle: {
     justifyContent: "flex-start",
@@ -178,7 +184,9 @@ const styles = StyleSheet.create({
   inputContainerStyle: {
     alignItems: "center",
     justifyContent: "center",
-    width: 75,
+    textAlign: "center",
+    width: 40,
+    marginRight: 10,
   },
   inputStyle: {
     height: "100%",
@@ -186,6 +194,7 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.grey,
     borderRadius: 10,
     paddingHorizontal: 10,
+    textAlign: "center",
   },
 });
 
