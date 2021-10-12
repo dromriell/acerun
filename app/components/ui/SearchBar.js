@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { StyleSheet, View, Text, TextInput, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Keyboard,
+  TextInput,
+  Dimensions,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { TouchComp } from "./TouchComp";
@@ -84,7 +90,13 @@ const SearchBar = (props) => {
         />
       </TouchComp>
       {searchButton && (
-        <SearchButton termRef={searchRef} onPress={handleSearchSubmit} />
+        <SearchButton
+          termRef={searchRef}
+          onPress={() => {
+            Keyboard.dismiss();
+            handleSearchSubmit();
+          }}
+        />
       )}
     </View>
   );
@@ -100,12 +112,10 @@ const styles = StyleSheet.create({
     height: "50%",
   },
   placeholder: {
-    flex: 1,
     width: "100%",
-    color: AppColors.darkGrey,
+    color: AppColors.blackTrans,
     textAlign: "center",
-    paddingVertical: 5,
-    fontSize: 14,
+    fontSize: 16,
   },
   searchField: {
     flex: 1,
