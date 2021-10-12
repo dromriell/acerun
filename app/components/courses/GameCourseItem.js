@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: AppColors.accent,
     borderRadius: 10,
+    minHeight: 250,
   },
   touchable: {
     width: "100%",
