@@ -62,8 +62,10 @@ const GameCourseItem = (props) => {
               {course.course_name}
             </HeaderText>
             <Text style={styles.headerSub}>
-              <BodyText capitalize>{course.city}, </BodyText>
-              <BodyText>{course.state_province.toUpperCase()}</BodyText>
+              <BodyText capitalize>{course.city}</BodyText>
+              {course.state_province && (
+                <BodyText>, {course.state_province.toUpperCase()}</BodyText>
+              )}
             </Text>
             {course.distance !== "" && (
               <BodyText style={styles.headerSub}>
@@ -75,8 +77,8 @@ const GameCourseItem = (props) => {
             <View style={styles.badge}>
               <Ionicons
                 name="golf"
-                size={36}
-                color={AppColors.accent}
+                size={35}
+                color={AppColors.primary}
                 style={styles.badgeIcon}
               />
               <SubHeaderText style={styles.badgeText}>
@@ -86,8 +88,8 @@ const GameCourseItem = (props) => {
             <View style={styles.badge}>
               <FontAwesome
                 name="tree"
-                size={36}
-                color={AppColors.accent}
+                size={33}
+                color={AppColors.primary}
                 style={styles.badgeIcon}
               />
               <SubHeaderText style={styles.badgeText}>
@@ -98,7 +100,7 @@ const GameCourseItem = (props) => {
               <FontAwesome5
                 name="mountain"
                 size={30}
-                color={AppColors.accent}
+                color={AppColors.primary}
                 style={styles.badgeIcon}
               />
               <SubHeaderText style={styles.badgeText}>
@@ -108,26 +110,15 @@ const GameCourseItem = (props) => {
             <View style={styles.badge}>
               <MaterialIcons
                 name={course.fees === "yes" ? "attach-money" : "money-off"}
-                size={50}
-                color={AppColors.accent}
-              />
-            </View>
-            <View style={styles.badge}>
-              <FontAwesome5
-                name={
-                  course.facilities === "yes"
-                    ? "toilet-paper"
-                    : "toilet-paper-slash"
-                }
-                size={30}
-                color={AppColors.accent}
+                size={40}
+                color={AppColors.primary}
               />
             </View>
             <View style={styles.badge}>
               <FontAwesome5
                 name={course.private === "yes" ? "lock" : "lock-open"}
-                size={30}
-                color={AppColors.accent}
+                size={28}
+                color={AppColors.primary}
               />
             </View>
           </View>
@@ -141,6 +132,7 @@ const styles = StyleSheet.create({
   courseItem: {
     flex: 1,
     minHeight: 250,
+    marginVertical: 10,
   },
   empty: {
     flex: 1,
@@ -187,7 +179,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   header: {
-    paddingLeft: 15,
+    paddingHorizontal: 10,
     paddingTop: 15,
     color: AppColors.white,
     fontSize: 26,
@@ -207,19 +199,20 @@ const styles = StyleSheet.create({
   badge: {
     justifyContent: "center",
     alignItems: "center",
-    width: 50,
+    width: 40,
     aspectRatio: 1,
     borderRadius: 50,
-    backgroundColor: AppColors.primary,
+    // backgroundColor: AppColors.primary,
   },
   badgeIcon: {
     position: "absolute",
   },
   badgeText: {
     position: "absolute",
-    bottom: 5,
-    color: AppColors.black,
-    fontSize: 22,
+    bottom: 0,
+    color: AppColors.accent,
+    fontSize: 24,
+    fontWeight: "600",
   },
 });
 
