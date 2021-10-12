@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TextInput, Dimensions } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { TouchComp } from "./TouchComp";
+import { BodyText } from "./AppText";
 import AppColors from "../../utils/AppColors";
 
 const SearchButton = (props) => {
@@ -22,7 +23,7 @@ const SearchButton = (props) => {
             padding: 2,
           }}
         >
-          <FontAwesome name="search" size={24} color={AppColors.accent} />
+          <FontAwesome name="search" size={21} color={AppColors.accent} />
         </View>
       </TouchComp>
     </View>
@@ -60,7 +61,7 @@ const SearchBar = (props) => {
     return (
       <View style={{ ...styles.searchBar, ...props.style }}>
         <TouchComp onPress={props.onPress}>
-          <Text style={styles.placeholder}>{props.placeholder}</Text>
+          <BodyText style={styles.placeholder}>{props.placeholder}</BodyText>
         </TouchComp>
         {searchButton && <SearchButton />}
       </View>
@@ -78,6 +79,8 @@ const SearchBar = (props) => {
               ? (text) => setSearchTerm(text)
               : (text) => onSearch(text)
           }
+          returnKeyType="search"
+          onSubmitEditing={handleSearchSubmit}
         />
       </TouchComp>
       {searchButton && (
@@ -99,9 +102,10 @@ const styles = StyleSheet.create({
   placeholder: {
     flex: 1,
     width: "100%",
-    color: AppColors.blackTrans,
+    color: AppColors.darkGrey,
     textAlign: "center",
     paddingVertical: 5,
+    fontSize: 14,
   },
   searchField: {
     flex: 1,
