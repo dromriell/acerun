@@ -69,7 +69,7 @@ const GameCourseSelectScreen = (props) => {
     } catch (error) {
       Alert.alert(
         "Could Not Fetch Location",
-        "Please try again later or pick a location on the map",
+        "Make sure you have enabled Location services and please try again.",
         [{ text: "Okay" }]
       );
     }
@@ -90,9 +90,7 @@ const GameCourseSelectScreen = (props) => {
         },
       });
       const courseDataResponse = await response.json();
-      console.log(courseDataResponse);
       setCourses(courseDataResponse.courses);
-      // setCourses(dummyCourse);
     } catch (error) {
       setError(error.message);
     }
@@ -104,6 +102,7 @@ const GameCourseSelectScreen = (props) => {
   }, []);
 
   useEffect(() => {
+    // setCourses(dummyCourse);
     if (!location) {
       return;
     }
@@ -157,6 +156,7 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: AppColors.darkGrey,
   },
   launchScreen: {
     width: "100%",
