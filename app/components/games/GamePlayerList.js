@@ -1,7 +1,7 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 
-import { SubHeaderText, BodyText } from "../ui/AppText";
+import { SubHeaderText } from "../ui/AppText";
 import AppColors from "../../utils/AppColors";
 
 const dummyPlayerData = [
@@ -30,7 +30,6 @@ const GamePlayerList = (props) => {
 
 const styles = StyleSheet.create({
   list: {
-    flex: 1,
     alignItems: "center",
     backgroundColor: AppColors.white,
     borderRadius: 15,
@@ -38,7 +37,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    padding: 20,
+    padding: 10,
     color: AppColors.black,
     backgroundColor: AppColors.primary,
     borderBottomWidth: 2,
