@@ -59,7 +59,10 @@ const StrokeMenuToggleButton = (props) => {
           transform: [{ rotateZ: rotateInterpolate }],
         }}
       >
-        <TouchComp onPress={handleStrokeMenuToggle}>
+        <TouchComp
+          onPress={handleStrokeMenuToggle}
+          style={{ width: 55, aspectRatio: 1 }}
+        >
           <Ionicons
             name="add-circle-sharp"
             color={isStrokeMenuOpen ? AppColors.red : AppColors.accent}
@@ -73,16 +76,7 @@ const StrokeMenuToggleButton = (props) => {
 };
 
 const styles = StyleSheet.create({
-  strokeMenu: {
-    width: "20%",
-    position: "relative",
-    alignItems: "center",
-  },
   strokeButtonContainer: {
-    position: "absolute",
-    flexDirection: "row",
-    width: 50,
-    flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
   },
