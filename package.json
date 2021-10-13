@@ -34,7 +34,8 @@
     "react-redux": "^7.2.4",
     "redux": "^4.1.1",
     "redux-thunk": "^2.3.0",
-    "victory-native": "^35.5.4"
+    "victory-native": "^35.5.4",
+    "@react-native-picker/picker": "1.16.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
