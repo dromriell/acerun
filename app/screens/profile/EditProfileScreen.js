@@ -1,7 +1,8 @@
 import React, { useReducer, useEffect, useState, useCallback } from "react";
 import { View, StyleSheet, KeyboardAvoidingView, Button } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Input from "../../components/ui/Input";
+import StatePicker from "../../components/ui/StatePicker";
 
 import { Ionicons } from "@expo/vector-icons";
 import AppColors from "../../utils/AppColors";
@@ -11,6 +12,7 @@ import {
   HeaderText,
   SubHeaderText,
 } from "../../components/ui/AppText";
+import { ScrollView } from "react-native-gesture-handler";
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -42,6 +44,12 @@ const EditProfileScreen = (props) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const profile = useSelector((state) => state.auth.profile);
+  const { bio, city, state } = profile;
+  const { username, birth_day, email, first_name, last_name, userID } =
+    profile.user;
+  console.log(username, city, state);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -93,77 +101,78 @@ const EditProfileScreen = (props) => {
 
   return (
     <KeyboardAvoidingView style={styles.screen}>
-      <View style={styles.form}>
-        <Input
-          id="username"
-          icon={
-            <Ionicons
-              name="person"
-              size={24}
-              color={AppColors.accent}
-              style={styles.inputIcon}
-            />
-          }
-          label="Username"
-          labelStyle={styles.label}
-          keyBoardType="text"
-          required
-          autoCapitalize="none"
-          errorText="Please enter a valid username"
-          onInputChange={handleInputChange}
-          initialValue=""
-        />
-        <Input
-          id="city"
-          icon={
-            <Ionicons
-              name="md-lock-closed"
-              size={24}
-              color={AppColors.accent}
-              style={styles.inputIcon}
-            />
-          }
-          label="City"
-          labelStyle={styles.label}
-          keyBoardType="text"
-          autoCapitalize="none"
-          errorText="Invalid City"
-          onInputChange={handleInputChange}
-          initialValue=""
-          max={20}
-        />
-        <Input
-          id="state"
-          icon={
-            <Ionicons
-              name="md-lock-closed"
-              size={24}
-              color={AppColors.accent}
-              style={styles.inputIcon}
-            />
-          }
-          label="State"
-          labelStyle={styles.label}
-          keyBoardType="text"
-          autoCapitalize="none"
-          errorText="Invalid State"
-          onInputChange={handleInputChange}
-          initialValue=""
-          max={2}
-        />
-        <View style={styles.buttonContainer}>
-          {isLoading ? (
-            <ActivityIndicator size="small" color={AppColors.primary} />
-          ) : (
-            <Button
-              title="Submit"
-              color={AppColors.primary}
-              onPress={handleEditSubmit}
-              disabled // TEMPA - Disable until form handling complete
-            />
-          )}
+      <ScrollView style={{ width: "90%" }}>
+        <View style={styles.form}>
+          <Input
+            id="username"
+            icon={
+              <Ionicons
+                name="person"
+                size={24}
+                color={AppColors.accent}
+                style={styles.inputIcon}
+              />
+            }
+            label="Username"
+            labelStyle={styles.label}
+            keyBoardType="text"
+            required
+            autoCapitalize="none"
+            errorText="Please enter a valid username"
+            onInputChange={handleInputChange}
+            initialValue={username || ""}
+          />
+          <Input
+            id="city"
+            icon={
+              <Ionicons
+                name="md-lock-closed"
+                size={24}
+                color={AppColors.accent}
+                style={styles.inputIcon}
+              />
+            }
+            label="City"
+            labelStyle={styles.label}
+            keyBoardType="text"
+            autoCapitalize="none"
+            errorText="Invalid City"
+            onInputChange={handleInputChange}
+            initialValue={city || ""}
+            max={20}
+          />
+          <StatePicker
+            id="state"
+            icon={
+              <Ionicons
+                name="md-lock-closed"
+                size={24}
+                color={AppColors.accent}
+                style={styles.inputIcon}
+              />
+            }
+            handleInputChange={handleInputChange}
+            label="State"
+            labelStyle={styles.label}
+            keyBoardType="text"
+            autoCapitalize="none"
+            errorText="Invalid State"
+            initialValue={state || ""}
+          />
+          <View style={styles.buttonContainer}>
+            {isLoading ? (
+              <ActivityIndicator size="small" color={AppColors.primary} />
+            ) : (
+              <Button
+                title="Submit"
+                color={AppColors.primary}
+                onPress={handleEditSubmit}
+                disabled // TEMPA - Disable until form handling complete
+              />
+            )}
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -186,7 +195,7 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.darkGrey,
   },
   form: {
-    width: "90%",
+    width: "100%",
   },
   label: {
     color: AppColors.white,
