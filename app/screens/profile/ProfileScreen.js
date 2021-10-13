@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Button,
   Image,
-  SafeAreaView,
+  ScrollView,
   StatusBar,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,68 +23,75 @@ import { TouchComp } from "../../components/ui/TouchComp";
 const ProfileScreen = (props) => {
   const dispatch = useDispatch();
   const profile = useSelector((state) => state.auth.profile);
+
   return (
     <View style={styles.screen}>
-      <View style={styles.profileImageContainer}>
-        <Image
-          style={styles.profileImage}
-          source={require("../../assets/icons/map/disc-golf-basket.png")}
-        />
-      </View>
-      <View style={styles.infoHeaderContainer}>
-        <HeaderText color={AppColors.white} size={32}>
-          Username Here
-        </HeaderText>
-        <SubHeaderText color={AppColors.grey}>
-          {profile.city && profile.city} {profile.state}
-        </SubHeaderText>
-        <View style={styles.countRow}>
-          <View style={{ ...styles.countCard, ...styles.borderRight }}>
-            <SubHeaderText size={24} style={styles.font}>
-              {profile.friends.length}
-            </SubHeaderText>
-            <BodyText color={AppColors.grey} centered>
-              Friends
-            </BodyText>
-          </View>
-          <View style={{ ...styles.countCard, ...styles.borderRight }}>
-            <SubHeaderText size={24} style={styles.font}>
-              {profile.disc_bag.length}
-            </SubHeaderText>
-            <BodyText centered color={AppColors.grey}>
-              Discs
-            </BodyText>
-          </View>
-          <View style={styles.countCard}>
-            <SubHeaderText size={24} style={styles.font}>
-              {profile.disc_bag.length}
-            </SubHeaderText>
-            <BodyText centered color={AppColors.grey}>
-              Games
-            </BodyText>
+      <ScrollView style={styles.scroll}>
+        <View style={styles.profileImageContainer}>
+          <Image
+            style={styles.profileImage}
+            source={require("../../assets/icons/map/disc-golf-basket.png")}
+          />
+        </View>
+        <View style={styles.infoHeaderContainer}>
+          <HeaderText color={AppColors.white} size={32}>
+            Username Here
+          </HeaderText>
+          <SubHeaderText color={AppColors.grey}>
+            {profile.city && profile.city} {profile.state}
+          </SubHeaderText>
+          <View style={styles.countRow}>
+            <View style={{ ...styles.countCard, ...styles.borderRight }}>
+              <SubHeaderText size={24} style={styles.font}>
+                {profile.friends.length}
+              </SubHeaderText>
+              <BodyText color={AppColors.grey} centered>
+                Friends
+              </BodyText>
+            </View>
+            <View style={{ ...styles.countCard, ...styles.borderRight }}>
+              <SubHeaderText size={24} style={styles.font}>
+                {profile.disc_bag.length}
+              </SubHeaderText>
+              <BodyText centered color={AppColors.grey}>
+                Discs
+              </BodyText>
+            </View>
+            <View style={styles.countCard}>
+              <SubHeaderText size={24} style={styles.font}>
+                {profile.disc_bag.length}
+              </SubHeaderText>
+              <BodyText centered color={AppColors.grey}>
+                Games
+              </BodyText>
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.buttonGroup}>
-        <TouchComp onPress={() => props.navigation.navigate("ProfileEdit")}>
-          <View style={styles.button}>
-            <MaterialIcons name="edit" size={24} color={AppColors.accent} />
-            <BodyText style={styles.font}> Edit Profile</BodyText>
-          </View>
-        </TouchComp>
-        <TouchComp onPress={() => console.log("CHANGE SETTINGS")}>
-          <View style={styles.button}>
-            <MaterialIcons name="settings" size={24} color={AppColors.accent} />
-            <BodyText style={styles.font}> Settings</BodyText>
-          </View>
-        </TouchComp>
-        <TouchComp onPress={() => dispatch(authActions.logout())}>
-          <View style={styles.button}>
-            <MaterialIcons name="logout" size={24} color={AppColors.accent} />
-            <BodyText style={styles.font}> Logout</BodyText>
-          </View>
-        </TouchComp>
-      </View>
+        <View style={styles.buttonGroup}>
+          <TouchComp onPress={() => props.navigation.navigate("ProfileEdit")}>
+            <View style={styles.button}>
+              <MaterialIcons name="edit" size={24} color={AppColors.accent} />
+              <BodyText style={styles.font}> Edit Profile</BodyText>
+            </View>
+          </TouchComp>
+          <TouchComp onPress={() => console.log("CHANGE SETTINGS")}>
+            <View style={styles.button}>
+              <MaterialIcons
+                name="settings"
+                size={24}
+                color={AppColors.accent}
+              />
+              <BodyText style={styles.font}> Settings</BodyText>
+            </View>
+          </TouchComp>
+          <TouchComp onPress={() => dispatch(authActions.logout())}>
+            <View style={styles.button}>
+              <MaterialIcons name="logout" size={24} color={AppColors.accent} />
+              <BodyText style={styles.font}> Logout</BodyText>
+            </View>
+          </TouchComp>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -92,16 +99,20 @@ const ProfileScreen = (props) => {
 export const screenOptions = () => {
   return {
     headerTitle: "",
+    headerShown: false,
   };
 };
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
     backgroundColor: AppColors.darkGrey,
     alignItems: "center",
     justifyContent: "flex-start",
+  },
+  scroll: {
+    width: "100%",
+    paddingTop: StatusBar.currentHeight,
   },
   profileImageContainer: {
     alignItems: "center",
@@ -139,6 +150,7 @@ const styles = StyleSheet.create({
   buttonGroup: {
     width: "100%",
     padding: 10,
+    marginBottom: 30,
   },
   button: {
     flexDirection: "row",
