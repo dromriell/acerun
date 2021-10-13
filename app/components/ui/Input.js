@@ -29,7 +29,7 @@ const Input = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.initialValue
       ? props.initialValue
-      : props.defaultValue
+      : props.initialValue
       ? props.defaultValue
       : "",
     isValid: props.isValid,
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.white,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
+    paddingHorizontal: 5,
   },
   errorText: {
     color: "red",
