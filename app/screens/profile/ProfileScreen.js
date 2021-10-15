@@ -35,7 +35,7 @@ const ProfileScreen = (props) => {
         </View>
         <View style={styles.infoHeaderContainer}>
           <HeaderText color={AppColors.white} size={32}>
-            Username Here
+            {profile.user.username}
           </HeaderText>
           <SubHeaderText color={AppColors.grey}>
             {profile.city && profile.city} {profile.state}
