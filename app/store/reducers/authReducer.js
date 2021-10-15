@@ -1,4 +1,4 @@
-import { AUTHENTICATE, LOG_OUT } from "../actions/authActions";
+import { AUTHENTICATE, LOG_OUT, UPDATE_PROFILE } from "../actions/authActions";
 
 const initialState = {
   userId: null,
@@ -23,6 +23,11 @@ export default (state = initialState, action) => {
     //    };
     case LOG_OUT:
       return initialState;
+    case UPDATE_PROFILE:
+      return {
+        ...state,
+        profile: action.profile,
+      };
     default:
       return state;
   }
