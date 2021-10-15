@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { stateArray } from "../../utils/stateArray";
 
 import { SubHeaderText } from "./AppText";
 import AppColors from "../../utils/AppColors";
@@ -9,12 +10,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 const StatePicker = (props) => {
   const { handleInputChange, initialValue } = props;
-  const [selectedValue, setSelectedValue] = useState();
-  console.log(initialValue);
+  const [selectedValue, setSelectedValue] = useState(initialValue);
 
-  useEffect(() => {
-    handleInputChange(selectedValue);
-  }, []);
+  const StateItem = Picker.Item;
 
   return (
     <View style={{ ...styles.formControl, ...props.formControlStyle }}>
@@ -24,66 +22,28 @@ const StatePicker = (props) => {
       <View style={{ ...styles.inputContainer, ...props.inputContainerStyle }}>
         {props.icon}
         <Picker
-          selectedValue={initialValue || null}
-          onValueChange={handleInputChange}
+          selectedValue={initialValue.toUpperCase() || null}
+          onValueChange={(itemValue) => {
+            setSelectedValue(itemValue);
+            handleInputChange("state", itemValue);
+          }}
           {...props}
           style={{ ...styles.input, ...props.inputStyle }}
+          itemStyle={{ ...styles.items, ...props.itemStyle }}
         >
           <Picker.Item label="Pick a state" value={null} />
-          <Picker.Item label="Alabama" value="AL" />
-          <Picker.Item label="Alaska" value="AK" />
-          <Picker.Item label="Arizona" value="AZ" />
-          <Picker.Item label="Arkansas" value="AR" />
-          <Picker.Item label="California" value="CA" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Kentucky" value="KY" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
-          <Picker.Item label="Colorado" value="CO" />
+          {stateArray.map((state) => {
+            const isSelected = selectedValue === state.abbr;
+            return (
+              <StateItem
+                key={state.abbr}
+                label={state.name}
+                value={state.abbr}
+                color={isSelected ? AppColors.primary : null}
+              />
+            );
+          })}
         </Picker>
-        <View style={styles.dropdownIcon}>
-          <MaterialIcons name="arrow-drop-down" size={24} color="black" />
-        </View>
       </View>
     </View>
   );
@@ -99,9 +59,9 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
-    width: "100%",
+    width: "95%",
     height: 35,
     marginVertical: 5,
     backgroundColor: AppColors.white,
@@ -110,19 +70,14 @@ const styles = StyleSheet.create({
   input: {
     width: "90%",
     height: "100%",
-    backgroundColor: AppColors.white,
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
+    borderRadius: 10,
     paddingHorizontal: 5,
   },
   errorText: {
     color: "red",
     fontSize: 13,
   },
-  dropdownIcon: {
-    position: "absolute",
-    right: 0,
-  },
+  items: {},
 });
 
 export default StatePicker;
