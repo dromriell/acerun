@@ -113,11 +113,12 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    width: "100%",
+    width: "95%",
     height: 35,
     marginVertical: 5,
+    borderRadius: 10,
   },
   input: {
     width: "90%",
