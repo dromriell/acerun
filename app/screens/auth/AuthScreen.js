@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
   },
   loginForm: {
     width: "90%",
+    alignItems: "center",
   },
   buttonGroup: {
     flexDirection: "row",
