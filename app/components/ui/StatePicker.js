@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
     width: "95%",
     height: 35,
@@ -71,13 +71,15 @@ const styles = StyleSheet.create({
     width: "90%",
     height: "100%",
     borderRadius: 10,
-    paddingHorizontal: 5,
+    paddingLeft: 10,
   },
   errorText: {
     color: "red",
     fontSize: 13,
   },
-  items: {},
+  items: {
+    textAlign: "center",
+  },
 });
 
 export default StatePicker;
