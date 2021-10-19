@@ -13,6 +13,7 @@ import * as authActions from "../../store/actions/authActions";
 
 import Input from "../../components/ui/Input";
 import StatePicker from "../../components/ui/StatePicker";
+import UpdateBadge from "../../components/ui/UpdateBadge";
 
 import { Ionicons } from "@expo/vector-icons";
 import AppColors from "../../utils/AppColors";
@@ -59,7 +60,6 @@ const EditProfileScreen = (props) => {
 
   const token = useSelector((state) => state.auth.token);
   const profile = useSelector((state) => state.auth.profile);
-  console.log(profile);
 
   const { bio, city, state, id } = profile;
   const { username, birth_day, email, first_name, last_name, userID } =
@@ -127,12 +127,7 @@ const EditProfileScreen = (props) => {
 
   return (
     <KeyboardAvoidingView style={styles.screen}>
-      {showUpdateBadge && (
-        <View style={styles.updateBadge}>
-          <BodyText>Updated Successfully</BodyText>
-        </View>
-      )}
-
+      {showUpdateBadge && <UpdateBadge message="Profile Updated!" />}
       <ScrollView style={styles.scroll}>
         <View style={styles.form}>
           <Input
@@ -292,14 +287,6 @@ const styles = StyleSheet.create({
   form: {
     width: "100%",
     alignItems: "center",
-  },
-  formRow: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
-    borderWidth: 1,
-    borderColor: "red",
-    paddingHorizontal: 5,
   },
   label: {
     color: AppColors.white,
