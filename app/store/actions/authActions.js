@@ -4,7 +4,7 @@ export const AUTHENTICATE = "AUTHENTICATE";
 export const LOG_OUT = "LOG_OUT";
 export const UPDATE_PROFILE = "UPDATE_PROFILE";
 
-import { authEP, profileEP } from "../../utils/apiEndPoints";
+import { authEP, profileEP, signUpEP } from "../../utils/apiEndPoints";
 
 let timer;
 
@@ -84,6 +84,37 @@ export const logout = () => {
   clearLogoutTimer();
   AsyncStorage.removeItem("userData");
   return { type: LOG_OUT };
+};
+
+export const signUpUser = (signUpData) => {
+  return async (dispatch) => {
+    const response = await fetch(signUpEP, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(signUpData),
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      let errorMsg = "";
+      console.log(errorResponse);
+
+      Object.entries(errorResponse).forEach(([key, value]) => {
+        switch (key) {
+          case "non_field_errors":
+            errorMsg = errorMsg + value;
+            return;
+          default:
+            errorMsg = errorMsg + value;
+            return;
+        }
+      });
+      console.log(errorMsg);
+      throw Error(errorMsg || "An error occured!");
+    }
+  };
 };
 
 export const updateProfile = (token, profileID, profileData) => {
