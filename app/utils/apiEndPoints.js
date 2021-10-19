@@ -14,6 +14,7 @@ export const uri = `https://dg-api-test.herokuapp.com`; // HEROKU TEST DEVELOPME
 
 export const authEP = `${uri}/api-token-auth/`;
 export const profileEP = (id) => `${uri}/api/v1/profiles/list/${id}/`;
+export const signUpEP = `${uri}/api/v1/users/list/`;
 
 // DISC ENDPOINTS
 
