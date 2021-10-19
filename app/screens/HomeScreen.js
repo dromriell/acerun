@@ -1,8 +1,6 @@
 import React from "react";
 import { View, StyleSheet, ScrollView, Image, StatusBar } from "react-native";
 import { useSelector } from "react-redux";
-import Constants from "expo-constants";
-import Svg from "react-native-svg";
 
 import EventWidget from "../components/events/EventWidget";
 import GameHistoryWidget from "../components/games/GameHistoryWidget";
