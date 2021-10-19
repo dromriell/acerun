@@ -120,21 +120,28 @@ const GameHistoryWidget = (props) => {
     );
   }
 
-  if (!isLoading && !gameHistory) {
+  if ((!isLoading && !gameHistory) || gameHistory.length === 0) {
     return (
       <View style={styles.container}>
-        <SubHeaderText>No Games Found</SubHeaderText>
+        <View style={styles.containerHeader}>
+          <HeaderText size={32} color={AppColors.accent}>
+            Recent Games
+          </HeaderText>
+        </View>
+        <View style={styles.emptyItem}>
+          <SubHeaderText size={24}>So Empty...</SubHeaderText>
+        </View>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.containerHeader}>
+      <View style={styles.containerHeader}>
         <HeaderText size={32} color={AppColors.accent}>
-          My Games
+          Recent Games
         </HeaderText>
-      </View> */}
+      </View>
       {gameHistory.map((game, i) => {
         if (!game.game) {
           return;
@@ -163,7 +170,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  emptyItem: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    width: "100%",
+    height: "100%",
+    paddingHorizontal: 20,
+  },
   containerHeader: {
+    width: "100%",
     padding: 5,
     backgroundColor: AppColors.primary,
   },
