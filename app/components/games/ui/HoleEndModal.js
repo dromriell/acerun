@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { View, Button, StyleSheet, Dimensions } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as gameActions from "../../../store/actions/gameActions";
 
@@ -19,6 +19,8 @@ const HoleEndModal = (props) => {
   const courseData = useSelector((state) => state.game.courseData); // MAY NEED TO USE FOR GAME END
   const currentHoleIndex = useSelector((state) => state.game.currentHoleIndex);
   const scorecard = useSelector((state) => state.game.scorecard);
+
+  const [isLoading, setIsLoading] = useState(false);
   const score = currentStrokes.length;
   const isEndGame = currentHoleIndex + 1 === courseData.holes.length;
 
@@ -76,6 +78,20 @@ const HoleEndModal = (props) => {
     setIsHoleEndModalOpen(false);
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.modal}>
+          <HeaderText style={styles.header}>Hole Complete!</HeaderText>
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color={AppColors.accent} />
+          </View>
+        </View>
+        <View />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.modal}>
@@ -125,6 +141,10 @@ const styles = StyleSheet.create({
     height: "35%",
     backgroundColor: AppColors.primary,
     borderRadius: 15,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
   },
   header: {
     width: "100%",
