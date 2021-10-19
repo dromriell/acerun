@@ -3,6 +3,7 @@ import { searchCoursesEP } from "../../utils/apiEndPoints";
 export const SET_COURSE_RESULTS = "SET_COURSE_RESULTS";
 export const SET_COURSE_FILTERS = "SET_COURSE_FILTERS";
 export const CLEAR_COURSE_FILTERS = "CLEAR_COURSE_FILTERS";
+export const RESET_COURSES = "RESET_COURSES";
 
 export const setCourseFilters = (filters) => {
   return (dispatch) => {
@@ -18,7 +19,6 @@ export const searchCourses = (token, searchTerm) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(searchCoursesEP(searchTerm));
 
     if (!response.ok) {
       const errorResponse = await response.json();
@@ -38,11 +38,16 @@ export const searchCourses = (token, searchTerm) => {
     }
 
     const courseSearchResults = await response.json();
-    console.log(courseSearchResults);
 
     dispatch({
       type: SET_COURSE_RESULTS,
       courseSearchResults: courseSearchResults.courses,
     });
+  };
+};
+
+export const resetCourses = () => {
+  return (dispatch) => {
+    dispatch({ type: RESET_COURSES });
   };
 };

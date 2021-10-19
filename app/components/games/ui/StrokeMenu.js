@@ -13,6 +13,7 @@ import AppColors from "../../../utils/AppColors";
 import { SubHeaderText } from "../../ui/AppText";
 
 const screenWidth = Dimensions.get("screen").width;
+const menuHeight = Dimensions.get("screen").height > 800 ? 200 : 150;
 
 const StrokeMenu = (props) => {
   const { isStrokeMenuOpen, handleStrokeRecord } = props;
@@ -299,7 +300,7 @@ const MenuBubble = (props) => {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: 166,
+    bottom: menuHeight,
     left: 0,
     alignItems: "center",
     height: 150,

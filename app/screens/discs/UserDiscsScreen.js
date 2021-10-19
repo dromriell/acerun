@@ -56,14 +56,6 @@ const UserDiscsScreen = (props) => {
     );
   }
 
-  if (!isLoading && userDiscs.length === 0) {
-    return (
-      <View style={styles.centered}>
-        <Text>No discs found! Start adding some!</Text>
-      </View>
-    );
-  }
-
   if (isLoading) {
     return (
       <View style={{ ...styles.screen, ...styles.loading }}>

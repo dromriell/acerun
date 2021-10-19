@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, StyleSheet, Switch, Alert } from "react-native";
+import { View, StyleSheet, Alert, Dimensions } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as Location from "expo-location";
 import * as gameActions from "../../../store/actions/gameActions";
@@ -13,6 +13,8 @@ import Toggle from "../../ui/Toggle";
 import getHaversineDistance from "../../../utils/getHaversineDist";
 
 import AppColors from "../../../utils/AppColors";
+
+const menuHeight = Dimensions.get("screen").height > 800 ? 200 : 150;
 
 const GameActionMenu = (props) => {
   const dispatch = useDispatch();
@@ -69,14 +71,7 @@ const GameActionMenu = (props) => {
     if (!hasPermission) {
       return;
     }
-    if (!equippedDisc) {
-      Alert.alert(
-        "No Disc Selected!",
-        "Please select a disc before marking your location.",
-        [{ text: "Okay" }]
-      );
-      return;
-    }
+
     try {
       setIsLoading(true);
       await navigator.geolocation.getCurrentPosition(
@@ -103,6 +98,14 @@ const GameActionMenu = (props) => {
   };
 
   const handleStrokeRecord = async (type) => {
+    if (!equippedDisc) {
+      Alert.alert(
+        "No Disc Selected!",
+        "Please select a disc before marking your location.",
+        [{ text: "Okay" }]
+      );
+      return;
+    }
     if (type === "STROKE") {
       await handleGetLocation();
     } else if (type === "PENALTY") {
@@ -150,16 +153,19 @@ const GameActionMenu = (props) => {
     <View
       style={{
         ...styles.screen,
-        height: isStrokeMenuOpen ? 300 : 150,
+        height: isStrokeMenuOpen ? menuHeight * 2 : menuHeight,
       }}
     >
       <View style={styles.container}>
         <View style={styles.gameHud}>
           <InfoBar currentStrokes={currentStrokes} weather={weather} />
-          <StrokeMenuToggleButton
-            isStrokeMenuOpen={isStrokeMenuOpen}
-            setIsStrokeMenuOpen={setIsStrokeMenuOpen}
-          />
+          <View style={styles.strokeMenu}>
+            <StrokeMenuToggleButton
+              isStrokeMenuOpen={isStrokeMenuOpen}
+              setIsStrokeMenuOpen={setIsStrokeMenuOpen}
+              isLoading={isLoading}
+            />
+          </View>
           <View style={styles.discMenu}>
             <Toggle
               labelLeft={"FH"}
@@ -234,23 +240,31 @@ const styles = StyleSheet.create({
     left: 0,
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 5,
+    paddingHorizontal: 5,
     backgroundColor: AppColors.blackTrans,
+    height: menuHeight,
+  },
+  strokeMenu: {
+    alignContent: "center",
+    justifyContent: "flex-start",
+    width: "20%",
   },
   discMenu: {
     alignContent: "center",
     justifyContent: "center",
     width: "40%",
+    padding: 2,
   },
   discContainer: {
-    width: "100%",
-    height: "75%",
+    flex: 1,
+    aspectRatio: 1,
     justifyContent: "center",
     alignItems: "center",
-    margin: 0,
   },
   discDisplay: {
-    height: "100%",
+    flex: 1,
+    width: "95%",
+    maxWidth: "95%",
   },
 });
 

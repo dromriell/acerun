@@ -4,13 +4,17 @@ import { REACT_APP_OPEN_WEATHER_API_KEY } from "../../env";
 const { manifest } = Constants;
 
 // export const uri = `http://${manifest.debuggerHost // LOCAL DEVELOPMENT URI
-//   .split(`:`)
-//   .shift()
-//   .concat(`:8000`)}`;
+// .split(`:`)
+// .shift()
+// .concat(`:8000`)}`;
 
 export const uri = `https://dg-api-test.herokuapp.com`; // HEROKU TEST DEVELOPMENT URI
 
+// AUTH & USER ENDPOINTS
+
 export const authEP = `${uri}/api-token-auth/`;
+export const profileEP = (id) => `${uri}/api/v1/profiles/list/${id}/`;
+export const signUpEP = `${uri}/api/v1/users/list/`;
 
 // DISC ENDPOINTS
 

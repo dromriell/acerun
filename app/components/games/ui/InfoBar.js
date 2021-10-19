@@ -16,7 +16,7 @@ const InfoBar = (props) => {
       </View>
       <View style={styles.infoCard}>
         <SubHeaderText color={AppColors.white}>
-          Dist: {currentStrokes[currentStrokes.length - 1]?.dist || 0}ft
+          Dist: {currentStrokes[currentStrokes.length - 1]?.dist || 0} ft
         </SubHeaderText>
       </View>
       <View style={styles.infoCard}>
@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: AppColors.darkGrey,
-    paddingVertical: 5,
+    paddingVertical: 3,
     paddingHorizontal: 10,
     borderRadius: 5,
     elevation: 5,
-    marginVertical: 5,
+    marginVertical: 1,
   },
 });
 

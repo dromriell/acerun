@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   Button,
-  ImageBackground,
+  Dimensions,
   Alert,
+  ScrollView,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,10 +15,16 @@ import GamePlayerList from "../../components/games/GamePlayerList";
 
 import * as gameActions from "../../store/actions/gameActions";
 
+import UpdateBadge from "../../components/ui/UpdateBadge";
 import AppColors from "../../utils/AppColors";
 
 const GameSetupScreen = (props) => {
   const dispatch = useDispatch();
+  const errorCreating = props.route.params
+    ? props.route.params.errorCreating
+    : null;
+  console.log(errorCreating);
+  const [courseUnavailable, setCourseUnavailable] = useState(errorCreating);
   const selectedCourse = useSelector((state) => state.game.course);
   const userProfile = useSelector((state) => state.auth.profile.user);
 
@@ -31,69 +38,96 @@ const GameSetupScreen = (props) => {
     props.navigation.navigate("GameLaunch", { players: [userProfile.id] }); //Currently one user, can add others for game on API
   };
 
+  useEffect(() => {
+    if (!errorCreating) {
+      return;
+    }
+    setCourseUnavailable(true);
+    const badgeTimeout = setTimeout(() => {
+      props.route.params.errorCreating = null;
+      setCourseUnavailable(false);
+    }, 5000);
+    return () => clearTimeout(badgeTimeout);
+  }, [errorCreating]);
+
   return (
     <View style={styles.screen}>
-      <View style={styles.containerRow}>
-        <GameCourseItem
-          course={selectedCourse}
-          onCoursePress={() => props.navigation.navigate("GameCourseSelect")}
+      {courseUnavailable && (
+        <UpdateBadge
+          message="Course Currently Unavailable"
+          style={{ width: "100%" }}
         />
-      </View>
-      <View style={styles.containerRow}>
-        <GamePlayerList />
-      </View>
-      <View style={styles.buttonContainer}>
-        <View style={styles.button}>
-          <Button
-            title="Cancel"
-            onPress={() => {
-              props.navigation.goBack();
-              dispatch(gameActions.clearGameCourse());
-            }}
-            color={AppColors.red}
+      )}
+      <ScrollView>
+        <View style={styles.containerRow}>
+          <GameCourseItem
+            course={selectedCourse}
+            onCoursePress={() => props.navigation.navigate("GameCourseSelect")}
           />
         </View>
-        <View style={styles.button}>
-          <Button
-            title="Start Game"
-            onPress={handleStartGame}
-            style={styles.button}
-            color={AppColors.primary}
-          />
+        <View style={styles.playerRow}>
+          <GamePlayerList />
         </View>
-      </View>
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Button
+              title="Cancel"
+              onPress={() => {
+                props.navigation.goBack();
+                dispatch(gameActions.clearGameCourse());
+              }}
+              color={AppColors.red}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button
+              title="Start Game"
+              onPress={handleStartGame}
+              style={styles.button}
+              color={AppColors.primary}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
+};
+
+export const screenOptions = (navData) => {
+  return {
+    presentation: "transparentModal",
+    headerShown: false,
+  };
 };
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "space-around",
+    height: "100%",
     backgroundColor: AppColors.blackTrans,
   },
   containerRow: {
     width: "90%",
-    height: "35%",
+    minHeight: 250,
+    marginVertical: 10,
+    alignSelf: "center",
   },
-  card: {
-    height: "100%",
-    margin: 10,
-    borderRadius: 5,
+  playerRow: {
+    width: "90%",
+    marginVertical: 10,
+    alignSelf: "center",
   },
-
   playerList: {
     justifyContent: "center",
     alignItems: "center",
-    height: "100%",
     backgroundColor: AppColors.white,
   },
-
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
     width: "100%",
+    height: 50,
+    justifyContent: "space-around",
+    marginVertical: 10,
   },
   button: {
     width: 125,
@@ -101,15 +135,5 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 });
-
-export const screenOptions = (navData) => {
-  return {
-    presentation: "transparentModal",
-    headerTitleAlign: "center",
-    headerTitle: "New Game Setup",
-    headerLeft: () => null,
-    headerShown: false,
-  };
-};
 
 export default GameSetupScreen;

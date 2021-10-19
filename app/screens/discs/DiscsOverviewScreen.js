@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Button,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as discActions from "../../store/actions/discsActions";
@@ -71,30 +72,26 @@ const DiscsOverviewScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <DiscHomeMenu navigation={props.navigation} />
-      <DiscCarousel
-        data={[]} // Currently no endpoint.
-        title={"Trending Discs"}
-        navigation={props.navigation}
-      />
-      <DiscCarousel
-        data={[]} // Currently no endpoint.
-        title={"New Discs"}
-        navigation={props.navigation}
-      />
+      <ScrollView>
+        <DiscHomeMenu navigation={props.navigation} />
+        <DiscCarousel
+          data={[]} // Currently no endpoint.
+          title={"Trending Discs"}
+          navigation={props.navigation}
+        />
+        <DiscCarousel
+          data={[]} // Currently no endpoint.
+          title={"New Discs"}
+          navigation={props.navigation}
+        />
+      </ScrollView>
     </View>
   );
 };
 
 export const screenOptions = (navData) => {
   return {
-    headerLeft: () => {
-      return (
-        <View style={styles.headerLeftContainer}>
-          <Text style={styles.headerLeftText}> </Text>
-        </View>
-      );
-    },
+    headerLeft: () => {},
     headerTitle: () => (
       <SearchBar
         placeholder="Search Discs..."
@@ -113,17 +110,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     paddingVertical: 10,
-  },
-  headerLeftContainer: {
-    alignItems: "center",
-    flexDirection: "row",
-    marginHorizontal: 11,
-    marginVertical: 3,
-  },
-  headerLeftText: {
-    height: 24,
-    width: 24,
-    margin: 3,
   },
   centered: {
     flex: 1,

@@ -1,8 +1,6 @@
 import React from "react";
 import { View, StyleSheet, ScrollView, Image, StatusBar } from "react-native";
 import { useSelector } from "react-redux";
-import Constants from "expo-constants";
-import Svg from "react-native-svg";
 
 import EventWidget from "../components/events/EventWidget";
 import GameHistoryWidget from "../components/games/GameHistoryWidget";
@@ -13,7 +11,6 @@ const HomeScreen = (props) => {
   const token = useSelector((state) => state.auth.token);
   const profile = useSelector((state) => state.auth.profile);
   const { first_name, username } = profile.user;
-  console.log(!first_name ? username : first_name);
 
   return (
     <View style={styles.screen}>

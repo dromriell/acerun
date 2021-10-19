@@ -10,14 +10,17 @@ import {
   Alert,
   Keyboard,
   Image,
+  Dimensions,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import * as authActions from "../../store/actions/authActions";
-import Input from "../../components/ui/Input";
-
 import { Ionicons } from "@expo/vector-icons";
+
+import * as authActions from "../../store/actions/authActions";
+
+import Input from "../../components/ui/Input";
 import AppColors from "../../utils/AppColors";
 import { HeaderText } from "../../components/ui/AppText";
+import UpdateBadge from "../../components/ui/UpdateBadge";
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -47,7 +50,10 @@ const formReducer = (state, action) => {
 
 const AuthScreen = (props) => {
   const dispatch = useDispatch();
-  const [isSignUp, setIsSignUp] = useState(false);
+  const { navigation, route } = props;
+  const { signUpComplete } = route?.params || false;
+
+  const [isSignUpConfirmed, setIsSignUpConfirmed] = useState(signUpComplete);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -64,6 +70,21 @@ const AuthScreen = (props) => {
   });
 
   useEffect(() => {
+    if (signUpComplete) {
+      setIsSignUpConfirmed(signUpComplete);
+    }
+  }, [signUpComplete]);
+
+  useEffect(() => {
+    if (isSignUpConfirmed) {
+      setTimeout(() => {
+        route.params.signUpComplete = false;
+        setIsSignUpConfirmed(false);
+      }, 5000);
+    }
+  }, [isSignUpConfirmed, setIsSignUpConfirmed]);
+
+  useEffect(() => {
     if (error) {
       Alert.alert("Something Went Wrong...", error, [{ text: "Okay" }]);
     }
@@ -71,19 +92,15 @@ const AuthScreen = (props) => {
 
   const handleAuthSubmit = async () => {
     await Keyboard.dismiss();
-    const action = isSignUp
-      ? authActions.signup(
-          formState.inputValues.username,
-          formState.inputValues.password
-        )
-      : authActions.login(
-          formState.inputValues.username,
-          formState.inputValues.password
-        );
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(action);
+      await dispatch(
+        authActions.login(
+          formState.inputValues.username,
+          formState.inputValues.password
+        )
+      );
     } catch (error) {
       setError(error.message);
       setIsLoading(false);
@@ -101,10 +118,6 @@ const AuthScreen = (props) => {
     },
     [dispatchFormState]
   );
-
-  const handleSignUpToggle = () => {
-    setIsSignUp(!isSignUp);
-  };
 
   return (
     <KeyboardAvoidingView
@@ -124,6 +137,7 @@ const AuthScreen = (props) => {
         />
       </ImageBackground>
       <View style={styles.container}>
+        {isSignUpConfirmed && <UpdateBadge message={"Sign up successful!"} />}
         <View style={styles.brandContainer}>
           <View
             style={{
@@ -136,13 +150,10 @@ const AuthScreen = (props) => {
               borderTopRightRadius: 50,
             }}
           ></View>
-          <View style={styles.icon}>
+          <View style={styles.iconContainer}>
             <Image
               source={require("../../assets/icons/bitmap.png")}
-              style={{
-                height: 155,
-                width: 165,
-              }}
+              style={styles.icon}
             />
           </View>
         </View>
@@ -210,7 +221,7 @@ const AuthScreen = (props) => {
                   <ActivityIndicator size="small" color={AppColors.primary} />
                 ) : (
                   <Button
-                    title={isSignUp ? "Sign-Up" : "Login"}
+                    title="Login"
                     color={AppColors.primary}
                     onPress={handleAuthSubmit}
                     disabled={!formState.isFormValid}
@@ -219,10 +230,9 @@ const AuthScreen = (props) => {
               </View>
               <View style={styles.buttonContainer}>
                 <Button
-                  title={`Switch to ${isSignUp ? "Login" : "Sign-Up"}`}
+                  title="Sign-Up"
                   color={AppColors.accent}
-                  onPress={handleSignUpToggle}
-                  disabled // TEMPA - Disable until working registration
+                  onPress={() => navigation.navigate("SignUp")}
                 />
               </View>
             </View>
@@ -245,6 +255,8 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     flex: 1,
+    top: 0,
+    left: 0,
   },
   imageContainer: {
     position: "absolute",
@@ -263,44 +275,54 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "100%",
+    height: "90%",
     alignItems: "center",
+    justifyContent: "center",
+    minHeight: Dimensions.get("screen").height * 0.9,
   },
   brandContainer: {
     width: "90%",
     justifyContent: "center",
     alignItems: "center",
-    height: 200,
+    height: "37%",
     backgroundColor: AppColors.darkGrey,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
   },
-  icon: {
+  iconContainer: {
     justifyContent: "center",
     alignItems: "center",
-    width: 150,
-    height: 150,
+    width: "50%",
+    aspectRatio: 1.064516,
     borderRadius: 100,
+  },
+  icon: {
+    width: "100%",
+    height: "100%",
   },
   authCard: {
     alignItems: "center",
     width: "90%",
-    height: 350,
+    height: "63%",
+    maxHeight: 350,
     backgroundColor: AppColors.primary,
     borderBottomRightRadius: 50,
     borderBottomLeftRadius: 50,
   },
   loginForm: {
     width: "90%",
+    alignItems: "center",
   },
   buttonGroup: {
+    flexDirection: "row",
     width: "100%",
     alignItems: "center",
   },
   buttonContainer: {
-    margin: 10,
+    margin: 5,
     borderRadius: 10,
     overflow: "hidden",
-    width: "75%",
+    width: "45%",
     paddingVertical: 5,
   },
   formControl: {

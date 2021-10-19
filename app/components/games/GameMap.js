@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 
 import { BodyText, SubHeaderText } from "../ui/AppText";
+import AppColors from "../../utils/AppColors";
 
 const GameMap = (props) => {
   const { holeData, currentStrokes } = props;
@@ -52,50 +53,38 @@ const GameMap = (props) => {
       scrollEnabled={true}
       camera={camera}
     >
-      <Marker coordinate={{ latitude: basket.lat, longitude: basket.lng }}>
-        <Image
-          source={require("../../assets/icons/map/disc-golf-basket.png")}
-          resizeMethod="resize"
-          resizeMode="contain"
-          style={{ height: 40, width: 40 }}
-        />
-      </Marker>
-      <Marker coordinate={{ latitude: tee_box.lat, longitude: tee_box.lng }}>
-        <Image
-          source={require("../../assets/icons/map/thrust-bend.png")}
-          resizeMethod="scale"
-          resizeMode="contain"
-          style={{ height: 35, width: 35 }}
-        />
-      </Marker>
+      <Marker
+        coordinate={{ latitude: basket.lat, longitude: basket.lng }}
+        tracksViewChanges={false}
+        image={require("../../assets/icons/map/basketIcon.png")}
+      />
+      <Marker
+        coordinate={{ latitude: tee_box.lat, longitude: tee_box.lng }}
+        tracksViewChanges={false}
+        image={require("../../assets/icons/map/teeBoxIcon.png")}
+      />
       {currentStrokes.map((stroke, i) => {
-        const strokeIcon =
-          stroke.throw === "penalty"
-            ? "../../assets/icons/map/penalty.png"
-            : "../../assets/icons/map/stroke.png";
         return (
           <Marker
             key={`stroke-${i}`}
+            tracksViewChanges={false}
             coordinate={{
               latitude: stroke.lat,
               longitude: stroke.lng,
             }}
+            icon={
+              stroke.type === "penalty"
+                ? require("../../assets/icons/map/penaltyIcon.png")
+                : require("../../assets/icons/map/strokeIcon.png")
+            }
           >
-            {stroke.throw === "penalty" ? (
-              <Image
-                source={require("../../assets/icons/map/penalty.png")}
-                resizeMethod="resize"
-                resizeMode="contain"
-                style={{ height: 30, width: 30 }}
-              />
-            ) : (
-              <Image
-                source={require("../../assets/icons/map/stroke.png")}
-                resizeMethod="resize"
-                resizeMode="contain"
-                style={{ height: 30, width: 30 }}
-              />
-            )}
+            <BodyText
+              color={AppColors.white}
+              size={18}
+              style={styles.strokeMarker}
+            >
+              {i + 1}
+            </BodyText>
           </Marker>
         );
       })}
@@ -111,6 +100,12 @@ const styles = StyleSheet.create({
     height: 15,
     width: 15,
     resizeMode: "contain",
+  },
+  strokeMarker: {
+    width: 40,
+    textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

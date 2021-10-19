@@ -104,6 +104,9 @@ const EventWidget = (props) => {
      * the last item. Tracking and setting currentEventIndex is done
      * in handleViewableItemsChanged
      */
+    if (!homeEvents.events) {
+      return;
+    }
     const eventListLength = homeEvents.events.length;
     const nextIndex = currentEventIndex + 1;
     if (nextIndex >= eventListLength) {
@@ -132,14 +135,16 @@ const EventWidget = (props) => {
     );
   }
 
-  if (!isLoading && !homeEvents) {
+  if (!isLoading && !homeEvents.events) {
     return (
       <View style={styles.container}>
         <View style={styles.eventHeader}>
-          <HeaderText>Events</HeaderText>
+          <HeaderText size={32} color={AppColors.accent}>
+            Events
+          </HeaderText>
         </View>
         <View style={styles.emptyItem}>
-          <SubHeaderText>No Events Found!</SubHeaderText>
+          <SubHeaderText size={24}>No Events Found!</SubHeaderText>
         </View>
       </View>
     );
@@ -200,8 +205,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    textAlign: "center",
     width: "100%",
     height: "100%",
+    paddingHorizontal: 20,
   },
   eventHeader: {
     padding: 5,

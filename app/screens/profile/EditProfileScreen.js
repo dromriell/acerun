@@ -1,7 +1,19 @@
 import React, { useReducer, useEffect, useState, useCallback } from "react";
-import { View, StyleSheet, KeyboardAvoidingView, Button } from "react-native";
-import { useDispatch } from "react-redux";
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Button,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+
+import * as authActions from "../../store/actions/authActions";
+
 import Input from "../../components/ui/Input";
+import StatePicker from "../../components/ui/StatePicker";
+import UpdateBadge from "../../components/ui/UpdateBadge";
 
 import { Ionicons } from "@expo/vector-icons";
 import AppColors from "../../utils/AppColors";
@@ -11,6 +23,7 @@ import {
   HeaderText,
   SubHeaderText,
 } from "../../components/ui/AppText";
+import { ScrollView } from "react-native-gesture-handler";
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -40,14 +53,26 @@ const formReducer = (state, action) => {
 
 const EditProfileScreen = (props) => {
   const dispatch = useDispatch();
+  const [hasChanged, setHasChanged] = useState(false);
+  const [showUpdateBadge, setShowUpdateBadge] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const token = useSelector((state) => state.auth.token);
+  const profile = useSelector((state) => state.auth.profile);
+
+  const { bio, city, state, id } = profile;
+  const { username, birth_day, email, first_name, last_name, userID } =
+    profile.user;
+
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      username: "",
-      city: "",
-      state: "",
+      username: username || "",
+      email: email || "",
+      first_name: first_name || "",
+      last_name: last_name || "",
+      city: city || "",
+      state: state || "",
     },
     inputValidities: {
       username: false,
@@ -63,24 +88,32 @@ const EditProfileScreen = (props) => {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (showUpdateBadge) {
+      setTimeout(() => setShowUpdateBadge(false), 5000);
+    }
+  }, [showUpdateBadge]);
+
   const handleEditSubmit = async () => {
-    const here = await Keyboard.dismiss();
-    // authActions.login(
-    //      formState.inputValues.username,
-    //      formState.inputValues.password
-    //    );
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(action);
+      await dispatch(
+        authActions.updateProfile(token, id, formState.inputValues)
+      );
+      setHasChanged(false);
+      setShowUpdateBadge(true);
     } catch (error) {
       setError(error.message);
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   const handleInputChange = useCallback(
     (inputName, inputValue, isInputValid) => {
+      if (!hasChanged) {
+        setHasChanged(true);
+      }
       dispatchFormState({
         type: "FORM_INPUT_UPDATE",
         value: inputValue,
@@ -93,77 +126,130 @@ const EditProfileScreen = (props) => {
 
   return (
     <KeyboardAvoidingView style={styles.screen}>
-      <View style={styles.form}>
-        <Input
-          id="username"
-          icon={
-            <Ionicons
-              name="person"
-              size={24}
-              color={AppColors.accent}
-              style={styles.inputIcon}
-            />
-          }
-          label="Username"
-          labelStyle={styles.label}
-          keyBoardType="text"
-          required
-          autoCapitalize="none"
-          errorText="Please enter a valid username"
-          onInputChange={handleInputChange}
-          initialValue=""
-        />
-        <Input
-          id="city"
-          icon={
-            <Ionicons
-              name="md-lock-closed"
-              size={24}
-              color={AppColors.accent}
-              style={styles.inputIcon}
-            />
-          }
-          label="City"
-          labelStyle={styles.label}
-          keyBoardType="text"
-          autoCapitalize="none"
-          errorText="Invalid City"
-          onInputChange={handleInputChange}
-          initialValue=""
-          max={20}
-        />
-        <Input
-          id="state"
-          icon={
-            <Ionicons
-              name="md-lock-closed"
-              size={24}
-              color={AppColors.accent}
-              style={styles.inputIcon}
-            />
-          }
-          label="State"
-          labelStyle={styles.label}
-          keyBoardType="text"
-          autoCapitalize="none"
-          errorText="Invalid State"
-          onInputChange={handleInputChange}
-          initialValue=""
-          max={2}
-        />
-        <View style={styles.buttonContainer}>
-          {isLoading ? (
-            <ActivityIndicator size="small" color={AppColors.primary} />
-          ) : (
-            <Button
-              title="Submit"
-              color={AppColors.primary}
-              onPress={handleEditSubmit}
-              disabled // TEMPA - Disable until form handling complete
-            />
-          )}
+      {showUpdateBadge && <UpdateBadge message="Profile Updated!" />}
+      <ScrollView style={styles.scroll}>
+        <View style={styles.form}>
+          <Input
+            id="username"
+            icon={
+              <Ionicons
+                name="person"
+                size={24}
+                color={AppColors.accent}
+                style={styles.inputIcon}
+              />
+            }
+            label="Username"
+            labelStyle={styles.label}
+            keyBoardType="text"
+            required
+            autoCapitalize="none"
+            errorText="Please enter a valid username"
+            onInputChange={handleInputChange}
+            initialValue={username || ""}
+          />
+          <Input
+            id="email"
+            icon={
+              <Ionicons
+                name="person"
+                size={24}
+                color={AppColors.accent}
+                style={styles.inputIcon}
+              />
+            }
+            label="Email"
+            email
+            labelStyle={styles.label}
+            keyBoardType="text"
+            required
+            autoCapitalize="none"
+            errorText="Please enter a valid email"
+            onInputChange={handleInputChange}
+            initialValue={email || ""}
+          />
+          <Input
+            id="first_name"
+            icon={
+              <Ionicons
+                name="person"
+                size={24}
+                color={AppColors.accent}
+                style={styles.inputIcon}
+              />
+            }
+            label="First Name"
+            labelStyle={styles.label}
+            keyBoardType="text"
+            required
+            autoCapitalize="none"
+            errorText="Please enter a valid name"
+            onInputChange={handleInputChange}
+            initialValue={first_name || ""}
+          />
+          <Input
+            id="last_name"
+            icon={
+              <Ionicons
+                name="person"
+                size={24}
+                color={AppColors.accent}
+                style={styles.inputIcon}
+              />
+            }
+            label="Last Name"
+            labelStyle={styles.label}
+            keyBoardType="text"
+            required
+            autoCapitalize="none"
+            errorText="Please enter a valid name"
+            onInputChange={handleInputChange}
+            initialValue={last_name || ""}
+          />
+          <Input
+            id="city"
+            icon={
+              <Ionicons
+                name="md-lock-closed"
+                size={24}
+                color={AppColors.accent}
+                style={styles.inputIcon}
+              />
+            }
+            label="City"
+            labelStyle={styles.label}
+            keyBoardType="text"
+            autoCapitalize="none"
+            errorText="Invalid City"
+            onInputChange={handleInputChange}
+            initialValue={city || ""}
+            max={20}
+          />
+          <StatePicker
+            id="state"
+            handleInputChange={handleInputChange}
+            label="State"
+            labelStyle={styles.label}
+            keyBoardType="text"
+            autoCapitalize="none"
+            errorText="Invalid State"
+            initialValue={state || ""}
+          />
+          <View style={styles.buttonContainer}>
+            {isLoading ? (
+              <ActivityIndicator size="small" color={AppColors.primary} />
+            ) : (
+              <Button
+                title="Submit"
+                color={AppColors.primary}
+                onPress={handleEditSubmit}
+                disabled={hasChanged ? false : true}
+                // disabled // TEMPA - Disable until form handling complete
+              />
+            )}
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -172,7 +258,7 @@ export const screenOptions = () => {
   return {
     animationEnabled: false,
     headerTitle: "Edit Profile",
-    headerTitleAlign: "center",
+    headerTitleAlign: "space-around",
     headerTitleStyle: {
       height: 30,
     },
@@ -185,8 +271,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: AppColors.darkGrey,
   },
+  updateBadge: {
+    position: "absolute",
+    width: "75%",
+    alignItems: "center",
+    top: 20,
+    backgroundColor: AppColors.accent,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    zIndex: 200,
+  },
+  scroll: { width: "100%" },
   form: {
-    width: "90%",
+    width: "100%",
+    alignItems: "center",
   },
   label: {
     color: AppColors.white,

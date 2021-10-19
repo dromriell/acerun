@@ -78,7 +78,7 @@ const CourseSearchScreen = (props) => {
 
   useEffect(() => {
     const clearSearch = navigation.addListener("beforeRemove", () => {
-      // dispatch(discActions.resetSearch());
+      dispatch(courseActions.resetCourses());
     });
 
     return clearSearch;
@@ -143,10 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginRight: 5,
     overflow: "hidden",
-    borderRadius: 5,
-  },
-  filterButton: {
-    width: "100%",
+    borderRadius: 50,
   },
 });
 

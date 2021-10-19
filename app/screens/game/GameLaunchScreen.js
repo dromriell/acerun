@@ -3,6 +3,7 @@ import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { CommonActions } from "@react-navigation/routers";
 
+import * as discActions from "../../store/actions/discsActions";
 import * as gameActions from "../../store/actions/gameActions";
 import AppColors from "../../utils/AppColors";
 
@@ -42,6 +43,7 @@ const GameLaunchScreen = (props) => {
   useEffect(() => {
     const launchGame = async () => {
       try {
+        await dispatch(discActions.fetchUserDiscs(token));
         await dispatch(gameActions.setCourseGameData(token, courseID));
         await dispatch(
           gameActions.createGame(token, courseID, players, userID)

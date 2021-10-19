@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
+  Dimensions,
 } from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 
@@ -52,11 +53,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    width: "100%",
+    width: Dimensions.get("screen").width,
+    height: 150,
   },
   buttonContainer: {
-    height: 150,
     width: 150,
+    aspectRatio: 1,
     backgroundColor: AppColors.primary,
     borderRadius: 10,
     elevation: 10,

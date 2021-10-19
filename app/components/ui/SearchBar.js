@@ -1,17 +1,15 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  Platform,
   StyleSheet,
   View,
-  Text,
+  Keyboard,
   TextInput,
+  Dimensions,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 import { TouchComp } from "./TouchComp";
-import { useFocusEffect } from "@react-navigation/native";
+import { BodyText } from "./AppText";
 import AppColors from "../../utils/AppColors";
 
 const SearchButton = (props) => {
@@ -31,7 +29,7 @@ const SearchButton = (props) => {
             padding: 2,
           }}
         >
-          <FontAwesome name="search" size={24} color={AppColors.accent} />
+          <FontAwesome name="search" size={21} color={AppColors.accent} />
         </View>
       </TouchComp>
     </View>
@@ -60,7 +58,6 @@ const SearchBar = (props) => {
 
   const handleSearchSubmit = () => {
     if (onManualSearch && isRefSet) {
-      console.log(searchTerm);
       onManualSearch(searchTerm);
     }
   };
@@ -69,7 +66,7 @@ const SearchBar = (props) => {
     return (
       <View style={{ ...styles.searchBar, ...props.style }}>
         <TouchComp onPress={props.onPress}>
-          <Text style={styles.placeholder}>{props.placeholder}</Text>
+          <BodyText style={styles.placeholder}>{props.placeholder}</BodyText>
         </TouchComp>
         {searchButton && <SearchButton />}
       </View>
@@ -80,7 +77,6 @@ const SearchBar = (props) => {
     <View style={{ ...styles.searchBar, ...props.style }}>
       <TouchComp onPress={props.onPress}>
         <TextInput
-          // autoFocus={props.autoFocus}
           style={styles.searchField}
           ref={searchRef}
           onChangeText={
@@ -88,10 +84,18 @@ const SearchBar = (props) => {
               ? (text) => setSearchTerm(text)
               : (text) => onSearch(text)
           }
+          returnKeyType="search"
+          onSubmitEditing={handleSearchSubmit}
         />
       </TouchComp>
       {searchButton && (
-        <SearchButton termRef={searchRef} onPress={handleSearchSubmit} />
+        <SearchButton
+          termRef={searchRef}
+          onPress={() => {
+            Keyboard.dismiss();
+            handleSearchSubmit();
+          }}
+        />
       )}
     </View>
   );
@@ -99,7 +103,7 @@ const SearchBar = (props) => {
 
 const styles = StyleSheet.create({
   searchBar: {
-    width: 300,
+    width: Dimensions.get("screen").width * 0.7,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
@@ -107,11 +111,10 @@ const styles = StyleSheet.create({
     height: "50%",
   },
   placeholder: {
-    flex: 1,
     width: "100%",
     color: AppColors.blackTrans,
     textAlign: "center",
-    paddingVertical: 5,
+    fontSize: 16,
   },
   searchField: {
     flex: 1,

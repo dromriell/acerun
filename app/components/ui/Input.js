@@ -29,7 +29,7 @@ const Input = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.initialValue
       ? props.initialValue
-      : props.defaultValue
+      : props.initialValue
       ? props.defaultValue
       : "",
     isValid: props.isValid,
@@ -113,11 +113,12 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    width: "100%",
+    width: "95%",
     height: 35,
     marginVertical: 5,
+    borderRadius: 10,
   },
   input: {
     width: "90%",

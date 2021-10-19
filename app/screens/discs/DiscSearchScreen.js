@@ -25,8 +25,6 @@ const DiscSearchScreen = (props) => {
   const token = useSelector((state) => state.auth.token);
   const searchResults = useSelector((state) => state.discs.searchResults);
 
-  console.log(route);
-
   const handleSearch = useCallback(
     async (term) => {
       if (term.length < 3) {

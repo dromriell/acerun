@@ -2,8 +2,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOG_OUT = "LOG_OUT";
+export const UPDATE_PROFILE = "UPDATE_PROFILE";
 
-import { authEP } from "../../utils/apiEndPoints";
+import { authEP, profileEP, signUpEP } from "../../utils/apiEndPoints";
 
 let timer;
 
@@ -83,6 +84,79 @@ export const logout = () => {
   clearLogoutTimer();
   AsyncStorage.removeItem("userData");
   return { type: LOG_OUT };
+};
+
+export const signUpUser = (signUpData) => {
+  return async (dispatch) => {
+    const response = await fetch(signUpEP, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(signUpData),
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      let errorMsg = "";
+      console.log(errorResponse);
+
+      Object.entries(errorResponse).forEach(([key, value]) => {
+        switch (key) {
+          case "non_field_errors":
+            errorMsg = errorMsg + value;
+            return;
+          default:
+            errorMsg = errorMsg + value;
+            return;
+        }
+      });
+      console.log(errorMsg);
+      throw Error(errorMsg || "An error occured!");
+    }
+  };
+};
+
+export const updateProfile = (token, profileID, profileData) => {
+  return async (dispatch) => {
+    const response = await fetch(profileEP(profileID), {
+      method: "PATCH",
+      headers: {
+        Authorization: `Token ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(profileData),
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      let errorMsg = "";
+      console.log(errorResponse);
+
+      Object.entries(errorResponse).forEach(([key, value]) => {
+        switch (key) {
+          case "username":
+            errorMsg = errorMsg + "Username is a required field. \n";
+            return;
+          case "password":
+            errorMsg = errorMsg + "Password is a required field. \n";
+            return;
+          case "non_field_errors":
+            errorMsg = errorMsg + value;
+            return;
+          default:
+            errorMsg = errorMsg + value;
+            return;
+        }
+      });
+      console.log(errorMsg);
+      throw Error(errorMsg || "An error occured!");
+    }
+
+    const profileResponse = await response.json();
+
+    dispatch({ type: UPDATE_PROFILE, profile: profileResponse });
+  };
 };
 
 const clearLogoutTimer = () => {

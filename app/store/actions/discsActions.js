@@ -117,7 +117,6 @@ export const addDiscToUserBag = (token, profileId, discId) => {
     }
 
     const newDiscResponse = await response.json();
-    console.log("disc added");
     dispatch({ type: ADD_DISC_TO_BAG, newDisc: newDiscResponse });
   };
 };

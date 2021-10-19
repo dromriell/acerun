@@ -2,25 +2,26 @@ import {
   SET_COURSE_RESULTS,
   SET_COURSE_FILTERS,
   CLEAR_COURSE_FILTERS,
+  RESET_COURSES,
 } from "../actions/courseActions";
 
 const filterCourses = (courses, courseFilters) => {
   // Use to filter courses and return a filtered array
   const filteredCourses = courses.filter((course) => {
-    for (courseFilter in courseFilters) {
-      if (!courseFilters[courseFilter]) {
+    for (filterKey in courseFilters) {
+      if (!courseFilters[filterKey]) {
         continue;
       }
       if (
-        courseFilter === "holeMin" &&
-        +course["holes"] >= courseFilters[courseFilter]
+        filterKey === "holeMin" &&
+        +course["holes"] >= courseFilters[filterKey]
       ) {
         continue;
       }
-      if (
-        course[courseFilter] !== "yes" ||
-        course[courseFilter] === undefined
-      ) {
+      if (filterKey === "fees" && course[filterKey] === "no") {
+        continue;
+      }
+      if (course[filterKey] !== "yes" || course[filterKey] === undefined) {
         return false;
       }
     }
@@ -60,13 +61,6 @@ export default (state = initialState, action) => {
         action.filters
       );
 
-      console.log(
-        "SET_FILTERS",
-        state.courseSearchResults.length,
-        action.filters,
-        filteredCourses.length
-      );
-
       return {
         ...state,
         filters: action.filters,
@@ -78,6 +72,8 @@ export default (state = initialState, action) => {
         filters: null,
         filteredResults: [],
       };
+    case RESET_COURSES:
+      return initialState;
     default:
       return state;
   }

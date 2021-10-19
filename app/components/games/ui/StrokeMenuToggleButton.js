@@ -1,5 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { View, Animated, Easing, StyleSheet } from "react-native";
+import {
+  View,
+  Animated,
+  Easing,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -7,7 +13,7 @@ import { TouchComp } from "../../ui/TouchComp";
 import AppColors from "../../../utils/AppColors";
 
 const StrokeMenuToggleButton = (props) => {
-  const { isStrokeMenuOpen, setIsStrokeMenuOpen } = props;
+  const { isStrokeMenuOpen, setIsStrokeMenuOpen, isLoading } = props;
   const firstRender = useRef(true);
 
   const rotateButtonAnim = useRef(new Animated.Value(0)).current;
@@ -59,30 +65,36 @@ const StrokeMenuToggleButton = (props) => {
           transform: [{ rotateZ: rotateInterpolate }],
         }}
       >
-        <TouchComp onPress={handleStrokeMenuToggle}>
-          <Ionicons
-            name="add-circle-sharp"
-            color={isStrokeMenuOpen ? AppColors.red : AppColors.accent}
-            style={styles.strokeButton}
-            size={55}
-          />
-        </TouchComp>
+        {isLoading ? (
+          <View
+            style={{
+              width: 55,
+              aspectRatio: 1,
+              justifyContent: "center",
+            }}
+          >
+            <ActivityIndicator size="large" color={AppColors.accent} />
+          </View>
+        ) : (
+          <TouchComp
+            onPress={handleStrokeMenuToggle}
+            style={{ width: 55, aspectRatio: 1 }}
+          >
+            <Ionicons
+              name="add-circle-sharp"
+              color={isStrokeMenuOpen ? AppColors.red : AppColors.accent}
+              style={styles.strokeButton}
+              size={55}
+            />
+          </TouchComp>
+        )}
       </Animated.View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  strokeMenu: {
-    width: "20%",
-    position: "relative",
-    alignItems: "center",
-  },
   strokeButtonContainer: {
-    position: "absolute",
-    flexDirection: "row",
-    width: 50,
-    flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
   },

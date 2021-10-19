@@ -1,16 +1,21 @@
 import React from "react";
 import { Platform } from "react-native";
-import { useSelector } from "react-redux";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import GameIcons from "../assets/fonts/GameIcons";
 
+// AUTH SCREENS
 import LaunchScreen from "../screens/LaunchScreen";
 import AuthScreen from "../screens/auth/AuthScreen";
+import SignUpScreen, {
+  screenOptions as SignUpScreenOptions,
+} from "../screens/auth/SignUpScreen";
 
+// HOME SCREEN
 import HomeScreen from "../screens/HomeScreen";
 
 // DISC SCREENS
@@ -121,6 +126,11 @@ export const AuthStackNavigator = () => {
     >
       <AuthStack.Screen name="Launch" component={LaunchScreen} />
       <AuthStack.Screen name="Login" component={AuthScreen} />
+      <AuthStack.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={SignUpScreenOptions}
+      />
     </AuthStack.Navigator>
   );
 };
@@ -265,11 +275,15 @@ const AppTabNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarStyle: { backgroundColor: AppColors.primary },
+        tabBarLabel: () => {
+          return null;
+        },
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          size = 30;
+          size = 35;
 
           switch (route.name) {
             case "Home":
@@ -278,17 +292,13 @@ const AppTabNavigator = () => {
             case "Discs":
               iconName = focused ? "bag-personal" : "bag-personal-outline";
               return (
-                <MaterialCommunityIcons
-                  name={iconName}
-                  size={size}
-                  color={color}
-                />
+                <GameIcons name={"frisbee-(1)"} size={size} color={color} />
               );
             case "Games":
               iconName = focused ? "gamepad-round" : "gamepad-round-outline";
               return (
-                <MaterialCommunityIcons
-                  name={iconName}
+                <GameIcons
+                  name={"disc-golf-basket"}
                   size={size}
                   color={color}
                 />

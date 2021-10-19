@@ -31,6 +31,7 @@ const CourseList = (props) => {
 const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
+    width: "100%",
     padding: 10,
   },
   courseList: {
