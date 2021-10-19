@@ -13,12 +13,14 @@ import {
   Dimensions,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import * as authActions from "../../store/actions/authActions";
-import Input from "../../components/ui/Input";
-
 import { Ionicons } from "@expo/vector-icons";
+
+import * as authActions from "../../store/actions/authActions";
+
+import Input from "../../components/ui/Input";
 import AppColors from "../../utils/AppColors";
 import { HeaderText } from "../../components/ui/AppText";
+import UpdateBadge from "../../components/ui/UpdateBadge";
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -48,7 +50,10 @@ const formReducer = (state, action) => {
 
 const AuthScreen = (props) => {
   const dispatch = useDispatch();
-  const [isSignUp, setIsSignUp] = useState(false);
+  const { navigation, route } = props;
+  const { signUpComplete } = route?.params || false;
+
+  const [isSignUpConfirmed, setIsSignUpConfirmed] = useState(signUpComplete);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -65,6 +70,21 @@ const AuthScreen = (props) => {
   });
 
   useEffect(() => {
+    if (signUpComplete) {
+      setIsSignUpConfirmed(signUpComplete);
+    }
+  }, [signUpComplete]);
+
+  useEffect(() => {
+    if (isSignUpConfirmed) {
+      setTimeout(() => {
+        route.params.signUpComplete = false;
+        setIsSignUpConfirmed(false);
+      }, 5000);
+    }
+  }, [isSignUpConfirmed, setIsSignUpConfirmed]);
+
+  useEffect(() => {
     if (error) {
       Alert.alert("Something Went Wrong...", error, [{ text: "Okay" }]);
     }
@@ -72,19 +92,15 @@ const AuthScreen = (props) => {
 
   const handleAuthSubmit = async () => {
     await Keyboard.dismiss();
-    const action = isSignUp
-      ? authActions.signup(
-          formState.inputValues.username,
-          formState.inputValues.password
-        )
-      : authActions.login(
-          formState.inputValues.username,
-          formState.inputValues.password
-        );
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(action);
+      await dispatch(
+        authActions.login(
+          formState.inputValues.username,
+          formState.inputValues.password
+        )
+      );
     } catch (error) {
       setError(error.message);
       setIsLoading(false);
@@ -102,10 +118,6 @@ const AuthScreen = (props) => {
     },
     [dispatchFormState]
   );
-
-  const handleSignUpToggle = () => {
-    setIsSignUp(!isSignUp);
-  };
 
   return (
     <KeyboardAvoidingView
@@ -125,6 +137,7 @@ const AuthScreen = (props) => {
         />
       </ImageBackground>
       <View style={styles.container}>
+        {isSignUpConfirmed && <UpdateBadge message={"Sign up successful!"} />}
         <View style={styles.brandContainer}>
           <View
             style={{
@@ -208,7 +221,7 @@ const AuthScreen = (props) => {
                   <ActivityIndicator size="small" color={AppColors.primary} />
                 ) : (
                   <Button
-                    title={isSignUp ? "Sign-Up" : "Login"}
+                    title="Login"
                     color={AppColors.primary}
                     onPress={handleAuthSubmit}
                     disabled={!formState.isFormValid}
@@ -217,10 +230,9 @@ const AuthScreen = (props) => {
               </View>
               <View style={styles.buttonContainer}>
                 <Button
-                  title={`${isSignUp ? "Login" : "Sign-Up"}`}
+                  title="Sign-Up"
                   color={AppColors.accent}
-                  onPress={handleSignUpToggle}
-                  disabled // TEMPA - Disable until working registration
+                  onPress={() => navigation.navigate("SignUp")}
                 />
               </View>
             </View>
