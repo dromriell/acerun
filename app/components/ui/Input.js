@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.white,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
-    paddingHorizontal: 5,
   },
   errorText: {
     color: "red",
