@@ -8,9 +8,14 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
+// AUTH SCREENS
 import LaunchScreen from "../screens/LaunchScreen";
 import AuthScreen from "../screens/auth/AuthScreen";
+import SignUpScreen, {
+  screenOptions as SignUpScreenOptions,
+} from "../screens/auth/SignUpScreen";
 
+// HOME SCREEN
 import HomeScreen from "../screens/HomeScreen";
 
 // DISC SCREENS
@@ -121,6 +126,11 @@ export const AuthStackNavigator = () => {
     >
       <AuthStack.Screen name="Launch" component={LaunchScreen} />
       <AuthStack.Screen name="Login" component={AuthScreen} />
+      <AuthStack.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={SignUpScreenOptions}
+      />
     </AuthStack.Navigator>
   );
 };
