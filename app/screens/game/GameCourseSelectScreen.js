@@ -23,10 +23,12 @@ import CourseList from "../../components/courses/CourseList";
 
 const GameCourseSelectScreen = (props) => {
   const dispatch = useDispatch();
+
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState();
   const [courses, setCourses] = useState();
+
   const token = useSelector((state) => state.auth.token);
 
   const verifyPermissions = async () => {
@@ -121,7 +123,11 @@ const GameCourseSelectScreen = (props) => {
     return (
       <View style={styles.launchScreen}>
         <View style={styles.button}>
-          <Button title="Try Again" color={AppColors.accent} />
+          <Button
+            title="Try Again"
+            color={AppColors.accent}
+            onPress={handleGetLocation}
+          />
         </View>
       </View>
     );
