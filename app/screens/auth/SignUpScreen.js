@@ -30,7 +30,6 @@ const formReducer = (state, action) => {
       };
       let isUpdatedFormValid = true;
       for (const [key, value] of Object.entries(updatedValidities)) {
-        console.log(key, value);
         isUpdatedFormValid = isUpdatedFormValid && value;
       }
       return {

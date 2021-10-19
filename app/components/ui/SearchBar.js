@@ -58,7 +58,6 @@ const SearchBar = (props) => {
 
   const handleSearchSubmit = () => {
     if (onManualSearch && isRefSet) {
-      console.log(searchTerm);
       onManualSearch(searchTerm);
     }
   };

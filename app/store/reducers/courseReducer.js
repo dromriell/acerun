@@ -61,13 +61,6 @@ export default (state = initialState, action) => {
         action.filters
       );
 
-      console.log(
-        "SET_FILTERS",
-        state.courseSearchResults.length,
-        action.filters,
-        filteredCourses.length
-      );
-
       return {
         ...state,
         filters: action.filters,

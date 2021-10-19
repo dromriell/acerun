@@ -114,7 +114,6 @@ const EditProfileScreen = (props) => {
       if (!hasChanged) {
         setHasChanged(true);
       }
-      console.log(inputName, inputValue);
       dispatchFormState({
         type: "FORM_INPUT_UPDATE",
         value: inputValue,

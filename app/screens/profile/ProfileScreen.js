@@ -74,7 +74,7 @@ const ProfileScreen = (props) => {
               <BodyText style={styles.font}> Edit Profile</BodyText>
             </View>
           </TouchComp>
-          <TouchComp onPress={() => console.log("CHANGE SETTINGS")}>
+          <TouchComp onPress={() => null}>
             <View style={styles.button}>
               <MaterialIcons
                 name="settings"

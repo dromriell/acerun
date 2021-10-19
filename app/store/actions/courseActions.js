@@ -38,7 +38,6 @@ export const searchCourses = (token, searchTerm) => {
     }
 
     const courseSearchResults = await response.json();
-    console.log(courseSearchResults);
 
     dispatch({
       type: SET_COURSE_RESULTS,
