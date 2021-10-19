@@ -26,8 +26,12 @@ const GameScorecardModal = (props) => {
   // const [focusedPlayer, setFocusedPlayer] = useState(userScorecard); // UNUSED, USE FOR MULTI USER GAMES
 
   const renderScores = (item, index) => {
-    const { hole, score } = item;
+    const { hole, score, strokes } = item;
     const { hole_number: holeNumber, par } = hole;
+    const longestThrow = Math.max.apply(
+      Math,
+      strokes.map((stroke) => stroke.dist)
+    );
     const isEven = index % 2 === 0;
 
     return (
@@ -35,7 +39,9 @@ const GameScorecardModal = (props) => {
         <BodyText style={styles.tableData}>{holeNumber}</BodyText>
         <BodyText style={styles.tableData}>{par}</BodyText>
         <BodyText style={styles.tableData}>{score}</BodyText>
-        <BodyText style={styles.tableData}>145ft</BodyText>
+        <BodyText style={styles.tableData}>
+          {longestThrow.toFixed(0)} ft
+        </BodyText>
       </View>
     );
   };
