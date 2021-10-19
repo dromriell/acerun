@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -15,10 +15,16 @@ import GamePlayerList from "../../components/games/GamePlayerList";
 
 import * as gameActions from "../../store/actions/gameActions";
 
+import UpdateBadge from "../../components/ui/UpdateBadge";
 import AppColors from "../../utils/AppColors";
 
 const GameSetupScreen = (props) => {
   const dispatch = useDispatch();
+  const errorCreating = props.route.params
+    ? props.route.params.errorCreating
+    : null;
+  console.log(errorCreating);
+  const [courseUnavailable, setCourseUnavailable] = useState(errorCreating);
   const selectedCourse = useSelector((state) => state.game.course);
   const userProfile = useSelector((state) => state.auth.profile.user);
 
@@ -32,8 +38,26 @@ const GameSetupScreen = (props) => {
     props.navigation.navigate("GameLaunch", { players: [userProfile.id] }); //Currently one user, can add others for game on API
   };
 
+  useEffect(() => {
+    if (!errorCreating) {
+      return;
+    }
+    setCourseUnavailable(true);
+    const badgeTimeout = setTimeout(() => {
+      props.route.params.errorCreating = null;
+      setCourseUnavailable(false);
+    }, 5000);
+    return () => clearTimeout(badgeTimeout);
+  }, [errorCreating]);
+
   return (
     <View style={styles.screen}>
+      {courseUnavailable && (
+        <UpdateBadge
+          message="Course Currently Unavailable"
+          style={{ width: "100%" }}
+        />
+      )}
       <ScrollView>
         <View style={styles.containerRow}>
           <GameCourseItem
