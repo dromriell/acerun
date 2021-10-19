@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, StyleSheet, Switch, Alert, Dimensions } from "react-native";
+import { View, StyleSheet, Alert, Dimensions } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as Location from "expo-location";
 import * as gameActions from "../../../store/actions/gameActions";
@@ -71,14 +71,7 @@ const GameActionMenu = (props) => {
     if (!hasPermission) {
       return;
     }
-    if (!equippedDisc) {
-      Alert.alert(
-        "No Disc Selected!",
-        "Please select a disc before marking your location.",
-        [{ text: "Okay" }]
-      );
-      return;
-    }
+
     try {
       setIsLoading(true);
       await navigator.geolocation.getCurrentPosition(
@@ -105,6 +98,14 @@ const GameActionMenu = (props) => {
   };
 
   const handleStrokeRecord = async (type) => {
+    if (!equippedDisc) {
+      Alert.alert(
+        "No Disc Selected!",
+        "Please select a disc before marking your location.",
+        [{ text: "Okay" }]
+      );
+      return;
+    }
     if (type === "STROKE") {
       await handleGetLocation();
     } else if (type === "PENALTY") {
@@ -162,6 +163,7 @@ const GameActionMenu = (props) => {
             <StrokeMenuToggleButton
               isStrokeMenuOpen={isStrokeMenuOpen}
               setIsStrokeMenuOpen={setIsStrokeMenuOpen}
+              isLoading={isLoading}
             />
           </View>
           <View style={styles.discMenu}>
