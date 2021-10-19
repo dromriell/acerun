@@ -9,7 +9,7 @@ import AppColors from "../../utils/AppColors";
 const CoursesOverviewScreen = (props) => {
   return (
     <View style={styles.screen}>
-      <HeaderText color={AppColors.white}>Courses Overview Screen</HeaderText>
+      <HeaderText color={AppColors.white}>Courses Home Screen</HeaderText>
     </View>
   );
 };
