@@ -34,6 +34,7 @@ export default function App() {
     TitilliumWeb_400Regular,
     TitilliumWeb_600SemiBold,
     TitilliumWeb_700Bold,
+    "game-icons": require("./app/assets/fonts/game-icons.ttf"),
   });
 
   if (!isFontsLoaded) {
