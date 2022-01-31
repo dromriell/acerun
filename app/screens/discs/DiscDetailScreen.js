@@ -10,6 +10,7 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -35,7 +36,9 @@ const StatCard = (props) => {
 
   return (
     <View style={styles.dataDeck}>
+          <View style={styles.headerContainer}>
       <SubHeaderText style={styles.dataHeader}>{props.header}</SubHeaderText>
+      </View>
       {props.stats.map((stat, i) => {
         return (
           <View key={`discStat-${stat}-${i}`} style={styles.dataContainer}>
@@ -352,12 +355,15 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 15,
   },
-  dataHeader: {
-    width: "100%",
+  headerContainer: {
+    width: '100%',
     marginBottom: 15,
-    fontSize: 21,
     borderBottomColor: AppColors.accent,
     borderBottomWidth: 1,
+  },
+  dataHeader: {
+    width: "100%",
+    fontSize: 21,
     color: AppColors.white,
   },
   dataContainer: {

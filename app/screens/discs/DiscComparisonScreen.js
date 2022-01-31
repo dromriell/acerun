@@ -18,9 +18,11 @@ const DiscPropertyColumn = (props) => {
 
   return (
     <View style={styles.propertyColumn}>
-      <SubHeaderText style={styles.propertyHeader}>
-        {disc.name || "---"}
-      </SubHeaderText>
+          <View style={styles.headerContainer}>
+        <SubHeaderText style={styles.propertyHeader}>
+          {disc.name || "---"}
+        </SubHeaderText>
+      </View>
       <View style={styles.propertyList}>
         <BodyText style={styles.property}>
           Flexibility: {disc.flexibility}
@@ -159,11 +161,15 @@ const styles = StyleSheet.create({
     width: "90%",
     marginBottom: 20,
   },
+  headerContainer: {
+    width: '100%',
+    marginBottom: 15,
+    borderBottomColor: AppColors.accent,
+    borderBottomWidth: 1,
+  },
   propertyHeader: {
     justifyContent: "center",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: AppColors.accent,
     color: AppColors.white,
     textAlign: "center",
   },
