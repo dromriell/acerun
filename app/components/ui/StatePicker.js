@@ -26,10 +26,10 @@ const StatePicker = (props) => {
       <View style={{ ...styles.inputContainer, ...props.inputContainerStyle }}>
         {props.icon}
         <Picker
-          selectedValue={initialValue.toUpperCase() || null}
+          selectedValue={selectedValue || null}
           onValueChange={(itemValue) => {
-            setSelectedValue(itemValue);
-            handleInputChange("state", itemValue);
+              setSelectedValue(itemValue);
+              handleInputChange("state", itemValue, true);
           }}
           {...props}
           style={{ ...styles.input, ...props.inputStyle }}
@@ -55,8 +55,9 @@ const StatePicker = (props) => {
 
 const styles = StyleSheet.create({
   formControl: {
-    height: 175,
-//    marginVertical: 10,
+    height: 150,
+    marginVertical: 20,
+      width: '95%'
   },
   label: {
     color: AppColors.black,
@@ -66,11 +67,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-//    width: "95%",
-//    height: 35,
-//    marginVertical: 5,
-//    backgroundColor: AppColors.white,
-//    borderRadius: 10,
+    width: "95%",
+    height: Platform.OS === "android" ? 35 : '100%',
+    marginVertical: 5,
+    backgroundColor: AppColors.white,
+    borderRadius: 10,
   },
   input: {
     width: "90%",
