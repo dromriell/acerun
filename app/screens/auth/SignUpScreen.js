@@ -183,6 +183,7 @@ const SignUpScreen = (props) => {
               labelStyle={styles.label}
               formControlStyle={styles.input100}
               inputStyle={styles.input}
+              handleInputChange={handleInputChange}
             />
             <Input
               id="password"
