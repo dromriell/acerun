@@ -84,7 +84,9 @@ const CourseFilterScreen = (props) => {
         <View style={styles.headerRightContainer}>
           <TouchComp onPress={handleSave}>
             <View style={styles.saveButton}>
-              <MaterialIcons name="save" size={32} color={AppColors.accent} />
+              <MaterialIcons name="save" size={
+                  Platform.OS === 'android' ? 32 : 24
+              } color={AppColors.accent} />
             </View>
           </TouchComp>
         </View>
@@ -185,13 +187,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
-    width: 40,
-    marginRight: 10,
+    width: 80,
+    marginRight: 0,
   },
   inputStyle: {
     height: "100%",
     marginBottom: 10,
-    backgroundColor: AppColors.grey,
+    backgroundColor: AppColors.white,
     borderRadius: 10,
     paddingHorizontal: 10,
     textAlign: "center",
