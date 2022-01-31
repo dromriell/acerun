@@ -24,7 +24,6 @@ const formReducer = (state, action) => {
         ...state.inputValues,
         [action.input]: action.value,
       };
-          console.log(updateValues)
       const updatedValidities = {
         ...state.inputValidities,
         [action.input]: action.isValid,
@@ -109,7 +108,6 @@ const SignUpScreen = (props) => {
         // If not, mark second password as invalid
         isInputValid = false;
       }
-        console.log(inputValue, 'DISPATCH')
       dispatchFormState({
         type: "FORM_INPUT_UPDATE",
         value: inputValue,
@@ -183,7 +181,9 @@ const SignUpScreen = (props) => {
               label="State"
               initialValue=""
               labelStyle={styles.label}
-          formControlStyle={Platform.OS === "android" ? styles.input100 : {}}
+              formControlStyle={
+                Platform.OS === "android" ? styles.input100 : {}
+              }
               inputStyle={styles.input}
               handleInputChange={handleInputChange}
             />
