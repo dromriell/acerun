@@ -96,8 +96,7 @@ const AppStack = createStackNavigator();
 const defaultStackNavOptions = {
   screenInterpolator: () => {},
   headerStyle: {
-    backgroundColor:
-      Platform.OS === "android" ? AppColors.primary : AppColors.white,
+    backgroundColor: AppColors.primary,
   },
   headerTitleStyle: {
     fontFamily: "TitilliumWeb_600SemiBold",
@@ -105,8 +104,8 @@ const defaultStackNavOptions = {
   headerBackTitleStyle: {
     fontFamily: "TitilliumWeb_400Regular",
   },
-  headerTintColor:
-    Platform.OS === "android" ? AppColors.white : AppColors.primary,
+  headerTintColor: AppColors.white,
+  headerBackTitleVisible: false,
 };
 
 const gameDrawerNavOptions = {
