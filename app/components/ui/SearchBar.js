@@ -5,6 +5,7 @@ import {
   Keyboard,
   TextInput,
   Dimensions,
+  Platform,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     backgroundColor: AppColors.white,
-    height: "50%",
+    height: Platform.OS === 'android' ? '50%' : '70%',
   },
   placeholder: {
     width: "100%",
