@@ -11,6 +11,7 @@ import {
   Keyboard,
   Image,
   Dimensions,
+    Platform,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -175,7 +176,9 @@ const AuthScreen = (props) => {
               icon={
                 <Ionicons
                   name="person"
-                  size={24}
+                  size={
+                      Platform.OS === 'android' ? 24 : 40
+                  }
                   color={AppColors.primary}
                   style={styles.inputIcon}
                 />
@@ -197,7 +200,9 @@ const AuthScreen = (props) => {
               icon={
                 <Ionicons
                   name="md-lock-closed"
-                  size={24}
+                  size={
+                      Platform.OS === 'android' ? 24 : 40
+                  }
                   color={AppColors.primary}
                   style={styles.inputIcon}
                 />
@@ -302,6 +307,7 @@ const styles = StyleSheet.create({
   },
   authCard: {
     alignItems: "center",
+      justifyContent: Platform.OS === "android" ? "" : 'center',
     width: "90%",
     height: "63%",
     maxHeight: 350,
@@ -334,6 +340,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: 45,
     width: "90%",
+      borderRadius: 10,
+      overflow: 'hidden',
   },
   input: {
     backgroundColor: AppColors.white,
@@ -344,7 +352,9 @@ const styles = StyleSheet.create({
   },
   inputIcon: {
     textAlignVertical: "center",
+      justifyContent: "center",
     textAlign: "center",
+      alignItems: "center",
     height: "100%",
     aspectRatio: 1,
     backgroundColor: AppColors.accent,
