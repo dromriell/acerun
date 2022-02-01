@@ -142,17 +142,17 @@ const GameHistoryWidget = (props) => {
           Recent Games
         </HeaderText>
       </View>
-          <View style={styles.gameContainer}>
-      {gameHistory.map((game, i) => {
-        if (!game.game) {
-          return;
-        }
-        if (i === 0) {
-          return <GameSummaryLarge key={game.id} game={game} />;
-        }
-        return <GameSummarySmall key={game.id} game={game} />;
-      })}
-    </View>
+      <View style={styles.gameContainer}>
+        {gameHistory.map((game, i) => {
+          if (!game.game) {
+            return;
+          }
+          if (i === 0) {
+            return <GameSummaryLarge key={game.id} game={game} />;
+          }
+          return <GameSummarySmall key={game.id} game={game} />;
+        })}
+      </View>
     </View>
   );
 };
@@ -251,24 +251,23 @@ const styles = StyleSheet.create({
     color: AppColors.red,
   },
   scoreBadge: {
-    flexDirection: 'row',
+    flexDirection: "row",
     position: "absolute",
     top: 15,
     right: 15,
-    alignItems: 'center',
+    alignItems: "center",
     justifyContent: "center",
     width: 50,
     height: 50,
     marginLeft: 15,
     borderRadius: 50,
     backgroundColor: AppColors.white,
-      lineHeight: 38,
+    lineHeight: 38,
   },
   underParBadge: {
     color: AppColors.green,
     fontSize: 38,
-  lineHeight: 55,
-
+    lineHeight: 55,
   },
   overParBadge: {
     color: AppColors.red,
@@ -285,14 +284,13 @@ const styles = StyleSheet.create({
     borderBottomColor: AppColors.black,
     width: "95%",
   },
-gameContainer: {
-backgroundColor: AppColors.grey,
+  gameContainer: {
+    backgroundColor: AppColors.grey,
     flex: 1,
-    width: '100%',
+    width: "100%",
     borderRadius: 15,
-    overflow: 'hidden',
-
-}
+    overflow: "hidden",
+  },
 });
 
 export default GameHistoryWidget;
