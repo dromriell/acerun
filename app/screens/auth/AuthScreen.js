@@ -342,6 +342,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: AppColors.white,
     paddingHorizontal: 10,
+      fontSize: 18,
   },
   label: {
     color: AppColors.grey,
