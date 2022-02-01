@@ -7,6 +7,7 @@ import {
   Dimensions,
   Alert,
   ScrollView,
+  Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -105,6 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
     backgroundColor: AppColors.blackTrans,
+      paddingTop: Platform.OS === 'android' ? 0 : 25
   },
   containerRow: {
     width: "90%",
