@@ -104,7 +104,6 @@ const GameCourseSelectScreen = (props) => {
   }, []);
 
   useEffect(() => {
-    // setCourses(dummyCourse);
     if (!location) {
       return;
     }
@@ -165,10 +164,10 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.darkGrey,
   },
   launchScreen: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: AppColors.darkGrey,
   },
 });
 
