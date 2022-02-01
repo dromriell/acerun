@@ -132,8 +132,8 @@ const EditProfileScreen = (props) => {
         <View style={styles.form}>
           <Input
             id="username"
-          inputContainerStyle={styles.inputContainer}
-          inputStyle={styles.input}
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             label="Username"
             labelStyle={styles.label}
             keyBoardType="text"
@@ -145,8 +145,8 @@ const EditProfileScreen = (props) => {
           />
           <Input
             id="email"
-          inputContainerStyle={styles.inputContainer}
-          inputStyle={styles.input}
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             label="Email"
             email
             labelStyle={styles.label}
@@ -159,8 +159,8 @@ const EditProfileScreen = (props) => {
           />
           <Input
             id="first_name"
-          inputContainerStyle={styles.inputContainer}
-          inputStyle={styles.input}
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             label="First Name"
             labelStyle={styles.label}
             keyBoardType="text"
@@ -172,8 +172,8 @@ const EditProfileScreen = (props) => {
           />
           <Input
             id="last_name"
-          inputContainerStyle={styles.inputContainer}
-          inputStyle={styles.input}
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             label="Last Name"
             labelStyle={styles.label}
             keyBoardType="text"
@@ -187,8 +187,8 @@ const EditProfileScreen = (props) => {
             id="city"
             label="City"
             labelStyle={styles.label}
-          inputContainerStyle={styles.inputContainer}
-          inputStyle={styles.input}
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             keyBoardType="text"
             autoCapitalize="none"
             errorText="Invalid City"
@@ -201,8 +201,8 @@ const EditProfileScreen = (props) => {
             handleInputChange={handleInputChange}
             label="State"
             labelStyle={styles.label}
-          inputContainerStyle={styles.inputContainer}
-          inputStyle={styles.input}
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             keyBoardType="text"
             autoCapitalize="none"
             errorText="Invalid State"
@@ -234,8 +234,8 @@ export const screenOptions = () => {
     headerTitleAlign: "space-around",
     headerTitleStyle: {
       height: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
+      alignItems: "center",
+      justifyContent: "center",
     },
   };
 };
@@ -264,16 +264,18 @@ const styles = StyleSheet.create({
   },
   label: {
     color: AppColors.white,
-      fontSize: 21,
+    fontSize: 21,
   },
-inputContainer: {
+  inputContainer: {
     borderRadius: 10,
-    overflow: 'hidden',
-},
-    input: {
-        paddingHorizontal: '5%',
-        fontSize: 18,
-    },
+    overflow: "hidden",
+    maxWidth: "95%",
+  },
+  input: {
+    borderRadius: 10,
+    paddingHorizontal: "5%",
+    fontSize: 18,
+  },
   inputIcon: {
     textAlignVertical: "center",
     textAlign: "center",

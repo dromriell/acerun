@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   formControl: {
     height: Platform.OS === "android" ? 75 : 150,
     marginVertical: Platform.OS === "android" ? 10 : 20,
-    width: "95%",
+    // width: "95%",
   },
   label: {
     color: AppColors.black,
@@ -64,14 +64,15 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: Platform.OS === "android" ? "space-around" : "center",
     alignItems: "center",
-    width: "100%",
+    width: "95%",
     height: Platform.OS === "android" ? 35 : "100%",
     marginVertical: 5,
     backgroundColor: AppColors.white,
     borderRadius: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: Platform.OS === "android" ? 0 : 10,
+    paddingLeft: Platform.OS === "android" ? 10 : 0,
   },
   input: {
     width: "90%",
