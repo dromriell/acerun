@@ -16,20 +16,19 @@ const StatePicker = (props) => {
 
   return (
     <View style={{ ...styles.formControl, ...props.formControlStyle }}>
-          {Platform.OS === "android"
-              ? <SubHeaderText style={{ ...styles.label, ...props.labelStyle }}>
-              {props.label}
-            </SubHeaderText>
-              : null
-          }
-      
+      {Platform.OS === "android" ? (
+        <SubHeaderText style={{ ...styles.label, ...props.labelStyle }}>
+          {props.label}
+        </SubHeaderText>
+      ) : null}
+
       <View style={{ ...styles.inputContainer, ...props.inputContainerStyle }}>
         {props.icon}
         <Picker
           selectedValue={selectedValue || null}
           onValueChange={(itemValue) => {
-              setSelectedValue(itemValue);
-              handleInputChange("state", itemValue, true);
+            setSelectedValue(itemValue);
+            handleInputChange("state", itemValue, true);
           }}
           {...props}
           style={{ ...styles.input, ...props.inputStyle }}
@@ -55,23 +54,24 @@ const StatePicker = (props) => {
 
 const styles = StyleSheet.create({
   formControl: {
-    height: 150,
-    marginVertical: 20,
-      width: '95%'
+    height: Platform.OS === "android" ? 75 : 150,
+    marginVertical: Platform.OS === "android" ? 10 : 20,
+    width: "95%",
   },
   label: {
     color: AppColors.black,
-      height: 0,
+    height: Platform.OS === "android" ? "40%" : 0,
   },
   inputContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: "95%",
-    height: Platform.OS === "android" ? 35 : '100%',
+    width: "100%",
+    height: Platform.OS === "android" ? 35 : "100%",
     marginVertical: 5,
     backgroundColor: AppColors.white,
     borderRadius: 10,
+    paddingHorizontal: 10,
   },
   input: {
     width: "90%",

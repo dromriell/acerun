@@ -11,7 +11,7 @@ import {
   Keyboard,
   Image,
   Dimensions,
-    Platform,
+  Platform,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -176,9 +176,7 @@ const AuthScreen = (props) => {
               icon={
                 <Ionicons
                   name="person"
-                  size={
-                      Platform.OS === 'android' ? 24 : 40
-                  }
+                  size={Platform.OS === "android" ? 24 : 40}
                   color={AppColors.primary}
                   style={styles.inputIcon}
                 />
@@ -200,9 +198,7 @@ const AuthScreen = (props) => {
               icon={
                 <Ionicons
                   name="md-lock-closed"
-                  size={
-                      Platform.OS === 'android' ? 24 : 40
-                  }
+                  size={Platform.OS === "android" ? 24 : 40}
                   color={AppColors.primary}
                   style={styles.inputIcon}
                 />
@@ -307,7 +303,7 @@ const styles = StyleSheet.create({
   },
   authCard: {
     alignItems: "center",
-      justifyContent: Platform.OS === "android" ? "" : 'center',
+    justifyContent: Platform.OS === "android" ? "flex-start" : "center",
     width: "90%",
     height: "63%",
     maxHeight: 350,
@@ -340,8 +336,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: 45,
     width: "90%",
-      borderRadius: 10,
-      overflow: 'hidden',
+    borderRadius: 10,
+    overflow: "hidden",
   },
   input: {
     backgroundColor: AppColors.white,
@@ -352,9 +348,9 @@ const styles = StyleSheet.create({
   },
   inputIcon: {
     textAlignVertical: "center",
-      justifyContent: "center",
+    justifyContent: "center",
     textAlign: "center",
-      alignItems: "center",
+    alignItems: "center",
     height: "100%",
     aspectRatio: 1,
     backgroundColor: AppColors.accent,
