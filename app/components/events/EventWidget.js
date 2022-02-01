@@ -176,24 +176,26 @@ const EventWidget = (props) => {
           Events
         </HeaderText>
       </View>
-      <FlatList
-        ref={eventListRef}
-        data={homeEvents.events}
-        renderItem={renderEvents}
-        keyExtractor={(item) => item.tournament_id}
-        horizontal={true}
-        decelerationRate={0}
-        snapToInterval={width}
-        snapToAlignment={"center"}
-        viewabilityConfig={viewabilityConfig}
-        onViewableItemsChanged={handleViewableItemsChanged}
-        contentInset={{
-          top: 0,
-          left: 30,
-          bottom: 0,
-          right: 30,
-        }}
-      />
+      <View style={styles.listContainer}>
+        <FlatList
+          ref={eventListRef}
+          data={homeEvents.events}
+          renderItem={renderEvents}
+          keyExtractor={(item) => item.tournament_id}
+          horizontal={true}
+          decelerationRate={0}
+          snapToInterval={width}
+          snapToAlignment={"center"}
+          viewabilityConfig={viewabilityConfig}
+          onViewableItemsChanged={handleViewableItemsChanged}
+          contentInset={{
+            top: 0,
+            left: 30,
+            bottom: 0,
+            right: 30,
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -202,12 +204,17 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 250,
-    elevation: 5,
     borderBottomColor: AppColors.black,
+    overflow: "hidden",
   },
   loadingContainer: {
     alignItems: "center",
     justifyContent: "center",
+  },
+  listContainer: {
+    width: "100%",
+    borderRadius: 10,
+    overflow: "hidden",
   },
   emptyItem: {
     flex: 1,
@@ -217,10 +224,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingHorizontal: 20,
-  backgroundColor: AppColors.grey,
-  borderRadius: 10,
-  overflow: 'hidden',
-
+    backgroundColor: AppColors.grey,
+    elevation: 5,
   },
   eventHeader: {
     padding: 5,
@@ -230,11 +235,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: width,
     height: "100%",
-  backgroundColor: AppColors.grey,
-
+    backgroundColor: AppColors.grey,
+    elevation: 5,
     padding: 5,
-      borderRadius: 10,
-      overflow: 'hidden',
   },
   eventBar: {
     alignItems: "center",
@@ -283,11 +286,11 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     color: AppColors.white,
     backgroundColor: AppColors.black,
-      borderColor: AppColors.accent,
-      borderWidth: 3,
+    borderColor: AppColors.accent,
+    borderWidth: 3,
     borderRadius: 10,
     elevation: 3,
-      overflow: 'hidden',
+    overflow: "hidden",
   },
 });
 
