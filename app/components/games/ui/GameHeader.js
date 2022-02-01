@@ -15,7 +15,7 @@ const GameHeader = (props) => {
 
   return (
     <View style={styles.header}>
-          <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="light-content" />
       <View style={styles.titleRow}>
         <HeaderText capitalize color={AppColors.grey} size={24}>
           {courseName}
@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
     left: 0,
     justifyContent: "center",
     width: "100%",
-    height: Platform.OS === 'android' ? 80 : 110,
+    height: Platform.OS === "android" ? 80 : 110,
     zIndex: 100,
     backgroundColor: AppColors.blackTrans,
     padding: 10,
-    paddingTop: Platform.OS === 'android' ? 10 : 20,
+    paddingTop: Platform.OS === "android" ? 10 : 20,
   },
   holeInfoText: {
     marginRight: 20,

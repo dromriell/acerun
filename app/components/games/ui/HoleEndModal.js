@@ -103,18 +103,26 @@ const HoleEndModal = (props) => {
         <View style={styles.buttonRow}>
           <View style={styles.buttonContainer}>
             <TouchComp onPress={handleCourseReset}>
-          <View style={
-              Platform.OS === 'android' ? styles.buttonAndroid : styles.buttonIOS
-          }>
+              <View
+                style={
+                  Platform.OS === "android"
+                    ? styles.buttonAndroid
+                    : styles.buttonIOS
+                }
+              >
                 <SubHeaderText>Reset Hole</SubHeaderText>
               </View>
             </TouchComp>
           </View>
           <View style={styles.buttonContainer}>
             <TouchComp onPress={handleHoleEnd}>
-              <View style={
-                  Platform.OS === 'android' ? styles.buttonAndroid : styles.buttonIOS
-              }>
+              <View
+                style={
+                  Platform.OS === "android"
+                    ? styles.buttonAndroid
+                    : styles.buttonIOS
+                }
+              >
                 <SubHeaderText color={AppColors.darkGrey} size={18}>
                   {isEndGame ? "End Game" : "Next Hole"}
                 </SubHeaderText>
@@ -145,7 +153,7 @@ const styles = StyleSheet.create({
     height: "35%",
     backgroundColor: AppColors.primary,
     borderRadius: 15,
-      overflow: 'hidden',
+    overflow: "hidden",
   },
   loading: {
     flex: 1,
@@ -198,15 +206,15 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderBottomColor: AppColors.blackTrans,
   },
-buttonIOS: {
-padding: 0,
+  buttonIOS: {
+    padding: 0,
     height: 45,
-    justifyContent: 'center',
-alignItems: "center",
-borderBottomWidth: 2,
-borderRadius: 15,
-borderBottomColor: AppColors.blackTrans,
-}
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomWidth: 2,
+    borderRadius: 15,
+    borderBottomColor: AppColors.blackTrans,
+  },
 });
 
 export default HoleEndModal;

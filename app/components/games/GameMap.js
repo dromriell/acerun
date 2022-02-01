@@ -30,9 +30,9 @@ const GameMap = (props) => {
   };
 
   useEffect(() => {
-      if (!mapRef || !center || Platform.OS === 'ios') {
-          return
-      }
+    if (!mapRef || !center || Platform.OS === "ios") {
+      return;
+    }
     mapRef.current.setMapBoundaries(
       {
         latitude: center.lat + 0.0005,

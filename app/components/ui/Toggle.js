@@ -16,7 +16,9 @@ const Toggle = (props) => {
   } = props;
   return (
     <View style={{ ...styles.toggleContainer, ...style }}>
-          <BodyText style ={styles.text} color={labelColor}>{labelLeft}</BodyText>
+      <BodyText style={styles.text} color={labelColor}>
+        {labelLeft}
+      </BodyText>
       <View style={styles.toggle}>
         <Switch
           trackColor={trackColor}
@@ -26,7 +28,9 @@ const Toggle = (props) => {
           iosBackgroundColor={trackColor}
         />
       </View>
-          <BodyText style ={styles.text}color={labelColor}>{labelRight}</BodyText>
+      <BodyText style={styles.text} color={labelColor}>
+        {labelRight}
+      </BodyText>
     </View>
   );
 };
@@ -37,19 +41,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "95%",
-      height: '70%',
-  transform: [{rotateZ: '90deg'}, {scaleX: 1}, {scaleY: .9},],
+    height: "70%",
+    transform: [{ rotateZ: "90deg" }, { scaleX: 1 }, { scaleY: 0.9 }],
   },
   toggle: {
-    width: '50%',
-      height: '100%',
+    width: "50%",
+    height: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
-text: {
- transform: [{rotateZ: '-90deg'}, {scaleY: .7}, {scaleX: 1},],
- paddingHorizontal: 5,
-}
+  text: {
+    transform: [{ rotateZ: "-90deg" }, { scaleY: 0.7 }, { scaleX: 1 }],
+    paddingHorizontal: 5,
+  },
 });
 
 export default Toggle;

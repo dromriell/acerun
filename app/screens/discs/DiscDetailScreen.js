@@ -36,8 +36,8 @@ const StatCard = (props) => {
 
   return (
     <View style={styles.dataDeck}>
-          <View style={styles.headerContainer}>
-      <SubHeaderText style={styles.dataHeader}>{props.header}</SubHeaderText>
+      <View style={styles.headerContainer}>
+        <SubHeaderText style={styles.dataHeader}>{props.header}</SubHeaderText>
       </View>
       {props.stats.map((stat, i) => {
         return (
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   headerContainer: {
-    width: '100%',
+    width: "100%",
     marginBottom: 15,
     borderBottomColor: AppColors.accent,
     borderBottomWidth: 1,

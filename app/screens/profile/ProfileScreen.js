@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     width: "100%",
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight: 50,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 50,
   },
   profileImageContainer: {
     alignItems: "center",

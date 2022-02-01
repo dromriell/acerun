@@ -165,18 +165,17 @@ const GameActionMenu = (props) => {
               setIsStrokeMenuOpen={setIsStrokeMenuOpen}
               isLoading={isLoading}
             />
-          <Toggle
-            labelLeft={"FH"}
-            labelRight={"BH"}
-            labelColor={AppColors.white}
-            trackColor={{ false: AppColors.grey, true: AppColors.grey }}
-            thumbColor={AppColors.accent}
-            onValueChange={() => setIsBackHandThrow(!isBackHandThrow)}
-            value={isBackHandThrow}
-          />
+            <Toggle
+              labelLeft={"FH"}
+              labelRight={"BH"}
+              labelColor={AppColors.white}
+              trackColor={{ false: AppColors.grey, true: AppColors.grey }}
+              thumbColor={AppColors.accent}
+              onValueChange={() => setIsBackHandThrow(!isBackHandThrow)}
+              value={isBackHandThrow}
+            />
           </View>
           <View style={styles.discMenu}>
-            
             <DiscSelector navigation={navigation} equippedDisc={equippedDisc} />
           </View>
         </View>
@@ -249,7 +248,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "space-between",
     width: "20%",
-      paddingBottom: '10%',
+    paddingBottom: "10%",
   },
   discMenu: {
     alignContent: "center",
@@ -258,14 +257,14 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   discContainer: {
-      height: '80%',
-      width: '100%',
+    height: "80%",
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
   discDisplay: {
     height: "100%",
-      aspectRatio: 1,
+    aspectRatio: 1,
     maxWidth: "95%",
   },
 });

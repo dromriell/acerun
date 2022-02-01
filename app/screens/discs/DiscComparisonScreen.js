@@ -18,7 +18,7 @@ const DiscPropertyColumn = (props) => {
 
   return (
     <View style={styles.propertyColumn}>
-          <View style={styles.headerContainer}>
+      <View style={styles.headerContainer}>
         <SubHeaderText style={styles.propertyHeader}>
           {disc.name || "---"}
         </SubHeaderText>
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerContainer: {
-    width: '100%',
+    width: "100%",
     marginBottom: 15,
     borderBottomColor: AppColors.accent,
     borderBottomWidth: 1,

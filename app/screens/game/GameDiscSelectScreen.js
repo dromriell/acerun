@@ -47,9 +47,9 @@ export const screenOptions = (navData) => {
   return {
     headerShown: false,
     presentation: "transparentModal",
-  headerStyle: {
+    headerStyle: {
       marginTop: 25,
-  }
+    },
   };
 };
 
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "center",
     paddingHorizontal: 10,
-    paddingTop: Platform.OS === 'android' ? 0 : 15,
+    paddingTop: Platform.OS === "android" ? 0 : 15,
     backgroundColor: AppColors.primary,
   },
   closeContainer: {

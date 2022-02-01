@@ -84,9 +84,11 @@ const CourseFilterScreen = (props) => {
         <View style={styles.headerRightContainer}>
           <TouchComp onPress={handleSave}>
             <View style={styles.saveButton}>
-              <MaterialIcons name="save" size={
-                  Platform.OS === 'android' ? 32 : 24
-              } color={AppColors.accent} />
+              <MaterialIcons
+                name="save"
+                size={Platform.OS === "android" ? 32 : 24}
+                color={AppColors.accent}
+              />
             </View>
           </TouchComp>
         </View>
