@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as gameActions from "../../../store/actions/gameActions";
 
@@ -103,14 +103,18 @@ const HoleEndModal = (props) => {
         <View style={styles.buttonRow}>
           <View style={styles.buttonContainer}>
             <TouchComp onPress={handleCourseReset}>
-              <View style={styles.button}>
+          <View style={
+              Platform.OS === 'android' ? styles.buttonAndroid : styles.buttonIOS
+          }>
                 <SubHeaderText>Reset Hole</SubHeaderText>
               </View>
             </TouchComp>
           </View>
           <View style={styles.buttonContainer}>
             <TouchComp onPress={handleHoleEnd}>
-              <View style={styles.button}>
+              <View style={
+                  Platform.OS === 'android' ? styles.buttonAndroid : styles.buttonIOS
+              }>
                 <SubHeaderText color={AppColors.darkGrey} size={18}>
                   {isEndGame ? "End Game" : "Next Hole"}
                 </SubHeaderText>
@@ -141,6 +145,7 @@ const styles = StyleSheet.create({
     height: "35%",
     backgroundColor: AppColors.primary,
     borderRadius: 15,
+      overflow: 'hidden',
   },
   loading: {
     flex: 1,
@@ -186,13 +191,22 @@ const styles = StyleSheet.create({
     elevation: 10,
     overflow: "hidden",
   },
-  button: {
+  buttonAndroid: {
     padding: 10,
     alignItems: "center",
     borderBottomWidth: 2,
     borderRadius: 15,
     borderBottomColor: AppColors.blackTrans,
   },
+buttonIOS: {
+padding: 0,
+    height: 45,
+    justifyContent: 'center',
+alignItems: "center",
+borderBottomWidth: 2,
+borderRadius: 15,
+borderBottomColor: AppColors.blackTrans,
+}
 });
 
 export default HoleEndModal;

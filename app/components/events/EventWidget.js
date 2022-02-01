@@ -151,7 +151,7 @@ const EventWidget = (props) => {
     return (
       <View style={styles.container}>
         <View style={styles.eventHeader}>
-          <HeaderText size={32} color={AppColors.accent}>
+          <HeaderText size={32} color={AppColors.white}>
             Events
           </HeaderText>
         </View>
@@ -167,7 +167,7 @@ const EventWidget = (props) => {
       <View style={styles.eventHeader}>
         <HeaderText
           size={32}
-          color={AppColors.accent}
+          color={AppColors.white}
           onPress={() => {
             eventListRef.current.scrollToIndex({ animated: true, index: 0 });
             setCurrentEventIndex(0);
@@ -204,9 +204,6 @@ const styles = StyleSheet.create({
     height: 250,
     elevation: 5,
     borderBottomColor: AppColors.black,
-    borderRadius: 5,
-    backgroundColor: AppColors.grey,
-    overflow: "hidden",
   },
   loadingContainer: {
     alignItems: "center",
@@ -220,17 +217,24 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingHorizontal: 20,
+  backgroundColor: AppColors.grey,
+  borderRadius: 10,
+  overflow: 'hidden',
+
   },
   eventHeader: {
     padding: 5,
-    backgroundColor: AppColors.primary,
   },
   eventItem: {
     flexDirection: "row",
     justifyContent: "center",
     width: width,
     height: "100%",
+  backgroundColor: AppColors.grey,
+
     padding: 5,
+      borderRadius: 10,
+      overflow: 'hidden',
   },
   eventBar: {
     alignItems: "center",
@@ -239,7 +243,7 @@ const styles = StyleSheet.create({
   eventInfo: {
     width: "75%",
     paddingHorizontal: 5,
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
   },
   dateBox: {
     alignItems: "center",
@@ -274,14 +278,16 @@ const styles = StyleSheet.create({
   eventBadge: {
     width: "95%",
     paddingHorizontal: 3,
-    paddingVertical: 5,
-    marginVertical: 5,
+    marginVertical: 2,
     textAlign: "center",
     textAlignVertical: "center",
     color: AppColors.white,
-    backgroundColor: AppColors.accent,
+    backgroundColor: AppColors.black,
+      borderColor: AppColors.accent,
+      borderWidth: 3,
     borderRadius: 10,
     elevation: 3,
+      overflow: 'hidden',
   },
 });
 

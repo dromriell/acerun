@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
   compass: {
     alignItems: "center",
     justifyContent: "center",
-    width: 45,
+    height: 45,
     aspectRatio: 1,
     backgroundColor: AppColors.darkGrey,
     borderRadius: 5,
-    padding: 2,
+    padding: 1,
   },
   direction: {
     position: "absolute",
