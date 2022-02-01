@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, Image, StatusBar, Platform } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Image,
+  StatusBar,
+  Platform,
+} from "react-native";
 import { useSelector } from "react-redux";
 
 import EventWidget from "../components/events/EventWidget";
@@ -19,9 +26,9 @@ const HomeScreen = (props) => {
         <HeaderText color={AppColors.white} size={24}>
           Hello,{" "}
         </HeaderText>
-          <HeaderText color={AppColors.accent} size={24}>
+        <HeaderText color={AppColors.accent} size={24}>
           {!first_name ? username : first_name}
-          </HeaderText>
+        </HeaderText>
       </View>
       <ScrollView style={{ width: "95%" }}>
         <View style={styles.container}>
@@ -49,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     padding: 10,
-    paddingTop: Platform.OS === 'android' ? 10 : 20,
+    paddingTop: Platform.OS === "android" ? 10 : 20,
     backgroundColor: AppColors.primary,
     elevation: 5,
     borderBottomRightRadius: 30,
@@ -58,7 +65,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
 });
 
