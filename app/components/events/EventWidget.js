@@ -48,7 +48,7 @@ const EventItem = (props) => {
         <BodyText style={styles.eventBadge}>{event.tier}</BodyText>
       </View>
       <View style={styles.eventInfo}>
-        <SubHeaderText size={24} capitalize>
+        <SubHeaderText size={event.tournament_name.length < 61 ? 24 : 20} capitalize>
           {event.tournament_name}
         </SubHeaderText>
         <BodyText>
@@ -95,7 +95,16 @@ const EventWidget = (props) => {
      * or timeout interaction and sets the currentEventIndex to the
      * most recent item index (forwards or backwards).
      */
-    setCurrentEventIndex(changed[0].index);
+      setCurrentEventIndex(oldEvents => {
+          let newEventIndex = null
+          
+          changed.forEach(({index, isViewable}) => {
+              if (isViewable) {
+                  newEventIndex = index
+              }
+          })
+          return newEventIndex
+      });
   }, []);
 
   const handleAutoScroll = () => {
@@ -175,7 +184,6 @@ const EventWidget = (props) => {
         snapToAlignment={"center"}
         viewabilityConfig={viewabilityConfig}
         onViewableItemsChanged={handleViewableItemsChanged}
-        // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         contentInset={{
           top: 0,
           left: 30,
@@ -228,6 +236,7 @@ const styles = StyleSheet.create({
   eventInfo: {
     width: "75%",
     paddingHorizontal: 5,
+      justifyContent: 'flex-start',
   },
   dateBox: {
     alignItems: "center",
