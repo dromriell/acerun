@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     width: "100%",
-    paddingTop: StatusBar.currentHeight,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight: 50,
   },
   profileImageContainer: {
     alignItems: "center",
