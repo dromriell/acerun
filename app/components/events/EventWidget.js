@@ -50,7 +50,7 @@ const EventItem = (props) => {
       <View style={styles.eventInfo}>
         <SubHeaderText
           size={event.tournament_name.length < 61 ? 24 : 20}
-          capitalize
+          style={styles.eventName}
         >
           {event.tournament_name}
         </SubHeaderText>
@@ -141,8 +141,15 @@ const EventWidget = (props) => {
 
   if (isLoading) {
     return (
-      <View style={{ ...styles.container, ...styles.loadingContainer }}>
-        <ActivityIndicator size="large" color={AppColors.accent} />
+      <View style={styles.container}>
+        <View style={styles.eventHeader}>
+          <HeaderText size={32} color={AppColors.white}>
+            Events
+          </HeaderText>
+        </View>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={AppColors.accent} />
+        </View>
       </View>
     );
   }
@@ -210,6 +217,7 @@ const styles = StyleSheet.create({
   loadingContainer: {
     alignItems: "center",
     justifyContent: "center",
+    height: "50%",
   },
   listContainer: {
     width: "100%",
@@ -277,6 +285,9 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
     textAlign: "center",
     textAlignVertical: "center",
+  },
+  eventName: {
+    width: "95%",
   },
   eventBadge: {
     width: "95%",
