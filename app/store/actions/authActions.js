@@ -60,9 +60,6 @@ export const login = (username, password) => {
     }
 
     const authResponse = await response.json();
-
-    console.log(authResponse);
-
     dispatch(
       authenticate(
         authResponse.user_id,

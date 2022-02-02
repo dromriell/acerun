@@ -1,12 +1,4 @@
-import Constants from "expo-constants";
-import { REACT_APP_OPEN_WEATHER_API_KEY } from "../../env";
-
-const { manifest } = Constants;
-
-// export const uri = `http://${manifest.debuggerHost // LOCAL DEVELOPMENT URI
-// .split(`:`)
-// .shift()
-// .concat(`:8000`)}`;
+import { OPEN_WEATHER_API_KEY } from "@env";
 
 export const uri = `https://dg-api-test.herokuapp.com`; // HEROKU TEST DEVELOPMENT URI
 
@@ -47,4 +39,4 @@ export const searchCoursesEP = (term) =>
 // ----- THIRD PARTY ENDPOINTS -----
 // Weather
 export const weatherEP = (zipCode) =>
-  `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${REACT_APP_OPEN_WEATHER_API_KEY}`;
+  `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${OPEN_WEATHER_API_KEY}`;
