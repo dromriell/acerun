@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   Button,
-  Dimensions,
   Alert,
   ScrollView,
   Platform,

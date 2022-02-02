@@ -6,7 +6,6 @@ import {
   Button,
   ActivityIndicator,
   Alert,
-  Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -16,14 +15,8 @@ import Input from "../../components/ui/Input";
 import StatePicker from "../../components/ui/StatePicker";
 import UpdateBadge from "../../components/ui/UpdateBadge";
 
-import { Ionicons } from "@expo/vector-icons";
 import AppColors from "../../utils/AppColors";
 
-import {
-  BodyText,
-  HeaderText,
-  SubHeaderText,
-} from "../../components/ui/AppText";
 import { ScrollView } from "react-native-gesture-handler";
 
 const formReducer = (state, action) => {

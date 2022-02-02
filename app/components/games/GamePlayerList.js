@@ -1,14 +1,8 @@
 import React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import { SubHeaderText } from "../ui/AppText";
 import AppColors from "../../utils/AppColors";
-
-const dummyPlayerData = [
-  {
-    username: "admin",
-  },
-];
 
 const GamePlayerList = (props) => {
   return (

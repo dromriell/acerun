@@ -10,7 +10,6 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
-  Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 

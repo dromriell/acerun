@@ -1,6 +1,6 @@
 import React from "react";
-import { View, StyleSheet, StatusBar, Text, Platform } from "react-native";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { View, StyleSheet, StatusBar, Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import getHaversineDistance from "../../../utils/getHaversineDist";
 

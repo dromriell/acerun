@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, useCallback } from "react";
+import React, { useState, useLayoutEffect, useCallback } from "react";
 import { View, StyleSheet, Switch, Platform, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as courseActions from "../../store/actions/courseActions";

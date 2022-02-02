@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ImageBackground, StyleSheet, StatusBar } from "react-native";
+import { View, ImageBackground, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { HeaderText } from "../../components/ui/AppText";

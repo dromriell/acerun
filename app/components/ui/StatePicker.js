@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Platform } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { stateArray } from "../../utils/stateArray";
 
 import { SubHeaderText } from "./AppText";
 import AppColors from "../../utils/AppColors";
-
-import { MaterialIcons } from "@expo/vector-icons";
 
 const StatePicker = (props) => {
   const { handleInputChange, initialValue } = props;

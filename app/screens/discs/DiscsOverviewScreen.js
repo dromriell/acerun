@@ -15,7 +15,6 @@ import DiscCarousel from "../../components/discs/DiscCarousel";
 import SearchBar from "../../components/ui/SearchBar";
 
 import AppColors from "../../utils/AppColors";
-import { SubHeaderText } from "../../components/ui/AppText";
 
 const DiscsOverviewScreen = (props) => {
   const dispatch = useDispatch();

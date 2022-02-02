@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import { View, StyleSheet, Image, Platform } from "react-native";
-import { useSelector } from "react-redux";
+import { StyleSheet, Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
-import { BodyText, SubHeaderText } from "../ui/AppText";
+import { BodyText } from "../ui/AppText";
 import AppColors from "../../utils/AppColors";
 
 const GameMap = (props) => {
