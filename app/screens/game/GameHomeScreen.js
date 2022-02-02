@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ImageBackground } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { LinearGradient } from "expo-linear-gradient";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as gameActions from "../../store/actions/gameActions";
-
+import AppImageBackground from "../../components/ui/AppImageBackground";
+import backgroundImages from "../../assets/backgroundImages";
 import AppColors from "../../utils/AppColors";
 import { TouchComp } from "../../components/ui/TouchComp";
 import { SubHeaderText } from "../../components/ui/AppText";
@@ -39,17 +38,7 @@ const GameHomeScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <ImageBackground
-        source={require("../../assets/images/disc-golf-002.png")}
-        style={styles.backgroundImage}
-      >
-        <LinearGradient
-          // Background Linear Gradient
-          colors={[AppColors.black, AppColors.black, AppColors.primary]}
-          style={styles.background}
-          start={{ x: 0.1, y: 0.1 }}
-        />
-      </ImageBackground>
+      <AppImageBackground image={backgroundImages.basketRender} />
       <View style={styles.buttonContainer}>
         <View style={styles.newGameButtonContainer}>
           <TouchComp onPress={() => props.navigation.navigate("GameSetup")}>
@@ -94,20 +83,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  backgroundImage: {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    flex: 1,
-  },
-  background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: "100%",
-    opacity: 0.7,
   },
   buttonContainer: {
     flex: 1,

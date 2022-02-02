@@ -13,8 +13,9 @@ import * as discActions from "../../store/actions/discsActions";
 import DiscHomeMenu from "../../components/discs/DiscHomeMenu";
 import DiscCarousel from "../../components/discs/DiscCarousel";
 import SearchBar from "../../components/ui/SearchBar";
-
 import AppColors from "../../utils/AppColors";
+import AppImageBackground from "../../components/ui/AppImageBackground";
+import backgroundImages from "../../assets/backgroundImages";
 
 const DiscsOverviewScreen = (props) => {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ const DiscsOverviewScreen = (props) => {
   }, [dispatch, loadUserDiscs, setError]);
 
   if (error) {
+    console.log(error);
     return (
       <View>
         <Text>An Error Occured</Text>
@@ -71,7 +73,8 @@ const DiscsOverviewScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <ScrollView>
+      <AppImageBackground image={backgroundImages.discRender} />
+      <ScrollView style={styles.scroll}>
         <DiscHomeMenu navigation={props.navigation} />
         <DiscCarousel
           data={[]} // Currently no endpoint.
@@ -105,9 +108,10 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: AppColors.darkGrey,
     alignItems: "center",
     justifyContent: "flex-start",
+  },
+  scroll: {
     paddingVertical: 10,
   },
   centered: {

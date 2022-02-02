@@ -1,10 +1,8 @@
 import React, { useState, useReducer, useCallback, useEffect } from "react";
-import { LinearGradient } from "expo-linear-gradient";
 import {
   View,
   StyleSheet,
   Button,
-  ImageBackground,
   ActivityIndicator,
   KeyboardAvoidingView,
   Alert,
@@ -17,10 +15,10 @@ import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
 import * as authActions from "../../store/actions/authActions";
-
+import AppImageBackground from "../../components/ui/AppImageBackground";
+import backgroundImages from "../../assets/backgroundImages";
 import Input from "../../components/ui/Input";
 import AppColors from "../../utils/AppColors";
-import { HeaderText } from "../../components/ui/AppText";
 import UpdateBadge from "../../components/ui/UpdateBadge";
 
 const formReducer = (state, action) => {
@@ -126,17 +124,7 @@ const AuthScreen = (props) => {
       behavior="height"
       keyboardShouldPersistTaps={"handled"}
     >
-      <ImageBackground
-        source={require("../../assets/images/disc-golf-4985907_960_720.jpg")}
-        style={styles.backgroundImage}
-      >
-        <LinearGradient
-          // Background Linear Gradient
-          colors={[AppColors.blue, AppColors.black, AppColors.green]}
-          style={styles.background}
-          start={{ x: 1.1, y: 0.9 }}
-        />
-      </ImageBackground>
+      <AppImageBackground image={backgroundImages.basketZoom} />
       <View style={styles.container}>
         {isSignUpConfirmed && <UpdateBadge message={"Sign up successful!"} />}
         <View style={styles.brandContainer}>
@@ -250,21 +238,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },
-  backgroundImage: {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    flex: 1,
-    top: 0,
-    left: 0,
-  },
-  imageContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
   },
   background: {
     position: "absolute",
