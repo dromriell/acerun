@@ -169,7 +169,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     minHeight: 450,
-    elevation: 5,
     borderBottomColor: AppColors.black,
     borderRadius: 15,
     overflow: "hidden",
@@ -191,7 +190,6 @@ const styles = StyleSheet.create({
   containerHeader: {
     width: "100%",
     padding: 5,
-    backgroundColor: AppColors.darkGrey,
   },
   gameSummaryLrg: {
     width: "100%",
