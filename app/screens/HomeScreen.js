@@ -3,11 +3,12 @@ import {
   View,
   StyleSheet,
   ScrollView,
-  Image,
+  ImageBackground,
   StatusBar,
   Platform,
 } from "react-native";
 import { useSelector } from "react-redux";
+import { LinearGradient } from "expo-linear-gradient";
 
 import EventWidget from "../components/events/EventWidget";
 import GameHistoryWidget from "../components/games/GameHistoryWidget";
@@ -22,6 +23,17 @@ const HomeScreen = (props) => {
   return (
     <View style={styles.screen}>
       <StatusBar backgroundColor={AppColors.primary} />
+      <ImageBackground
+        source={require("../assets/images/disc-golf-002.png")}
+        style={styles.backgroundImage}
+      >
+        <LinearGradient
+          // Background Linear Gradient
+          colors={[AppColors.black, AppColors.black, AppColors.primary]}
+          style={styles.background}
+          start={{ x: 0.1, y: 0.1 }}
+        />
+      </ImageBackground>
       <View style={styles.header}>
         <HeaderText color={AppColors.white} size={24}>
           Hello,{" "}
@@ -49,6 +61,20 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: AppColors.darkGrey,
+  },
+  backgroundImage: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    flex: 1,
+  },
+  background: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: "100%",
+    opacity: 0.7,
   },
   header: {
     width: "100%",
