@@ -114,8 +114,15 @@ const GameHistoryWidget = (props) => {
 
   if (isLoading) {
     return (
-      <View style={{ ...styles.container, ...styles.loadingContainer }}>
-        <ActivityIndicator size="large" color={AppColors.accent} />
+      <View style={{ ...styles.container }}>
+        <View style={styles.containerHeader}>
+          <HeaderText size={32} color={AppColors.white}>
+            Recent Games
+          </HeaderText>
+        </View>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={AppColors.accent} />
+        </View>
       </View>
     );
   }
@@ -170,6 +177,7 @@ const styles = StyleSheet.create({
   loadingContainer: {
     justifyContent: "center",
     alignItems: "center",
+    height: "50%",
   },
   emptyItem: {
     flex: 1,
