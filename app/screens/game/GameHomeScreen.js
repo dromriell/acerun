@@ -7,8 +7,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as gameActions from "../../store/actions/gameActions";
 
-import { TouchComp } from "../../components/ui/TouchComp";
 import AppColors from "../../utils/AppColors";
+import { TouchComp } from "../../components/ui/TouchComp";
+import { SubHeaderText } from "../../components/ui/AppText";
 
 const GameHomeScreen = (props) => {
   const { navigation } = props;
