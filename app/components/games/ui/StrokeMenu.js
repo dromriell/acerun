@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -274,7 +274,9 @@ const MenuBubble = (props) => {
         overlayGrowAnimation.start();
       }}
       delayLongPress={600}
-      onLongPress={() => onPressComplete(type)}
+      onLongPress={() => {
+        onPressComplete(type);
+      }}
       onPressOut={() => {
         overlayShrinkAnimation.start();
       }}
@@ -291,7 +293,7 @@ const MenuBubble = (props) => {
             transform: [{ scaleX: scaleXAnim }, { scaleY: scaleYAnim }],
           }}
         ></Animated.View>
-        <SubHeaderText>{type}</SubHeaderText>
+        <SubHeaderText color={AppColors.accent}>{type}</SubHeaderText>
       </View>
     </Pressable>
   );
@@ -323,10 +325,11 @@ const styles = StyleSheet.create({
     width: 80,
     aspectRatio: 1,
     borderRadius: 100,
-    backgroundColor: AppColors.accent,
-    borderColor: AppColors.primary,
+    backgroundColor: AppColors.darkGrey,
+    borderColor: AppColors.accent,
     borderWidth: 2,
     overflow: "hidden",
+    color: AppColors.white,
   },
   bubbleStroke: {
     flex: 1,

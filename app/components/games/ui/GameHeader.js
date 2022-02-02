@@ -1,6 +1,6 @@
 import React from "react";
-import { View, StyleSheet, StatusBar, Text } from "react-native";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { View, StyleSheet, StatusBar, Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import getHaversineDistance from "../../../utils/getHaversineDist";
 
@@ -15,7 +15,7 @@ const GameHeader = (props) => {
 
   return (
     <View style={styles.header}>
-      <StatusBar barStyle={AppColors.white} />
+      <StatusBar barStyle="light-content" />
       <View style={styles.titleRow}>
         <HeaderText capitalize color={AppColors.grey} size={24}>
           {courseName}
@@ -51,10 +51,11 @@ const styles = StyleSheet.create({
     left: 0,
     justifyContent: "center",
     width: "100%",
-    height: 80,
+    height: Platform.OS === "android" ? 80 : 110,
     zIndex: 100,
     backgroundColor: AppColors.blackTrans,
     padding: 10,
+    paddingTop: Platform.OS === "android" ? 10 : 20,
   },
   holeInfoText: {
     marginRight: 20,

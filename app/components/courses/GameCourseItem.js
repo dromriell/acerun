@@ -38,7 +38,7 @@ const GameCourseItem = (props) => {
   }
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <TouchComp style={styles.touchable} onPress={onCoursePress} useForeground>
         <View style={styles.courseItem}>
           <View style={styles.imageContainer}>

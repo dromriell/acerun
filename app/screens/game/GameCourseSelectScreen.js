@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   Button,
   Alert,
@@ -14,7 +13,7 @@ import * as gameActions from "../../store/actions/gameActions";
 
 import { nearbyCoursesEP } from "../../utils/apiEndPoints";
 
-import { HeaderText, SubHeaderText } from "../../components/ui/AppText";
+import { HeaderText } from "../../components/ui/AppText";
 import AppColors from "../../utils/AppColors";
 
 import CourseList from "../../components/courses/CourseList";
@@ -104,7 +103,6 @@ const GameCourseSelectScreen = (props) => {
   }, []);
 
   useEffect(() => {
-    // setCourses(dummyCourse);
     if (!location) {
       return;
     }
@@ -165,10 +163,10 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.darkGrey,
   },
   launchScreen: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: AppColors.darkGrey,
   },
 });
 

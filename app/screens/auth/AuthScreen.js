@@ -1,25 +1,24 @@
 import React, { useState, useReducer, useCallback, useEffect } from "react";
-import { LinearGradient } from "expo-linear-gradient";
 import {
   View,
   StyleSheet,
   Button,
-  ImageBackground,
   ActivityIndicator,
   KeyboardAvoidingView,
   Alert,
   Keyboard,
   Image,
   Dimensions,
+  Platform,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
 import * as authActions from "../../store/actions/authActions";
-
+import AppImageBackground from "../../components/ui/AppImageBackground";
+import backgroundImages from "../../assets/backgroundImages";
 import Input from "../../components/ui/Input";
 import AppColors from "../../utils/AppColors";
-import { HeaderText } from "../../components/ui/AppText";
 import UpdateBadge from "../../components/ui/UpdateBadge";
 
 const formReducer = (state, action) => {
@@ -125,17 +124,7 @@ const AuthScreen = (props) => {
       behavior="height"
       keyboardShouldPersistTaps={"handled"}
     >
-      <ImageBackground
-        source={require("../../assets/images/disc-golf-4985907_960_720.jpg")}
-        style={styles.backgroundImage}
-      >
-        <LinearGradient
-          // Background Linear Gradient
-          colors={[AppColors.blue, AppColors.black, AppColors.green]}
-          style={styles.background}
-          start={{ x: 1.1, y: 0.9 }}
-        />
-      </ImageBackground>
+      <AppImageBackground image={backgroundImages.basketZoom} />
       <View style={styles.container}>
         {isSignUpConfirmed && <UpdateBadge message={"Sign up successful!"} />}
         <View style={styles.brandContainer}>
@@ -175,7 +164,7 @@ const AuthScreen = (props) => {
               icon={
                 <Ionicons
                   name="person"
-                  size={24}
+                  size={Platform.OS === "android" ? 24 : 40}
                   color={AppColors.primary}
                   style={styles.inputIcon}
                 />
@@ -197,7 +186,7 @@ const AuthScreen = (props) => {
               icon={
                 <Ionicons
                   name="md-lock-closed"
-                  size={24}
+                  size={Platform.OS === "android" ? 24 : 40}
                   color={AppColors.primary}
                   style={styles.inputIcon}
                 />
@@ -250,21 +239,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  backgroundImage: {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    flex: 1,
-    top: 0,
-    left: 0,
-  },
-  imageContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-  },
   background: {
     position: "absolute",
     left: 0,
@@ -302,6 +276,7 @@ const styles = StyleSheet.create({
   },
   authCard: {
     alignItems: "center",
+    justifyContent: Platform.OS === "android" ? "flex-start" : "center",
     width: "90%",
     height: "63%",
     maxHeight: 350,
@@ -334,17 +309,22 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: 45,
     width: "90%",
+    borderRadius: 10,
+    overflow: "hidden",
   },
   input: {
     backgroundColor: AppColors.white,
     paddingHorizontal: 10,
+    fontSize: 18,
   },
   label: {
     color: AppColors.grey,
   },
   inputIcon: {
     textAlignVertical: "center",
+    justifyContent: "center",
     textAlign: "center",
+    alignItems: "center",
     height: "100%",
     aspectRatio: 1,
     backgroundColor: AppColors.accent,

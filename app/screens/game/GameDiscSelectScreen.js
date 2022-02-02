@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -47,6 +47,9 @@ export const screenOptions = (navData) => {
   return {
     headerShown: false,
     presentation: "transparentModal",
+    headerStyle: {
+      marginTop: 25,
+    },
   };
 };
 
@@ -63,6 +66,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "center",
     paddingHorizontal: 10,
+    paddingTop: Platform.OS === "android" ? 0 : 15,
     backgroundColor: AppColors.primary,
   },
   closeContainer: {

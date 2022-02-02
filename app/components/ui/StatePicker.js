@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Platform } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { stateArray } from "../../utils/stateArray";
 
 import { SubHeaderText } from "./AppText";
 import AppColors from "../../utils/AppColors";
-
-import { MaterialIcons } from "@expo/vector-icons";
 
 const StatePicker = (props) => {
   const { handleInputChange, initialValue } = props;
@@ -16,16 +14,19 @@ const StatePicker = (props) => {
 
   return (
     <View style={{ ...styles.formControl, ...props.formControlStyle }}>
-      <SubHeaderText style={{ ...styles.label, ...props.labelStyle }}>
-        {props.label}
-      </SubHeaderText>
+      {Platform.OS === "android" ? (
+        <SubHeaderText style={{ ...styles.label, ...props.labelStyle }}>
+          {props.label}
+        </SubHeaderText>
+      ) : null}
+
       <View style={{ ...styles.inputContainer, ...props.inputContainerStyle }}>
         {props.icon}
         <Picker
-          selectedValue={initialValue.toUpperCase() || null}
+          selectedValue={selectedValue || null}
           onValueChange={(itemValue) => {
             setSelectedValue(itemValue);
-            handleInputChange("state", itemValue);
+            handleInputChange("state", itemValue, true);
           }}
           {...props}
           style={{ ...styles.input, ...props.inputStyle }}
@@ -39,7 +40,7 @@ const StatePicker = (props) => {
                 key={state.abbr}
                 label={state.name}
                 value={state.abbr}
-                color={isSelected ? AppColors.primary : null}
+                color={isSelected ? AppColors.primary : ""}
               />
             );
           })}
@@ -51,21 +52,25 @@ const StatePicker = (props) => {
 
 const styles = StyleSheet.create({
   formControl: {
-    height: 75,
-    marginVertical: 10,
+    height: Platform.OS === "android" ? 75 : 150,
+    marginVertical: Platform.OS === "android" ? 10 : 20,
+    // width: "95%",
   },
   label: {
     color: AppColors.black,
+    height: Platform.OS === "android" ? "40%" : 0,
   },
   inputContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: Platform.OS === "android" ? "space-around" : "center",
     alignItems: "center",
     width: "95%",
-    height: 35,
+    height: Platform.OS === "android" ? 35 : "100%",
     marginVertical: 5,
     backgroundColor: AppColors.white,
     borderRadius: 10,
+    paddingHorizontal: Platform.OS === "android" ? 0 : 10,
+    paddingLeft: Platform.OS === "android" ? 10 : 0,
   },
   input: {
     width: "90%",

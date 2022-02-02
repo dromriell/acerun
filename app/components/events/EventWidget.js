@@ -48,7 +48,10 @@ const EventItem = (props) => {
         <BodyText style={styles.eventBadge}>{event.tier}</BodyText>
       </View>
       <View style={styles.eventInfo}>
-        <SubHeaderText size={24} capitalize>
+        <SubHeaderText
+          size={event.tournament_name.length < 61 ? 24 : 20}
+          style={styles.eventName}
+        >
           {event.tournament_name}
         </SubHeaderText>
         <BodyText>
@@ -95,7 +98,16 @@ const EventWidget = (props) => {
      * or timeout interaction and sets the currentEventIndex to the
      * most recent item index (forwards or backwards).
      */
-    setCurrentEventIndex(changed[0].index);
+    setCurrentEventIndex((oldEvents) => {
+      let newEventIndex = null;
+
+      changed.forEach(({ index, isViewable }) => {
+        if (isViewable) {
+          newEventIndex = index;
+        }
+      });
+      return newEventIndex;
+    });
   }, []);
 
   const handleAutoScroll = () => {
@@ -129,8 +141,15 @@ const EventWidget = (props) => {
 
   if (isLoading) {
     return (
-      <View style={{ ...styles.container, ...styles.loadingContainer }}>
-        <ActivityIndicator size="large" color={AppColors.accent} />
+      <View style={styles.container}>
+        <View style={styles.eventHeader}>
+          <HeaderText size={32} color={AppColors.white}>
+            Events
+          </HeaderText>
+        </View>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={AppColors.accent} />
+        </View>
       </View>
     );
   }
@@ -139,7 +158,7 @@ const EventWidget = (props) => {
     return (
       <View style={styles.container}>
         <View style={styles.eventHeader}>
-          <HeaderText size={32} color={AppColors.accent}>
+          <HeaderText size={32} color={AppColors.white}>
             Events
           </HeaderText>
         </View>
@@ -155,7 +174,7 @@ const EventWidget = (props) => {
       <View style={styles.eventHeader}>
         <HeaderText
           size={32}
-          color={AppColors.accent}
+          color={AppColors.white}
           onPress={() => {
             eventListRef.current.scrollToIndex({ animated: true, index: 0 });
             setCurrentEventIndex(0);
@@ -164,25 +183,26 @@ const EventWidget = (props) => {
           Events
         </HeaderText>
       </View>
-      <FlatList
-        ref={eventListRef}
-        data={homeEvents.events}
-        renderItem={renderEvents}
-        keyExtractor={(item) => item.tournament_id}
-        horizontal={true}
-        decelerationRate={0}
-        snapToInterval={width}
-        snapToAlignment={"center"}
-        viewabilityConfig={viewabilityConfig}
-        onViewableItemsChanged={handleViewableItemsChanged}
-        // viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        contentInset={{
-          top: 0,
-          left: 30,
-          bottom: 0,
-          right: 30,
-        }}
-      />
+      <View style={styles.listContainer}>
+        <FlatList
+          ref={eventListRef}
+          data={homeEvents.events}
+          renderItem={renderEvents}
+          keyExtractor={(item) => item.tournament_id}
+          horizontal={true}
+          decelerationRate={0}
+          snapToInterval={width}
+          snapToAlignment={"center"}
+          viewabilityConfig={viewabilityConfig}
+          onViewableItemsChanged={handleViewableItemsChanged}
+          contentInset={{
+            top: 0,
+            left: 30,
+            bottom: 0,
+            right: 30,
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -191,15 +211,18 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 250,
-    elevation: 5,
     borderBottomColor: AppColors.black,
-    borderRadius: 5,
-    backgroundColor: AppColors.grey,
     overflow: "hidden",
   },
   loadingContainer: {
     alignItems: "center",
     justifyContent: "center",
+    height: "50%",
+  },
+  listContainer: {
+    width: "100%",
+    borderRadius: 10,
+    overflow: "hidden",
   },
   emptyItem: {
     flex: 1,
@@ -209,16 +232,19 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingHorizontal: 20,
+    backgroundColor: AppColors.grey,
+    elevation: 5,
   },
   eventHeader: {
     padding: 5,
-    backgroundColor: AppColors.primary,
   },
   eventItem: {
     flexDirection: "row",
     justifyContent: "center",
     width: width,
     height: "100%",
+    backgroundColor: AppColors.grey,
+    elevation: 5,
     padding: 5,
   },
   eventBar: {
@@ -228,6 +254,7 @@ const styles = StyleSheet.create({
   eventInfo: {
     width: "75%",
     paddingHorizontal: 5,
+    justifyContent: "space-between",
   },
   dateBox: {
     alignItems: "center",
@@ -259,17 +286,22 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
   },
+  eventName: {
+    width: "95%",
+  },
   eventBadge: {
     width: "95%",
     paddingHorizontal: 3,
-    paddingVertical: 5,
-    marginVertical: 5,
+    marginVertical: 2,
     textAlign: "center",
     textAlignVertical: "center",
     color: AppColors.white,
-    backgroundColor: AppColors.accent,
+    backgroundColor: AppColors.black,
+    borderColor: AppColors.accent,
+    borderWidth: 3,
     borderRadius: 10,
     elevation: 3,
+    overflow: "hidden",
   },
 });
 

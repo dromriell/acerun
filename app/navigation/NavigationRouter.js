@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { AuthStackNavigator, AppNavigator } from "./AppNavigator";
+import AppTheme from "../utils/AppTheme";
 
 const NavigationRouter = (props) => {
   const isAuth = useSelector((state) => {
@@ -9,7 +10,7 @@ const NavigationRouter = (props) => {
   });
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={AppTheme}>
       {isAuth ? <AppNavigator /> : <AuthStackNavigator />}
     </NavigationContainer>
   );

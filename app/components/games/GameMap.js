@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import { View, StyleSheet, Image } from "react-native";
-import { useSelector } from "react-redux";
+import { StyleSheet, Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
-import { BodyText, SubHeaderText } from "../ui/AppText";
+import { BodyText } from "../ui/AppText";
 import AppColors from "../../utils/AppColors";
 
 const GameMap = (props) => {
@@ -30,6 +29,9 @@ const GameMap = (props) => {
   };
 
   useEffect(() => {
+    if (!mapRef || !center || Platform.OS === "ios") {
+      return;
+    }
     mapRef.current.setMapBoundaries(
       {
         latitude: center.lat + 0.0005,
@@ -45,7 +47,7 @@ const GameMap = (props) => {
   return (
     <MapView
       ref={mapRef}
-      // region={mapRegion}
+      region={mapRegion}
       style={styles.map}
       minZoomLevel={18} // default => 0
       maxZoomLevel={22} // default => 20
@@ -72,7 +74,7 @@ const GameMap = (props) => {
               latitude: stroke.lat,
               longitude: stroke.lng,
             }}
-            icon={
+            image={
               stroke.type === "penalty"
                 ? require("../../assets/icons/map/penaltyIcon.png")
                 : require("../../assets/icons/map/strokeIcon.png")

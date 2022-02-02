@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, View, Button, StyleSheet, FlatList } from "react-native";
+import { Modal, View, Button, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 
 import * as gameActions from "../../../store/actions/gameActions";

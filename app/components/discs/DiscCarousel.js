@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, FlatList, StyleSheet, ScrollView } from "react-native";
+import React from "react";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import DiscItem from "./DiscItem";

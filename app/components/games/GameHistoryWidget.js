@@ -114,8 +114,15 @@ const GameHistoryWidget = (props) => {
 
   if (isLoading) {
     return (
-      <View style={{ ...styles.container, ...styles.loadingContainer }}>
-        <ActivityIndicator size="large" color={AppColors.accent} />
+      <View style={{ ...styles.container }}>
+        <View style={styles.containerHeader}>
+          <HeaderText size={32} color={AppColors.white}>
+            Recent Games
+          </HeaderText>
+        </View>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={AppColors.accent} />
+        </View>
       </View>
     );
   }
@@ -124,7 +131,7 @@ const GameHistoryWidget = (props) => {
     return (
       <View style={styles.container}>
         <View style={styles.containerHeader}>
-          <HeaderText size={32} color={AppColors.accent}>
+          <HeaderText size={32} color={AppColors.white}>
             Recent Games
           </HeaderText>
         </View>
@@ -138,19 +145,21 @@ const GameHistoryWidget = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
-        <HeaderText size={32} color={AppColors.accent}>
+        <HeaderText size={32} color={AppColors.white}>
           Recent Games
         </HeaderText>
       </View>
-      {gameHistory.map((game, i) => {
-        if (!game.game) {
-          return;
-        }
-        if (i === 0) {
-          return <GameSummaryLarge key={game.id} game={game} />;
-        }
-        return <GameSummarySmall key={game.id} game={game} />;
-      })}
+      <View style={styles.gameContainer}>
+        {gameHistory.map((game, i) => {
+          if (!game.game) {
+            return;
+          }
+          if (i === 0) {
+            return <GameSummaryLarge key={game.id} game={game} />;
+          }
+          return <GameSummarySmall key={game.id} game={game} />;
+        })}
+      </View>
     </View>
   );
 };
@@ -160,15 +169,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     minHeight: 450,
-    elevation: 5,
     borderBottomColor: AppColors.black,
-    borderRadius: 5,
-    backgroundColor: AppColors.grey,
+    borderRadius: 15,
     overflow: "hidden",
   },
   loadingContainer: {
     justifyContent: "center",
     alignItems: "center",
+    height: "50%",
   },
   emptyItem: {
     flex: 1,
@@ -182,13 +190,13 @@ const styles = StyleSheet.create({
   containerHeader: {
     width: "100%",
     padding: 5,
-    backgroundColor: AppColors.primary,
   },
   gameSummaryLrg: {
     width: "100%",
     height: 250,
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
+    borderTopRightRadius: 15,
     overflow: "hidden",
     elevation: 5,
   },
@@ -249,6 +257,7 @@ const styles = StyleSheet.create({
     color: AppColors.red,
   },
   scoreBadge: {
+    flexDirection: "row",
     position: "absolute",
     top: 15,
     right: 15,
@@ -259,10 +268,12 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     borderRadius: 50,
     backgroundColor: AppColors.white,
+    lineHeight: 38,
   },
   underParBadge: {
     color: AppColors.green,
     fontSize: 38,
+    lineHeight: 55,
   },
   overParBadge: {
     color: AppColors.red,
@@ -278,6 +289,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: AppColors.black,
     width: "95%",
+  },
+  gameContainer: {
+    backgroundColor: AppColors.grey,
+    flex: 1,
+    width: "100%",
+    borderRadius: 15,
+    overflow: "hidden",
   },
 });
 

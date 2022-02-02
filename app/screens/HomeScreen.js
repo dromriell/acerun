@@ -1,11 +1,19 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, Image, StatusBar } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  StatusBar,
+  Platform,
+} from "react-native";
 import { useSelector } from "react-redux";
 
 import EventWidget from "../components/events/EventWidget";
 import GameHistoryWidget from "../components/games/GameHistoryWidget";
-import { HeaderText } from "../components/ui/AppText";
+import AppImageBackground from "../components/ui/AppImageBackground";
+import backgroundImages from "../assets/backgroundImages";
 import AppColors from "../utils/AppColors";
+import { HeaderText } from "../components/ui/AppText";
 
 const HomeScreen = (props) => {
   const token = useSelector((state) => state.auth.token);
@@ -15,9 +23,13 @@ const HomeScreen = (props) => {
   return (
     <View style={styles.screen}>
       <StatusBar backgroundColor={AppColors.primary} />
+      <AppImageBackground image={backgroundImages.basketRender} />
       <View style={styles.header}>
         <HeaderText color={AppColors.white} size={24}>
-          Hello, {!first_name ? username : first_name}
+          Hello,{" "}
+        </HeaderText>
+        <HeaderText color={AppColors.accent} size={24}>
+          {!first_name ? username : first_name}
         </HeaderText>
       </View>
       <ScrollView style={{ width: "95%" }}>
@@ -46,6 +58,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     padding: 10,
+    paddingTop: Platform.OS === "android" ? 10 : 20,
     backgroundColor: AppColors.primary,
     elevation: 5,
     borderBottomRightRadius: 30,
@@ -54,7 +67,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
 });
 

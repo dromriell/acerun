@@ -15,14 +15,8 @@ import Input from "../../components/ui/Input";
 import StatePicker from "../../components/ui/StatePicker";
 import UpdateBadge from "../../components/ui/UpdateBadge";
 
-import { Ionicons } from "@expo/vector-icons";
 import AppColors from "../../utils/AppColors";
 
-import {
-  BodyText,
-  HeaderText,
-  SubHeaderText,
-} from "../../components/ui/AppText";
 import { ScrollView } from "react-native-gesture-handler";
 
 const formReducer = (state, action) => {
@@ -131,14 +125,8 @@ const EditProfileScreen = (props) => {
         <View style={styles.form}>
           <Input
             id="username"
-            icon={
-              <Ionicons
-                name="person"
-                size={24}
-                color={AppColors.accent}
-                style={styles.inputIcon}
-              />
-            }
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             label="Username"
             labelStyle={styles.label}
             keyBoardType="text"
@@ -150,14 +138,8 @@ const EditProfileScreen = (props) => {
           />
           <Input
             id="email"
-            icon={
-              <Ionicons
-                name="person"
-                size={24}
-                color={AppColors.accent}
-                style={styles.inputIcon}
-              />
-            }
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             label="Email"
             email
             labelStyle={styles.label}
@@ -170,14 +152,8 @@ const EditProfileScreen = (props) => {
           />
           <Input
             id="first_name"
-            icon={
-              <Ionicons
-                name="person"
-                size={24}
-                color={AppColors.accent}
-                style={styles.inputIcon}
-              />
-            }
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             label="First Name"
             labelStyle={styles.label}
             keyBoardType="text"
@@ -189,14 +165,8 @@ const EditProfileScreen = (props) => {
           />
           <Input
             id="last_name"
-            icon={
-              <Ionicons
-                name="person"
-                size={24}
-                color={AppColors.accent}
-                style={styles.inputIcon}
-              />
-            }
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             label="Last Name"
             labelStyle={styles.label}
             keyBoardType="text"
@@ -208,16 +178,10 @@ const EditProfileScreen = (props) => {
           />
           <Input
             id="city"
-            icon={
-              <Ionicons
-                name="md-lock-closed"
-                size={24}
-                color={AppColors.accent}
-                style={styles.inputIcon}
-              />
-            }
             label="City"
             labelStyle={styles.label}
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             keyBoardType="text"
             autoCapitalize="none"
             errorText="Invalid City"
@@ -230,6 +194,8 @@ const EditProfileScreen = (props) => {
             handleInputChange={handleInputChange}
             label="State"
             labelStyle={styles.label}
+            inputContainerStyle={styles.inputContainer}
+            inputStyle={styles.input}
             keyBoardType="text"
             autoCapitalize="none"
             errorText="Invalid State"
@@ -257,10 +223,12 @@ const EditProfileScreen = (props) => {
 export const screenOptions = () => {
   return {
     animationEnabled: false,
-    headerTitle: "Edit Profile",
+    headerTitle: "",
     headerTitleAlign: "space-around",
     headerTitleStyle: {
       height: 30,
+      alignItems: "center",
+      justifyContent: "center",
     },
   };
 };
@@ -282,13 +250,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     zIndex: 200,
   },
-  scroll: { width: "100%" },
+  scroll: { width: "100%", marginBottom: 25 },
   form: {
     width: "100%",
     alignItems: "center",
   },
   label: {
     color: AppColors.white,
+    fontSize: 21,
+  },
+  inputContainer: {
+    borderRadius: 10,
+    overflow: "hidden",
+    maxWidth: "95%",
+  },
+  input: {
+    borderRadius: 10,
+    paddingHorizontal: "5%",
+    fontSize: 18,
   },
   inputIcon: {
     textAlignVertical: "center",

@@ -1,5 +1,3 @@
-import { userDiscs } from "../../dummyData/userDiscs";
-
 export const SET_USER_DISCS = "SET_USER_DISCS";
 export const SET_OVERVIEW_DISCS = "SET_OVERVIEW_DISCS";
 export const SEARCH_DISCS = "SEARCH_DISCS";
@@ -42,10 +40,16 @@ export const fetchUserDiscs = (token) => {
   };
 };
 
+/**
+ * Fetches the disc data to be displayed on the discs overview
+ * screen (i.e. trending and new discs).
+ * NO CURRENT DATA ENDPOINT FOR THIS. ADD WHEN COMPLETED.
+ * @returns dispatch
+ */
 export const fetchOverviewDiscs = () => {
   return async (dispatch) => {
     try {
-      const response = userDiscs;
+      const response = {};
       dispatch({ type: SET_OVERVIEW_DISCS, overviewDiscs: response });
     } catch (error) {
       throw error;

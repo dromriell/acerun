@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Button,
-  StyleSheet,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import AppColors from "../../utils/AppColors";
 
 import { SubHeaderText } from "../ui/AppText";

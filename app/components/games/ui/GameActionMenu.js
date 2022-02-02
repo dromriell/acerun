@@ -146,6 +146,7 @@ const GameActionMenu = (props) => {
 
     dispatch(gameActions.addStroke(stroke));
     setIsPenalty(false);
+    setIsHole(false);
     setLocation();
   }, [location]);
 
@@ -165,8 +166,6 @@ const GameActionMenu = (props) => {
               setIsStrokeMenuOpen={setIsStrokeMenuOpen}
               isLoading={isLoading}
             />
-          </View>
-          <View style={styles.discMenu}>
             <Toggle
               labelLeft={"FH"}
               labelRight={"BH"}
@@ -176,6 +175,8 @@ const GameActionMenu = (props) => {
               onValueChange={() => setIsBackHandThrow(!isBackHandThrow)}
               value={isBackHandThrow}
             />
+          </View>
+          <View style={styles.discMenu}>
             <DiscSelector navigation={navigation} equippedDisc={equippedDisc} />
           </View>
         </View>
@@ -246,8 +247,9 @@ const styles = StyleSheet.create({
   },
   strokeMenu: {
     alignContent: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     width: "20%",
+    paddingBottom: "10%",
   },
   discMenu: {
     alignContent: "center",
@@ -256,14 +258,14 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   discContainer: {
-    flex: 1,
-    aspectRatio: 1,
+    height: "80%",
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
   discDisplay: {
-    flex: 1,
-    width: "95%",
+    height: "100%",
+    aspectRatio: 1,
     maxWidth: "95%",
   },
 });

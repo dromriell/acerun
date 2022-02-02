@@ -4,11 +4,7 @@ import { useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 
 import AppColors from "../../utils/AppColors";
-import {
-  BodyText,
-  HeaderText,
-  SubHeaderText,
-} from "../../components/ui/AppText";
+import { BodyText, SubHeaderText } from "../../components/ui/AppText";
 
 const CourseDetailScreen = (props) => {
   const { route } = props;
