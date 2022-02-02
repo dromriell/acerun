@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Button, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -40,7 +40,7 @@ const GameHomeScreen = (props) => {
   return (
     <View style={styles.screen}>
       <ImageBackground
-        source={require("../../assets/images/disc-golf-002.jpg")}
+        source={require("../../assets/images/disc-golf-002.png")}
         style={styles.backgroundImage}
       >
         <LinearGradient
