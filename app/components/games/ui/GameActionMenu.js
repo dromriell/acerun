@@ -146,6 +146,7 @@ const GameActionMenu = (props) => {
 
     dispatch(gameActions.addStroke(stroke));
     setIsPenalty(false);
+    setIsHole(false);
     setLocation();
   }, [location]);
 

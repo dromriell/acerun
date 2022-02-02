@@ -274,7 +274,9 @@ const MenuBubble = (props) => {
         overlayGrowAnimation.start();
       }}
       delayLongPress={600}
-      onLongPress={() => onPressComplete(type)}
+      onLongPress={() => {
+        onPressComplete(type);
+      }}
       onPressOut={() => {
         overlayShrinkAnimation.start();
       }}
