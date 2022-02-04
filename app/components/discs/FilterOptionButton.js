@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import AppColors from "../../utils/AppColors";
 
 import { SubHeaderText } from "../ui/AppText";
 
 const FilterOptionButton = (props) => {
-  const [isSelected, setIsSelected] = useState(false);
   const { selected } = props;
-
-  useEffect(() => {
-    setIsSelected(selected);
-  }, [selected, setIsSelected]);
 
   return (
     <View style={styles.buttonContainer}>
