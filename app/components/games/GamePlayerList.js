@@ -4,7 +4,13 @@ import { View, StyleSheet } from "react-native";
 import { SubHeaderText } from "../ui/AppText";
 import AppColors from "../../utils/AppColors";
 
+/**
+ * Currently only displays one player (current user).
+ * Intended to be used to display all users attached
+ * to a given game once friends features added.
+ */
 const GamePlayerList = (props) => {
+  const { players } = props;
   return (
     <View style={styles.list}>
       <SubHeaderText
@@ -16,7 +22,13 @@ const GamePlayerList = (props) => {
         Player List
       </SubHeaderText>
       <View style={styles.listHeader}>
-        <SubHeaderText centered>Player Name - AmPro</SubHeaderText>
+        {players.map((player) => {
+          return (
+            <SubHeaderText centered key={player.id}>
+              {player.first_name} {player.last_name}
+            </SubHeaderText>
+          );
+        })}
       </View>
     </View>
   );

@@ -22,10 +22,12 @@ const GameSetupScreen = (props) => {
   const errorCreating = props.route.params
     ? props.route.params.errorCreating
     : null;
-  console.log(errorCreating);
   const [courseUnavailable, setCourseUnavailable] = useState(errorCreating);
   const selectedCourse = useSelector((state) => state.game.course);
   const userProfile = useSelector((state) => state.auth.profile.user);
+
+  //Currently one user, can add others for game on API
+  const players = [userProfile];
 
   const handleStartGame = () => {
     if (!selectedCourse) {
@@ -34,7 +36,7 @@ const GameSetupScreen = (props) => {
       ]);
       return;
     }
-    props.navigation.navigate("GameLaunch", { players: [userProfile.id] }); //Currently one user, can add others for game on API
+    props.navigation.navigate("GameLaunch", { players });
   };
 
   useEffect(() => {
@@ -65,7 +67,7 @@ const GameSetupScreen = (props) => {
           />
         </View>
         <View style={styles.playerRow}>
-          <GamePlayerList />
+          <GamePlayerList players={players} />
         </View>
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
