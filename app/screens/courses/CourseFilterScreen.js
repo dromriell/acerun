@@ -5,7 +5,7 @@ import * as courseActions from "../../store/actions/courseActions";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { SubHeaderText } from "../../components/ui/AppText";
-import { TouchComp } from "../../components/ui/TouchComp";
+import TouchComp from "../../components/ui/TouchComp";
 import Input from "../../components/ui/Input";
 import AppColors from "../../utils/AppColors";
 

@@ -13,11 +13,10 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-import HeaderButton from "../../components/ui/HeaderButton";
-import DiscRatingChart from "../../components/discs/DiscRatingChart";
 import * as discActions from "../../store/actions/discsActions";
 import { discDetailEP } from "../../utils/apiEndPoints";
-
+import HeaderButton from "../../components/ui/HeaderButton";
+import DiscRatingChart from "../../components/discs/DiscRatingChart";
 import {
   HeaderText,
   SubHeaderText,
@@ -26,24 +25,17 @@ import {
 import AppColors from "../../utils/AppColors";
 
 const StatCard = (props) => {
-  /*
-   Component organizes disc properties explicitly passed down to it. Used to
-   seperate physical disc traits and user stats. Takes a 'header'(string),
-   'stats'(array), and 'labels'(array) props. The values of 'stats' and
-   'labels' are linked by their indexes and should be ordered together.
-  */
+  const { header, stats, labels } = props;
 
   return (
     <View style={styles.dataDeck}>
       <View style={styles.headerContainer}>
-        <SubHeaderText style={styles.dataHeader}>{props.header}</SubHeaderText>
+        <SubHeaderText style={styles.dataHeader}>{header}</SubHeaderText>
       </View>
-      {props.stats.map((stat, i) => {
+      {stats.map((stat, i) => {
         return (
           <View key={`discStat-${stat}-${i}`} style={styles.dataContainer}>
-            <SubHeaderText style={styles.dataLabel}>
-              {props.labels[i]}
-            </SubHeaderText>
+            <SubHeaderText style={styles.dataLabel}>{labels[i]}</SubHeaderText>
             <BodyText style={styles.data}>{stat}</BodyText>
           </View>
         );
@@ -53,10 +45,6 @@ const StatCard = (props) => {
 };
 
 const DiscsDetailScreen = (props) => {
-  /*
-   Screen for displaying detailed info about a given disc. Is passed down a disc id
-   from parent screen via navigation props.
-  */
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isScreenLoading, setIsScreenLoading] = useState(true);
@@ -72,10 +60,7 @@ const DiscsDetailScreen = (props) => {
   const profileId = useSelector((state) => state.auth.profile.id);
   const userDiscs = useSelector((state) => state.discs.userDiscs);
 
-  const loadDisc = useCallback(async () => {
-    /*
-     Loads the target disc data from API and sets the disc state.
-    */
+  const fetchDiscData = useCallback(async () => {
     setError(null);
     try {
       const response = await fetch(`${discDetailEP}${discId}/`, {
@@ -92,7 +77,7 @@ const DiscsDetailScreen = (props) => {
   }, [dispatch, setError]);
 
   useEffect(() => {
-    loadDisc();
+    fetchDiscData();
   }, []);
 
   useEffect(() => {
@@ -110,9 +95,6 @@ const DiscsDetailScreen = (props) => {
   }, [disc]);
 
   const handleDiscAdd = useCallback(async () => {
-    /*
-     Handle adding disc to user bag.
-    */
     setError(null);
     setIsLoading(true);
     try {

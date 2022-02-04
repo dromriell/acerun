@@ -6,7 +6,7 @@ import DiscItem from "./DiscItem";
 import { SubHeaderText } from "../ui/AppText";
 import AppColors from "../../utils/AppColors";
 
-const EmptyListPlaceHolder = (props) => {
+const EmptyListPlaceHolder = () => {
   return (
     <View style={styles.placeholder}>
       <MaterialIcons

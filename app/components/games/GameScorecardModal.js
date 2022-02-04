@@ -23,8 +23,6 @@ const GameScorecardModal = (props) => {
 
   const userScorecard = useSelector((state) => state.game.scorecard);
 
-  // const [focusedPlayer, setFocusedPlayer] = useState(userScorecard); // UNUSED, USE FOR MULTI USER GAMES
-
   const renderScores = (item, index) => {
     const { hole, score, strokes } = item;
     const { hole_number: holeNumber, par } = hole;

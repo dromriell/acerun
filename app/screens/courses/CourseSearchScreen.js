@@ -13,7 +13,7 @@ import * as courseActions from "../../store/actions/courseActions";
 
 import CourseList from "../../components/courses/CourseList";
 import SearchBar from "../../components/ui/SearchBar";
-import { TouchComp } from "../../components/ui/TouchComp";
+import TouchComp from "../../components/ui/TouchComp";
 import { SubHeaderText } from "../../components/ui/AppText";
 
 import AppColors from "../../utils/AppColors";

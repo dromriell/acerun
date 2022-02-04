@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  StyleSheet,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  View,
-  Image,
-  Text,
-  Platform,
-} from "react-native";
-import { BodyText, SubHeaderText, HeaderText } from "../ui/AppText";
+import { StyleSheet, View, Image, Text } from "react-native";
 
 import AppColors from "../../utils/AppColors";
+import TouchComp from "../ui/TouchComp";
+import { BodyText, SubHeaderText, HeaderText } from "../ui/AppText";
 
 const FlightRatingBar = (props) => {
   const { speed, glide, turn, fade } = props;
@@ -37,11 +30,6 @@ const FlightRatingBar = (props) => {
 };
 
 export const EmptyDiscItem = (props) => {
-  const TouchComp =
-    Platform.OS === "android" && Platform.Version >= 21
-      ? TouchableNativeFeedback
-      : TouchableOpacity;
-
   return (
     <View style={{ ...styles.discContainer, ...props.style }}>
       <View style={styles.touchableEmpty}>
@@ -60,11 +48,6 @@ export const EmptyDiscItem = (props) => {
 const DiscItem = (props) => {
   const { discData } = props;
   const disc = discData.disc ? discData.disc : discData;
-
-  const TouchComp =
-    Platform.OS === "android" && Platform.Version >= 21
-      ? TouchableNativeFeedback
-      : TouchableOpacity;
 
   return (
     <View style={{ ...styles.discContainer, ...props.style }}>

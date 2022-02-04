@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 
 import GameCourseItem from "./GameCourseItem";
 
+/**
+ * Takes a callback prop (onCoursePress) to handle user
+ * interaction with course items at the screen level.
+ */
 const CourseList = (props) => {
   const { data, onCoursePress } = props;
-  const [error, setError] = useState();
 
   const renderCourseItem = (itemData) => {
     return (

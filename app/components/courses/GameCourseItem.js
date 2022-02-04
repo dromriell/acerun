@@ -1,6 +1,5 @@
 import React from "react";
-import { View, ImageBackground, StyleSheet, Text } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, StyleSheet, Text } from "react-native";
 
 import {
   Ionicons,
@@ -9,16 +8,17 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 
-import { TouchComp } from "../ui/TouchComp";
+import TouchComp from "../ui/TouchComp";
 import { HeaderText, SubHeaderText, BodyText } from "../ui/AppText";
 import AppColors from "../../utils/AppColors";
+import AppImageBackground from "../ui/AppImageBackground";
 
 const GameCourseItem = (props) => {
   const { course, onCoursePress, onEmptyCoursePress } = props;
 
   if (!course) {
     return (
-      <View style={styles.empty}>
+      <View style={styles.emptyContainer}>
         <TouchComp
           style={styles.touchable}
           onPress={onEmptyCoursePress || onCoursePress}
@@ -38,24 +38,11 @@ const GameCourseItem = (props) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <TouchComp style={styles.touchable} onPress={onCoursePress} useForeground>
         <View style={styles.courseItem}>
           <View style={styles.imageContainer}>
-            <ImageBackground
-              source={{ uri: course.image_url }}
-              style={styles.image}
-            >
-              <LinearGradient
-                colors={[
-                  AppColors.blackTrans,
-                  AppColors.black,
-                  AppColors.blackTrans,
-                ]}
-                style={styles.background}
-                start={{ x: 0.7, y: 0.1 }}
-              />
-            </ImageBackground>
+            <AppImageBackground image={{ uri: course.image_url }} />
           </View>
           <View style={styles.courseInfo}>
             <HeaderText capitalize style={styles.header}>
@@ -129,12 +116,15 @@ const GameCourseItem = (props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   courseItem: {
     flex: 1,
     minHeight: 250,
     marginVertical: 10,
   },
-  empty: {
+  emptyContainer: {
     flex: 1,
     borderWidth: 1,
     borderColor: AppColors.accent,
@@ -164,18 +154,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 5,
   },
-  image: {
-    width: "100%",
-    height: "100%",
-  },
-  background: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: "100%",
-    opacity: 0.7,
-  },
   headerContainer: {
     width: "100%",
   },
@@ -203,7 +181,6 @@ const styles = StyleSheet.create({
     width: 40,
     aspectRatio: 1,
     borderRadius: 50,
-    // backgroundColor: AppColors.primary,
   },
   badgeIcon: {
     position: "absolute",

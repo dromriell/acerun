@@ -185,11 +185,7 @@ const StrokeMenu = (props) => {
     <Animated.View
       style={{
         ...styles.container,
-        transform: [
-          { translateY: yTranslateAnim },
-          { scaleY: yscale },
-          //  { rotateZ: interpolateRotation },
-        ],
+        transform: [{ translateY: yTranslateAnim }, { scaleY: yscale }],
         zIndex: zIndexAnim,
       }}
     >

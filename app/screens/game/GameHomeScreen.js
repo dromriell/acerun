@@ -7,7 +7,7 @@ import * as gameActions from "../../store/actions/gameActions";
 import AppImageBackground from "../../components/ui/AppImageBackground";
 import backgroundImages from "../../assets/backgroundImages";
 import AppColors from "../../utils/AppColors";
-import { TouchComp } from "../../components/ui/TouchComp";
+import TouchComp from "../../components/ui/TouchComp";
 import { SubHeaderText } from "../../components/ui/AppText";
 
 const GameHomeScreen = (props) => {

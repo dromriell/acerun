@@ -8,6 +8,9 @@ import AppColors from "../utils/AppColors";
 
 const LaunchScreen = (props) => {
   const dispatch = useDispatch();
+  /**
+   * Login if userData in storage. Expiration handling needs to be addressed.
+   */
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem("userData");

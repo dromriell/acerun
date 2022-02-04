@@ -38,7 +38,7 @@ const GameActionMenu = (props) => {
   const [isBackHandThrow, setIsBackHandThrow] = useState(true);
   const [isPenalty, setIsPenalty] = useState(false);
 
-  const getDistance = useCallback(() => {
+  const getThrowDistance = useCallback(() => {
     if (!location) {
       return 0;
     }
@@ -50,7 +50,7 @@ const GameActionMenu = (props) => {
     return getHaversineDistance(prevPosition, location);
   }, [location, currentStrokes, holeData, getHaversineDistance]);
 
-  const verifyPermissions = async () => {
+  const verifyLocationPermissions = async () => {
     const result = await Location.requestForegroundPermissionsAsync();
     const bgResult = await Location.requestBackgroundPermissionsAsync();
 
@@ -67,7 +67,7 @@ const GameActionMenu = (props) => {
   };
 
   const handleGetLocation = async () => {
-    const hasPermission = await verifyPermissions();
+    const hasPermission = await verifyLocationPermissions();
     if (!hasPermission) {
       return;
     }
@@ -129,7 +129,7 @@ const GameActionMenu = (props) => {
     if (!location) {
       return;
     }
-    const distance = getDistance();
+    const distance = getThrowDistance();
     const equippedThrow = isBackHandThrow ? "backhand" : "forehand";
     const type = isHole ? "hole" : isPenalty ? "penalty" : "stroke";
 

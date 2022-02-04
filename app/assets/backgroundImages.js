@@ -1,3 +1,7 @@
+/**
+ * Resolves images during packaging to be used dynamically
+ * with the AppImageBackground component.
+ */
 export default {
   discRender: require("./images/disc-golf-001.png"),
   basketRender: require("./images/disc-golf-002.png"),

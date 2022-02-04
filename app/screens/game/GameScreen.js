@@ -11,11 +11,10 @@ import GameScorecardModal from "../../components/games/GameScorecardModal";
 
 import AppColors from "../../utils/AppColors";
 
+/**
+ * Main screen to display all game related actions and user interactions.
+ **/
 const GameScreen = (props) => {
-  /**
-   * Main screen to display all game related actions and user interactions.
-   **/
-
   const { navigation } = props;
   const [isHoleEndModalOpen, setIsHoleEndModalOpen] = useState(false);
   const [isGameEnd, setIsGameEnd] = useState(false);
@@ -29,10 +28,11 @@ const GameScreen = (props) => {
   const currentStrokes = useSelector((state) => state.game.currentStrokes);
   const weather = useSelector((state) => state.game.weather);
 
+  /**
+   * asyncSetWatch is called in order to increase location accuracy. Nothing
+   * is done with the location data retrieved here.
+   */
   useEffect(() => {
-    // Set watchPosition in order to track user movement during game
-    // and increase stroke getLocation accuracy.
-
     Location.installWebGeolocationPolyfill();
     const asyncSetWatch = async () => {
       const geoLocWatch = await Location.watchPositionAsync(
@@ -40,7 +40,7 @@ const GameScreen = (props) => {
           accuracy: Location.Accuracy.Highest,
           distanceInterval: 5,
         },
-        (position) => {} // Nothing is done with location data collected here
+        (position) => {}
       );
       setGeoLocationWatch(geoLocWatch);
     };
@@ -49,8 +49,8 @@ const GameScreen = (props) => {
     }
   }, []);
 
+  // Event listener to remove watchPosition when user leaves the screen.
   useEffect(() => {
-    // Event listener to remove watchPosition when user leaves the screen.
     const clearWatch = navigation.addListener("beforeRemove", async () => {
       await geoLocationWatch.remove();
       setGeoLocationWatch(null);
@@ -59,15 +59,14 @@ const GameScreen = (props) => {
   }, [navigation, geoLocationWatch]);
 
   if (!courseData) {
-    // Loading display
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={AppColors.accent} />
       </View>
     );
   }
-
-  const holeData = courseData?.holes[currentHoleIndex]; // Assign after courseData is retrieved
+  // Assign after courseData is retrieved
+  const holeData = courseData?.holes[currentHoleIndex];
 
   return (
     <View style={styles.mapContainer}>

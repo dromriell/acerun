@@ -17,7 +17,7 @@ import {
 } from "../../components/ui/AppText";
 import * as authActions from "../../store/actions/authActions";
 import AppColors from "../../utils/AppColors";
-import { TouchComp } from "../../components/ui/TouchComp";
+import TouchComp from "../../components/ui/TouchComp";
 
 const ProfileScreen = (props) => {
   const dispatch = useDispatch();

@@ -2,7 +2,7 @@ import React from "react";
 import { Text, StyleSheet } from "react-native";
 
 export const BodyText = (props) => {
-  const { color, size, centered, width, centerVertical } = props;
+  const { color, size, centered, width } = props;
   return (
     <Text
       {...props}
@@ -22,7 +22,7 @@ export const BodyText = (props) => {
 };
 
 export const SubHeaderText = (props) => {
-  const { color, size, centered, width, centerVertical } = props;
+  const { color, size, centered, width } = props;
 
   return (
     <Text
@@ -43,7 +43,7 @@ export const SubHeaderText = (props) => {
 };
 
 export const HeaderText = (props) => {
-  const { color, size, centered, width, centerVertical } = props;
+  const { color, size, centered, width } = props;
 
   return (
     <Text

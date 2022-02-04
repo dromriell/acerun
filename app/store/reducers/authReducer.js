@@ -15,12 +15,6 @@ export default (state = initialState, action) => {
         token: action.token,
         profile: action.profile,
       };
-    //  case SIGN_UP:
-    //    return {
-    //      ...state,
-    //      token: action.token,
-    //      userId: action.userId,
-    //    };
     case LOG_OUT:
       return initialState;
     case UPDATE_PROFILE:

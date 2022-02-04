@@ -25,9 +25,11 @@ const DiscSearchScreen = (props) => {
   const token = useSelector((state) => state.auth.token);
   const searchResults = useSelector((state) => state.discs.searchResults);
 
+  const minSearchTermLength = 3;
+
   const handleSearch = useCallback(
     async (term) => {
-      if (term.length < 3) {
+      if (term.length < minSearchTermLength) {
         dispatch(discActions.resetSearch());
         return;
       }
@@ -43,11 +45,10 @@ const DiscSearchScreen = (props) => {
     [dispatch, setError]
   );
 
+  /**
+   * Only called if this screen is navigated to from the disc comparison screen.
+   */
   const handleDiscCompareSelect = (disc, placement) => {
-    /*
-      Handles the assignment of discs to be compared. Only called onDiscSelect
-      if 
-    */
     dispatch(discActions.addComparisonDisc(placement, disc));
     props.navigation.goBack();
   };

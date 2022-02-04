@@ -29,6 +29,7 @@ const GameMap = (props) => {
   };
 
   useEffect(() => {
+    // setMapBoundaries does not currently work with Apple Maps
     if (!mapRef || !center || Platform.OS === "ios") {
       return;
     }
@@ -49,8 +50,8 @@ const GameMap = (props) => {
       ref={mapRef}
       region={mapRegion}
       style={styles.map}
-      minZoomLevel={18} // default => 0
-      maxZoomLevel={22} // default => 20
+      minZoomLevel={18}
+      maxZoomLevel={22}
       mapType="satellite"
       scrollEnabled={true}
       camera={camera}

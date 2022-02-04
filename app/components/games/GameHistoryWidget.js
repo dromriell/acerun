@@ -68,7 +68,7 @@ const GameSummaryLarge = (props) => {
 
 const GameSummarySmall = (props) => {
   const { game, total_score, player } = props.game;
-  const { course, date, isInProgress } = game;
+  const { course, date } = game;
   const displayDate = new Date(date);
   const isUnderPar = total_score <= 0;
 

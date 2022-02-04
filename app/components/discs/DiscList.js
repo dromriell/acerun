@@ -5,6 +5,7 @@ import DiscListHeader from "./DiscListHeader";
 import DiscItem from "./DiscItem";
 import AppColors from "../../utils/AppColors";
 
+// Translation from API object keys
 const discTypes = {
   dist: "dist_dr",
   frwy: "frwy_dr",

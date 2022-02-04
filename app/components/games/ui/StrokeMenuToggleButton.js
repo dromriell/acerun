@@ -9,7 +9,7 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { TouchComp } from "../../ui/TouchComp";
+import TouchComp from "../../ui/TouchComp";
 import AppColors from "../../../utils/AppColors";
 
 const StrokeMenuToggleButton = (props) => {

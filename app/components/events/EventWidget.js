@@ -92,6 +92,11 @@ const EventWidget = (props) => {
     return <EventItem event={itemData.item} />;
   };
 
+  const handleHeaderPress = () => {
+    eventListRef.current.scrollToIndex({ animated: true, index: 0 });
+    setCurrentEventIndex(0);
+  };
+
   const handleViewableItemsChanged = useCallback(({ changed }) => {
     /**
      * Called on FlatList when viewable item changes from either user
@@ -175,10 +180,7 @@ const EventWidget = (props) => {
         <HeaderText
           size={32}
           color={AppColors.white}
-          onPress={() => {
-            eventListRef.current.scrollToIndex({ animated: true, index: 0 });
-            setCurrentEventIndex(0);
-          }}
+          onPress={handleHeaderPress}
         >
           Events
         </HeaderText>

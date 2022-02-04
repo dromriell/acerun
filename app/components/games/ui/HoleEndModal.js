@@ -3,7 +3,7 @@ import { View, StyleSheet, ActivityIndicator, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as gameActions from "../../../store/actions/gameActions";
 
-import { TouchComp } from "../../ui/TouchComp";
+import TouchComp from "../../ui/TouchComp";
 import { BodyText, HeaderText, SubHeaderText } from "../../ui/AppText";
 
 import AppColors from "../../../utils/AppColors";
@@ -16,7 +16,7 @@ const HoleEndModal = (props) => {
   const token = useSelector((state) => state.auth.token);
   const userID = useSelector((state) => state.auth.profile.user.id);
   const currentStrokes = useSelector((state) => state.game.currentStrokes);
-  const courseData = useSelector((state) => state.game.courseData); // MAY NEED TO USE FOR GAME END
+  const courseData = useSelector((state) => state.game.courseData);
   const currentHoleIndex = useSelector((state) => state.game.currentHoleIndex);
   const scorecard = useSelector((state) => state.game.scorecard);
 

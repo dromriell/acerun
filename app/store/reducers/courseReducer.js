@@ -6,7 +6,6 @@ import {
 } from "../actions/courseActions";
 
 const filterCourses = (courses, courseFilters) => {
-  // Use to filter courses and return a filtered array
   const filteredCourses = courses.filter((course) => {
     for (filterKey in courseFilters) {
       if (!courseFilters[filterKey]) {

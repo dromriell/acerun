@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
-import { TouchComp } from "./TouchComp";
+import TouchComp from "./TouchComp";
 import { BodyText } from "./AppText";
 import AppColors from "../../utils/AppColors";
 
@@ -37,6 +37,12 @@ const SearchButton = (props) => {
   );
 };
 
+/**
+ * Defaults to autosearching by calling props.onSearch during input onChangeText. Set expected search
+ * validation and dispatching within that callback. Manual searches can be set by provinding
+ * props.onManualSearch. This can also be used as a placeholder button if props.button value
+ * provided. See disc and course overview screens as examples.
+ */
 const SearchBar = (props) => {
   const { onSearch, searchButton, onManualSearch } = props;
   const [isRefSet, setIsRefSet] = useState(false);

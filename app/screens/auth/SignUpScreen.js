@@ -14,7 +14,7 @@ import * as authActions from "../../store/actions/authActions";
 
 import Input from "../../components/ui/Input";
 import StatePicker from "../../components/ui/StatePicker";
-import { HeaderText, SubHeaderText } from "../../components/ui/AppText";
+import { HeaderText } from "../../components/ui/AppText";
 import AppColors from "../../utils/AppColors";
 
 const formReducer = (state, action) => {
@@ -47,7 +47,6 @@ const SignUpScreen = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [hasChanged, setHasChanged] = useState(false);
-  const [signUpConfirmed, setSignUpConfirmed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 

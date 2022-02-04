@@ -1,32 +1,19 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  Platform,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 
-import { SubHeaderText } from "../ui/AppText";
 import AppColors from "../../utils/AppColors";
+import TouchComp from "../ui/TouchComp";
+import { SubHeaderText } from "../ui/AppText";
 
 const DiscHomeMenu = (props) => {
-  const TouchComp =
-    Platform.OS === "android" && Platform.Version >= 21
-      ? TouchableNativeFeedback
-      : TouchableOpacity;
+  const navigateToScreen = (screenName) =>
+    props.navigation.navigate(screenName);
 
   return (
     <View style={styles.menu}>
       <View style={styles.buttonContainer}>
-        <TouchComp
-          useForeground
-          onPress={() => {
-            props.navigation.navigate("UserDiscs");
-          }}
-        >
+        <TouchComp useForeground onPress={() => navigateToScreen("UserDiscs")}>
           <View style={styles.button}>
             <Feather name="circle" size={60} color={AppColors.accent} />
             <SubHeaderText style={styles.buttonText}>My Discs</SubHeaderText>
@@ -35,7 +22,7 @@ const DiscHomeMenu = (props) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchComp
-          onPress={() => props.navigation.navigate("DiscComparison")}
+          onPress={() => navigateToScreen("DiscComparison")}
           useForeground
         >
           <View style={styles.button}>

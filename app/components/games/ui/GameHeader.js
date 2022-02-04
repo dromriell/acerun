@@ -7,7 +7,7 @@ import getHaversineDistance from "../../../utils/getHaversineDist";
 import AppColors from "../../../utils/AppColors";
 
 import { HeaderText, SubHeaderText, BodyText } from "../../ui/AppText";
-import { TouchComp } from "../../ui/TouchComp";
+import TouchComp from "../../ui/TouchComp";
 
 const GameHeader = (props) => {
   const { courseName, holeData } = props;

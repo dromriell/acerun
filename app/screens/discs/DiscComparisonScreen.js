@@ -9,11 +9,10 @@ import { Ionicons } from "@expo/vector-icons";
 import AppColors from "../../utils/AppColors";
 import { BodyText, SubHeaderText } from "../../components/ui/AppText";
 
+/**
+ * Takes a 'disc' prop (not userDisc).
+ */
 const DiscPropertyColumn = (props) => {
-  /*
-  Component for displaying disc properties in a column. Takes a 'disc'
-  prop (not userDisc).
-  */
   const { disc } = props;
 
   return (
@@ -42,12 +41,6 @@ const DiscPropertyColumn = (props) => {
 };
 
 const DiscComparisonScreen = (props) => {
-  /*
-  Screen which allows user to compare properties of two discs. Displays a
-  DiscRatingChart, DiscItems, EmptyDiscItems, and local DiscPropertyColumn
-  component.
-  */
-
   const [discArray, setDiscArray] = useState([]);
   const discA = useSelector((state) => state.discs.comparisonDiscA);
   const discB = useSelector((state) => state.discs.comparisonDiscB);
@@ -58,12 +51,6 @@ const DiscComparisonScreen = (props) => {
   }, [discA, discB]);
 
   const renderDiscItems = () => {
-    /*
-      Render discArray and return either a DiscItem if a disc is present,
-      or and EmptyDiscItem if not. Both components navigate to DiscSearchScreen
-      onPress and pass along handleDiscSelect via nav params.    
-    */
-
     const discItemArray = [];
 
     // Loop twice since array will only hold two possible discs.
@@ -112,14 +99,15 @@ const DiscComparisonScreen = (props) => {
             <DiscRatingChart data={discArray.filter((disc) => !!disc)} />
           </View>
           <View style={styles.properties}>
-            {discArray.map((disc, i) => {
-              if (!disc) {
-                return null;
-              }
-              return (
-                <DiscPropertyColumn key={`discPropCol-${i + 1}`} disc={disc} />
-              );
-            })}
+            {discArray.map(
+              (disc, i) =>
+                disc && (
+                  <DiscPropertyColumn
+                    key={`discPropCol-${i + 1}`}
+                    disc={disc}
+                  />
+                )
+            )}
           </View>
         </View>
       </ScrollView>

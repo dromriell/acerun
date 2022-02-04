@@ -3,6 +3,11 @@ import { StyleSheet, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AppColors from "../../utils/AppColors";
 
+/**
+ * Component for filling parent container with an image
+ * background. Takes an image prop that needs to be a path
+ * (either require or uri).
+ */
 const AppImageBackground = (props) => {
   const { image, imageStyle, gradientStyle } = props;
 

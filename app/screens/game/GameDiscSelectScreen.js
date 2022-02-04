@@ -7,7 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as gameActions from "../../store/actions/gameActions";
 
 import DiscList from "../../components/discs/DiscList";
-import { TouchComp } from "../../components/ui/TouchComp";
+import TouchComp from "../../components/ui/TouchComp";
 import AppColors from "../../utils/AppColors";
 
 const GameDiscSelectScreen = (props) => {

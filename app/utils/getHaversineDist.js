@@ -1,3 +1,6 @@
+/**
+ * Returns the distanct between two geolocation points in feet.
+ */
 const getHaversineDistance = (position1, position2) => {
   var R = 3958.8; // Radius of the Earth in miles
   var rlat1 = position1.lat * (Math.PI / 180); // Convert degrees to radians
