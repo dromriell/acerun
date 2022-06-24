@@ -36,7 +36,9 @@ const GameSetupScreen = (props) => {
       ]);
       return;
     }
-    props.navigation.navigate("GameLaunch", { players });
+    props.navigation.navigate("GameLaunch", {
+      players: players.map((player) => player.id),
+    });
   };
 
   useEffect(() => {
